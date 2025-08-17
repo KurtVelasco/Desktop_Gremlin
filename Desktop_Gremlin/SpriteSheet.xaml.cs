@@ -176,6 +176,19 @@ namespace Desktop_Gremlin
                     }
                 }
 
+                // This plays EMOTE2 indefinetely while IS_EMOTING2 == true and interrupts it on other actions
+                if (IS_EMOTING2)
+                {
+                    if (IS_WALKING || IS_DRAGGING || FOLLOW_CURSOR)
+                    {
+                        IS_EMOTING2 = false;
+                    }
+                    else
+                    {
+                        CURRENT_EMOTE_2 = PlayAnimationFrame(EMOTE2_SHEET, CURRENT_EMOTE_2, EMOTE2_FRAME_COUNT);
+                    }
+                }
+
                 if (!IS_DRAGGING && !IS_WALKING && !IS_EMOTING1 && !FOLLOW_CURSOR && !IS_EMOTING2)
                 {
                     CURRENT_IDLE_FRAME = PlayAnimationFrame(IDLE_SHEET, CURRENT_IDLE_FRAME, IDLE_FRAME_COUNT);
@@ -223,8 +236,8 @@ namespace Desktop_Gremlin
                         }
                     }
                     else
-                    {                       
-                        CURRENT_EMOTE_2 = PlayAnimationFrame(EMOTE2_SHEET, CURRENT_EMOTE_2, EMOTE2_FRAME_COUNT);                       
+                    {
+                        CURRENT_EMOTE_2 = PlayAnimationFrame(EMOTE2_SHEET, CURRENT_EMOTE_2, EMOTE2_FRAME_COUNT);
                     }
                 }
                 else if (IS_WALKING)
@@ -274,10 +287,26 @@ namespace Desktop_Gremlin
             DragMove();
 
             FOLLOW_CURSOR = !FOLLOW_CURSOR;
-            IS_EMOTING2 = !IS_EMOTING2;
+
+            // A hack to make sure IDLE animation plays after FOLLOW_CURSOR behaivour is turned off
+            if (!FOLLOW_CURSOR)
+            {
+                IS_EMOTING2 = false;
+            }
+            else
+            {
+                IS_EMOTING2 = !IS_EMOTING2;
+            }
 
             IS_DRAGGING = false;
         }
+
+        // Simply toggling on RMB click to signal if we want the EMOTE2 to play
+        private void Canvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            IS_EMOTING2 = !IS_EMOTING2;
+        }
+
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Left)
