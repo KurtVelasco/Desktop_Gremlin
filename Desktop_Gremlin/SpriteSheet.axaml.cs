@@ -276,7 +276,6 @@ namespace Desktop_Gremlin
            var point = e.GetCurrentPoint(this);
            if (point.Properties.IsLeftButtonPressed)
            {
-               Console.WriteLine("Drag started");
                IS_DRAGGING = true;
                FOLLOW_CURSOR = !FOLLOW_CURSOR;
                IS_EMOTING2 = !IS_EMOTING2;
@@ -287,8 +286,6 @@ namespace Desktop_Gremlin
 
        private void Canvas_PointerReleased(object? sender, PointerReleasedEventArgs e)
        {
-           Console.WriteLine("Drag stopped");
-
            IS_DRAGGING = false;
        }
        //Avalonia on X11 seems to have issues properly detecting when the release event occurs,
