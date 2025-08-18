@@ -1,0 +1,54 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Desktop_Gremlin.SpriteSheet"
+        Width="210" Height="235"
+        CanResize="False"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent"
+        Topmost="True"
+        SystemDecorations="None"
+        KeyDown="Window_KeyDown"
+        KeyUp="Window_KeyUp"
+        PointerReleased="Canvas_PointerReleased">
+
+    <Grid PointerPressed="Canvas_PointerPressed" Margin="0,0,10,10">
+
+        <Image x:Name="SpriteImage"
+               Width="160" Height="162"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Margin="15,35,0,0"/>
+
+        <Label x:Name="SpriteLabel"
+               Content=""
+               Background="Transparent"
+               Foreground="Transparent"
+               FontWeight="Bold"
+               FontSize="14"
+               VerticalContentAlignment="Center"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Width="135"
+               Margin="115,1,0,0"/>
+
+        <Border x:Name="SpeechBubbleBorder"
+                Background="Black"
+                BorderBrush="White"
+                BorderThickness="1.5"
+                Width="120" Height="74"
+                Opacity="0"
+                Padding="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="75,6,0,0">
+
+            <TextBlock x:Name="SpriteSpeech"
+                       Text=""
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="15"
+                       FontFamily="Agency FB"
+                       TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</Window>
