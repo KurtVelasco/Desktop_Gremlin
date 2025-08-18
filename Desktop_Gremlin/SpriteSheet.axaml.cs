@@ -147,12 +147,12 @@ namespace Desktop_Gremlin
             return (currentFrame + 1) % frameCount;
         }
 
-        private int lastTick = 0;
        private void InitializeAnimations() 
        { 
            double intervalMs = 1000.0 / FRAME_RATE;
 
-           //I don't know why, but it's faster on linux, somehow, yes, I looooove linux
+           //While porting to the web, it turns out Windows is actually the slow one, why this is? 
+           //No clue!
            if (OperatingSystem.IsLinux())
            {
                intervalMs *= 1.5f;
