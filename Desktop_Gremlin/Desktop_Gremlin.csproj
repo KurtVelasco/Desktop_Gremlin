@@ -103,7 +103,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Sounds\Haru\" />
+    <Folder Include="Sounds\Mambo\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -111,73 +114,56 @@
     <Content Include="config.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Haru\intro.wav">
+    <Content Include="Sounds\idle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Haru\run.wav">
+    <Content Include="SpriteSheet\Gremlins\Hikari\grab.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Haru\mambo.wav">
+    <Content Include="SpriteSheet\Gremlins\Hikari\config.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Haru\outro.wav">
+    <Content Include="SpriteSheet\Gremlins\Hikari\forward.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Haru\hover.wav">
+    <Content Include="Sounds\intro.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Mambo\intro.wav">
+    <Content Include="SpriteSheet\Gremlins\Hikari\fireL.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Mambo\mambo.wav">
+    <Content Include="SpriteSheet\Gremlins\Hikari\fireR.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Mambo\pat.wav">
+    <Content Include="SpriteSheet\Gremlins\Hikari\wIdle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Mambo\run.wav">
+    <Content Include="SpriteSheet\Gremlins\Hikari\outro.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Mambo\hover.wav">
+    <Content Include="SpriteSheet\Gremlins\Hikari\intro.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\forward.png">
+    <Content Include="SpriteSheet\Gremlins\Hikari\sleep.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\right.png">
+    <Content Include="SpriteSheet\Gremlins\Hikari\hover.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\backward.png">
+    <Resource Include="SpriteSheet\Gremlins\Hikari\Movie_297-ezgif.com-gif-to-sprite-converter.png" />
+    <Content Include="SpriteSheet\Gremlins\Hikari\right.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\left.png">
+    <Content Include="SpriteSheet\Gremlins\Hikari\left.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\idle.png">
+    <Content Include="SpriteSheet\Gremlins\Hikari\backward.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\outro.png">
+    <Content Include="SpriteSheet\Gremlins\Hikari\idle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\intro.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\config.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\grab.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\sleep.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\click.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\hover.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Haru\wIdle.png">
+    <Content Include="SpriteSheet\Gremlins\Hikari\click.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SpriteSheet\Gremlins\Mambo\backward.png">
@@ -187,15 +173,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SpriteSheet\Gremlins\Mambo\config.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Mambo\outro.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Mambo\sleep.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpriteSheet\Gremlins\Mambo\wIdle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SpriteSheet\Gremlins\Mambo\forward.png">
@@ -216,7 +193,55 @@
     <Content Include="SpriteSheet\Gremlins\Mambo\left.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SpriteSheet\Gremlins\Mambo\outro.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SpriteSheet\Gremlins\Mambo\right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Mambo\sleep.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Mambo\wIdle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\backward.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\click.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\config.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\forward.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\grab.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\hover.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\idle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\intro.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\outro.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\sleep.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpriteSheet\Gremlins\Haru\wIdle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
