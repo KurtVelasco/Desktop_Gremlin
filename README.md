@@ -31,7 +31,7 @@ A. Prob in the future
 A. I mostly base it off characters that I like so maybe, unless someone requested it through Kofi.
 <br><br>
 **Virus Detected?**<br>
-A. I would be suprise if you can find a github download without getting false-positived by Virustotal. 
+A. I would be suprise if you can find a github download without getting false-positived by Virustotal/Defender. 
    I can assure that it's safe, but thats up to you.
 <br><br>
 **Can you Add X Feature**<br>
