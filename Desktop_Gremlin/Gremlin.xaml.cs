@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.IO;
@@ -15,8 +13,6 @@ namespace Desktop_Gremlin
 
     public partial class Gremlin : Window
     {
-
-
         //To those reading this, I'm sorry for this messy code, or not//
         //In the future I'm planning to seperate major code snippets into diffrent class files//
         //Instead of barfing evrything in 1 file//
@@ -25,87 +21,7 @@ namespace Desktop_Gremlin
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
-        public static class Settings
-        {
-            public static int SpriteColumn { get; set; } = 10;
-            public static int FrameRate { get; set; } = 31;
-            public static string StartingChar { get; set; } = "Haru";
-            public static double FollowRadius { get; set; } = 150.0;
-            public static int FrameWidth { get; set; } = 200;
-            public static int FrameHeight { get; set; } = 200;
-            public static int Ammo { get; set; } = 6;
-
-            public static Dictionary<string, DateTime> LastPlayed = new Dictionary<string, DateTime>();
-        }
-        public class AnimationFrameCounts
-        {
-            public int Intro { get; set; } = 0;
-            public int Idle { get; set; } = 0;
-            public int Left { get; set; } = 0;
-            public int Right { get; set; } = 0;
-            public int Up { get; set; } = 0;
-            public int Down { get; set; } = 0;
-            public int Outro { get; set; } = 0;
-            public int Grab { get; set; } = 0;
-            public int WalkIdle { get; set; } = 0;
-            public int Click { get; set; } = 0;
-            public int Dance { get; set; } = 0;
-            public int Hover { get; set; } = 0;
-            public int Sleep { get; set; } = 0;
-            public int LeftFire { get; set; } = 0;
-            public int RightFire { get; set; } = 0;
-        }
-        
-        public class AnimationFrame
-        {
-            public int LeftFire { get; set; } = 0;
-            public int RightFire { get; set; } = 0;
-            public int Intro { get; set; } = 0;
-            public int Idle { get; set; } = 0;
-            public int Outro { get; set; } = 0;
-            public int WalkDown { get; set; } = 0;
-            public int WalkUp { get; set; } = 0;
-            public int WalkRight { get; set; } = 0;
-            public int WalkLeft { get; set; } = 0;
-            public int Grab { get; set; } = 0;
-            public int WalkIdle { get; set; } = 0;
-            public int Click { get; set; } = 0;
-            public int Dance { get; set; } = 0;
-            public int Hover { get; set; } = 0;
-            public int Sleep { get; set; } = 0; 
-        }
-        public class State
-        {
-            //Some of the States are unused, I'll used them in the future
-            //If I need more percision when it comes to state managment
-            public bool IsIntro { get; set; } = true;
-            public bool ForwardAnimation { get; set; } = true;
-            public bool IsRandom { get; set; } = false;
-            public bool IsHover { get; set; } = false;
-            public bool IsIdle { get; set; } = true;
-            public bool IsWalking { get; set; } = false;
-            public bool IsDragging { get; set; } = false;
-            public bool IsWalkIdle { get; set; } = false;
-            public bool IsClick { get; set; } = false;
-            public bool IsSleeping { get; set; } = false;   
-            public bool IsFiring_Left { get; set; } = false;
-            public bool IsFiring_Right { get; set; } = false;
-        }
-        public class MouseSettings
-        {
-            public bool FollowCursor { get; set; } = false;
-            public System.Drawing.Point LastMousePosition { get; set; }
-            public double FollowSpeed { get; set; } = 5.0;
-            public double MouseX { get; set; }
-            public double MouseY { get; set; }
-            public double Speed { get; set; } = 10.0;
-
-        }
-        public MouseSettings Mouse = new MouseSettings();
-        public AnimationFrame CurrentFrames = new AnimationFrame();
-        public State States = new State();
-        public AnimationFrameCounts FrameCounts = new AnimationFrameCounts();
-
+            
         private DispatcherTimer _closeTimer;
         private DispatcherTimer _masterTimer;
         private DispatcherTimer _idleTimer;
@@ -115,15 +31,14 @@ namespace Desktop_Gremlin
             public int Y;
         }
 
- 
         public Gremlin()
         {
 
             this.ShowInTaskbar = false;
             InitializeComponent();
             SpriteImage.Source = new CroppedBitmap();
-            LoadMasterConfig();
-            LoadConfigChar();
+            ConfigManager.LoadMasterConfig();
+            ConfigManager.LoadConfigChar();
             SetupTrayIcon();
             InitializeAnimations();
             PlaySound("intro.wav");
@@ -131,144 +46,6 @@ namespace Desktop_Gremlin
             _idleTimer.Interval = TimeSpan.FromSeconds(120);
             _idleTimer.Tick += IdleTimer_Tick; ;
             _idleTimer.Start();
-        }
-   
-        //TODO: Put this on a seperate class
-        public static class SpriteManager
-        {
-            private static readonly Dictionary<string, BitmapImage> Cache = new Dictionary<string, BitmapImage>();
-            private static readonly HashSet<string> AlwaysCached = new HashSet<string>()
-            {
-                "idle", "left", "right", "forward", "backward", "widle"
-            };
-
-            private static string _currentExtra = null;
-
-            public static BitmapImage Get(string animationName)
-            {
-                animationName = animationName.ToLower();
-
-                if (Cache.TryGetValue(animationName, out var sheet))
-                {
-                    return sheet;
-                }
-
-                string fileName = GetFileName(animationName);
-                if (fileName == null)
-                {
-                    NormalError("Unknown animation requested: " + animationName, "Sprite Error");
-                    return null;
-                }
-                sheet = LoadSprite(Settings.StartingChar, fileName);
-                if (sheet != null)
-                {
-                    Cache[animationName] = sheet;
-                    if (!AlwaysCached.Contains(animationName))
-                    {
-                        if (_currentExtra != null && _currentExtra != animationName)
-                        {
-                            Cache.Remove(_currentExtra);
-                        }
-                        _currentExtra = animationName;
-                    }
-                }
-
-                return sheet;
-            }
-            private static string GetFileName(string animationName)
-            {
-                switch (animationName.ToLower())
-                {
-                    case "idle": 
-                        return "idle.png";
-                    case "intro": 
-                        return "intro.png";
-                    case "left": 
-                        return "left.png";
-                    case "right": 
-                        return "right.png";
-                    case "forward": 
-                        return "forward.png";
-                    case "backward": 
-                        return "backward.png";
-                    case "outro": 
-                        return "outro.png";
-                    case "grab": 
-                        return "grab.png";
-                    case "widle": 
-                        return "wIdle.png";
-                    case "click": 
-                        return "click.png";
-                    case "hover": 
-                        return "hover.png";
-                    case "sleep":
-                        return "sleep.png";
-                    case "firel":
-                        return "fireL.png";
-                    case "firer":
-                        return "fireR.png";
-                    default: 
-                        return null;
-                }
-            }
-            public static void PruneCache()
-            {
-                var keysToRemove = new List<string>();
-
-                foreach (var key in Cache.Keys)
-                {
-                    if (!AlwaysCached.Contains(key.ToLower()))
-                    {
-                        keysToRemove.Add(key);
-                    }
-                }
-
-                foreach (var key in keysToRemove)
-                {
-                    Cache.Remove(key);
-                }
-            }
-            public static void ClearCache()
-            {
-                foreach (var img in Cache.Values)
-                {
-                    img.StreamSource?.Dispose();
-                }
-                Cache.Clear();
-                _currentExtra = null;
-            }
-            private static BitmapImage LoadSprite(string filefolder, string fileName, string rootFolder = "Gremlins")
-            {
-                string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                    "SpriteSheet", rootFolder, filefolder, fileName);
-
-                if (!File.Exists(path))
-                    return null;
-
-                try
-                {
-                    var image = new BitmapImage();
-                    image.BeginInit();
-                    image.UriSource = new Uri(path);
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.EndInit();
-                    image.Freeze();
-                    return image;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-        public static void FatalError(string message, string title = "Error")
-        {
-            System.Windows.MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
-            System.Windows.Application.Current.Shutdown();
-        }
-        public static void NormalError(string message, string title = "Error")
-        {
-            System.Windows.MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
         private int PlayAnimation(BitmapImage sheet, int currentFrame, int frameCount, int frameWidth, int frameHeight, System.Windows.Controls.Image targetImage, bool PlayOnce = false)
         {
@@ -287,37 +64,28 @@ namespace Desktop_Gremlin
 
             targetImage.Source = new CroppedBitmap(sheet, new Int32Rect(x, y, frameWidth, frameHeight));
 
-           
-            return (currentFrame + 1) % frameCount;
-            
-            //else
-            //{
-            //    if (States.ForwardAnimation)
-            //    {
-            //        currentFrame++;
 
-            //        if (currentFrame >= frameCount - 1)
-            //        {
-            //            States.ForwardAnimation = false;
-            //        } 
-            //    }
-            //    else
-            //    {
-            //        currentFrame--;
-            //        if (currentFrame <= 0)
-            //        {
-            //            States.ForwardAnimation = true;
-            //        } 
-            //    }
-            //    return currentFrame;
-            //}
+            return (currentFrame + 1) % frameCount;
         }
+        public static void FatalError(string message, string title = "Error")
+        {
+            System.Windows.MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+            System.Windows.Application.Current.Shutdown();
+        }
+        public static void NormalError(string message, string title = "Error")
+        {
+            System.Windows.MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+       
+
+        //Will eventually update this verbose piece of shit code
+        //For now, it works.
         private void InitializeAnimations()
         {
             _masterTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
             _masterTimer.Tick += (s, e) =>
             {
-                if(States.IsSleeping && !States.IsIntro)
+                if(AnimationStates.IsSleeping && !AnimationStates.IsIntro)
                 {
                     CurrentFrames.Sleep =
                     PlayAnimation(
@@ -328,7 +96,7 @@ namespace Desktop_Gremlin
                     Settings.FrameHeight,   
                     SpriteImage);
                 }   
-                if (States.IsIntro)
+                if (AnimationStates.IsIntro)
                 {
                     CurrentFrames.Intro = PlayAnimation(
                         SpriteManager.Get("intro"),
@@ -340,11 +108,15 @@ namespace Desktop_Gremlin
 
                     if (CurrentFrames.Intro == 0)
                     {
-                        States.IsIntro = false;
+                        AnimationStates.IsIntro = false;
                     }
                 }
-                if (States.IsDragging)
+                if (AnimationStates.IsDragging)
                 {
+                    if (CurrentFrames.Grab == 0)
+                    {
+                        PlaySound("grab.wav");
+                    }
                     CurrentFrames.Grab = PlayAnimation(
                         SpriteManager.Get("grab"),
                         CurrentFrames.Grab,
@@ -352,12 +124,34 @@ namespace Desktop_Gremlin
                         Settings.FrameWidth,
                         Settings.FrameHeight,
                         SpriteImage);
-                    States.IsIntro = false;
-                    States.IsClick = false;
-                    States.IsSleeping = false;
+      
+                    AnimationStates.IsIntro = false;
+                    AnimationStates.IsClick = false;
+                    AnimationStates.IsSleeping = false;
+                }
+                if (AnimationStates.IsPat)
+                {
+                    if (CurrentFrames.Pat == 0)
+                    {
+                        PlaySound("grab.wav");
+                    }
+                    CurrentFrames.Pat = PlayAnimation(
+                        SpriteManager.Get("pat"),
+                        CurrentFrames.Pat,
+                        FrameCounts.Pat,
+                        Settings.FrameWidth,
+                        Settings.FrameHeight,
+                        SpriteImage);
+                    AnimationStates.IsIntro = false;
+                    AnimationStates.IsClick = false;
+                    AnimationStates.IsSleeping = false;
+                    if (CurrentFrames.Pat == 0)
+                    {
+                        AnimationStates.IsPat = false;   
+                    }
                 }
 
-                if (States.IsHover && !States.IsDragging && !States.IsSleeping)
+                if (AnimationStates.IsHover && !AnimationStates.IsDragging && !AnimationStates.IsSleeping)
                 {
                     CurrentFrames.Hover = PlayAnimation(
                         SpriteManager.Get("hover"),
@@ -366,23 +160,29 @@ namespace Desktop_Gremlin
                         Settings.FrameWidth,
                         Settings.FrameHeight,
                         SpriteImage);
+                    AnimationStates.IsPat = false;
                 }
                 if (Settings.Ammo <= 0)
                 {
-                    CurrentFrames.Click = PlayAnimation(
-                        SpriteManager.Get("click"),
-                        CurrentFrames.Click,
-                        FrameCounts.Click,
+                    if (CurrentFrames.Reload == 0)
+                    {
+                        PlaySound("reload.wav");
+                    }
+                    AnimationStates.IsFiring_Left = false;
+                    AnimationStates.IsFiring_Right = false;
+                    CurrentFrames.Reload = PlayAnimation(
+                        SpriteManager.Get("reload"),
+                        CurrentFrames.Reload,
+                        FrameCounts.Reload,
                         Settings.FrameWidth,
                         Settings.FrameHeight,
                         SpriteImage);
-                    if (CurrentFrames.Click == 0)
+                    if (CurrentFrames.Reload == 0)
                     {
-                        States.IsClick = false;
-                        Settings.Ammo = 6;
+                        Settings.Ammo = 5;
                     }
                 }
-                if (States.IsClick)
+                if (AnimationStates.IsClick)
                 {
                     CurrentFrames.Click = PlayAnimation(
                         SpriteManager.Get("click"),
@@ -392,16 +192,16 @@ namespace Desktop_Gremlin
                         Settings.FrameHeight,
                         SpriteImage);
 
-                    States.IsIntro = false;
-                    States.IsSleeping = false;
+                    AnimationStates.IsIntro = false;
+                    AnimationStates.IsSleeping = false;
                     if (CurrentFrames.Click == 0)
                     {
-                        States.IsClick = false;
+                        AnimationStates.IsClick = false;
                     }
                 }
-                if (!States.IsSleeping && !States.IsIntro && !States.IsDragging 
-                && !States.IsWalkIdle && !States.IsClick && !States.IsHover && !States.IsFiring_Left &&!States.IsFiring_Right
-                && Settings.Ammo > 0)
+                if (!AnimationStates.IsSleeping && !AnimationStates.IsIntro && !AnimationStates.IsDragging 
+                && !AnimationStates.IsWalkIdle && !AnimationStates.IsClick && !AnimationStates.IsHover && !AnimationStates.IsFiring_Left &&!AnimationStates.IsFiring_Right
+                && Settings.Ammo > 0 && !AnimationStates.IsPat)
                 {
                     CurrentFrames.Idle = PlayAnimation(
                         SpriteManager.Get("idle"),
@@ -411,8 +211,12 @@ namespace Desktop_Gremlin
                         Settings.FrameHeight,
                         SpriteImage);
                 }
-                if (States.IsFiring_Left)
+                if (AnimationStates.IsFiring_Left & Settings.Ammo > 0)
                 {
+                    if (CurrentFrames.LeftFire == 0)
+                    {
+                        PlaySound("fire.wav");
+                    }
                     CurrentFrames.LeftFire = PlayAnimation(
                         SpriteManager.Get("fireL"),
                         CurrentFrames.LeftFire,
@@ -422,11 +226,16 @@ namespace Desktop_Gremlin
                         SpriteImage);
                     if (CurrentFrames.LeftFire == 0)
                     {
-                        States.IsFiring_Left = false;
+                        AnimationStates.IsFiring_Left = false;
+                        Settings.Ammo = Settings.Ammo - 1;
                     }    
                 }
-                if (States.IsFiring_Right)
+                if (AnimationStates.IsFiring_Right && Settings.Ammo > 0)
                 {
+                    if (CurrentFrames.RightFire == 0)
+                    {
+                        PlaySound("fire.wav");
+                    }
                     CurrentFrames.RightFire = PlayAnimation(
                         SpriteManager.Get("fireR"),
                         CurrentFrames.RightFire,
@@ -436,11 +245,13 @@ namespace Desktop_Gremlin
                         SpriteImage);
                     if (CurrentFrames.RightFire == 0)
                     {
-                        States.IsFiring_Right = false;
+                        AnimationStates.IsFiring_Right = false;
+                        Settings.Ammo = Settings.Ammo - 1;
                     }
                 }
 
-                if (Mouse.FollowCursor && !States.IsDragging && !States.IsClick && !States.IsSleeping &&!States.IsFiring_Left &&!States.IsFiring_Right && Settings.Ammo > 0)
+                if (MouseSettings.FollowCursor &&!AnimationStates.IsPat && !AnimationStates.IsDragging && !AnimationStates.IsClick && !AnimationStates.IsSleeping &&!AnimationStates.IsFiring_Left
+                    &&!AnimationStates.IsFiring_Right && Settings.Ammo > 0 )
                 {
                     POINT cursorPos;
                     GetCursorPos(out cursorPos);
@@ -470,7 +281,7 @@ namespace Desktop_Gremlin
 
                     if (distance > Settings.FollowRadius)
                     {
-                        double step = Math.Min(Mouse.Speed, distance - Settings.FollowRadius);
+                        double step = Math.Min(MouseSettings.Speed, distance - Settings.FollowRadius);
                         double nx = dx / distance;
                         double ny = dy / distance;
                         double moveX = nx * step;
@@ -542,7 +353,6 @@ namespace Desktop_Gremlin
             _masterTimer.Start();
         }
       
-
         private void ResetApp()
         {
             TRAY_ICON.Visible = false;
@@ -607,33 +417,8 @@ namespace Desktop_Gremlin
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add("Reappear", null, (s, e) => ResetApp());
             menu.Items.Add("Close", null, (s, e) => CloseApp());
-            //List<string> options = new List<string>
-            //{
-            //    "Mambo",
-            //    "Haru",
-            //};
-            //var submenu = new ToolStripMenuItem("Options");
-            //foreach (var option in options)
-            //{
-            //    var item = new ToolStripMenuItem(option);
-            //    item.Click += (s, e) =>
-            //    {
-            //        Settings.StartingChar = option;
-            //        SpriteManager.ClearCache();
-            //        LoadConfigChar();
-            //        _masterTimer.Stop();
-            //        InitializeAnimations();
-            //    };
-            //    submenu.DropDownItems.Add(item);
-            //}
-
-            //menu.Items.Add(new ToolStripSeparator());
-            //menu.Items.Add(submenu);
-
             TRAY_ICON.ContextMenuStrip = menu;
         }
-
-
         private void PlaySound(string fileName, double delaySeconds = 0)
         {
             string path = System.IO.Path.Combine(
@@ -641,194 +426,34 @@ namespace Desktop_Gremlin
                 "Sounds", Settings.StartingChar, fileName);
 
             if (!File.Exists(path))
-            {
                 return;
-            }
+
             if (delaySeconds > 0)
             {
                 if (Settings.LastPlayed.TryGetValue(fileName, out DateTime lastTime))
                 {
                     if ((DateTime.Now - lastTime).TotalSeconds < delaySeconds)
-                    {
                         return;
-                    }
                 }
             }
+
             try
             {
-                using (SoundPlayer sp = new SoundPlayer(path))
-                {
-                    sp.Play();
-                }
+                SoundPlayer sp = new SoundPlayer(path);
+                sp.Play();
                 Settings.LastPlayed[fileName] = DateTime.Now;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine("Sound error: " + ex.Message);
             }
-        }
-
-        private void LoadMasterConfig()
-        {
-            string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.txt");
-            if (!File.Exists(path))
-            {
-                FatalError("Cannot find the config file for the main directory", "Missing Config File");
-            }
-
-            foreach (var line in File.ReadAllLines(path))
-            {
-                if (string.IsNullOrWhiteSpace(line) || !line.Contains("="))
-                {
-                    continue;
-                }
-
-                var parts = line.Split('=');
-                if (parts.Length != 2)
-                {
-                    continue;
-                }
-
-                string key = parts[0].Trim();
-                string value = parts[1].Trim();
-
-                switch (key.ToUpper())
-                {
-                    case "START_CHAR":
-                        {
-                            Settings.StartingChar = value;
-                            break;
-                        }
-                    case "SPRITE_SPEED":
-                        {
-                            if (int.TryParse(value, out int intValue))
-                            {
-                                Settings.FrameRate = intValue;
-                            }
-                            break;
-                        }
-                    case "FOLLOW_RADIUS":
-                        {
-                            if (double.TryParse(value, out double intValue))
-                            {
-                                Settings.FollowRadius = intValue;
-                            }
-                            break;
-                        }
-                    case "SPRITE_COLUMN":
-                        {
-                            if (int.TryParse(value, out int intValue))
-                            {
-                                Settings.SpriteColumn = intValue;
-                            }
-                            break;
-                        }
-                    case "FRAME_HEIGHT":
-                        {
-                            if (int.TryParse(value, out int intValue))
-                            {
-                                Settings.FrameHeight = intValue;
-                            }
-                            break;
-                        }
-                    case "FRAME_WIDTH":
-                        {
-                            if (int.TryParse(value, out int intValue))
-                            {
-                                Settings.FrameWidth = intValue;
-                            }
-                        }
-                        break;
-                }
-            }
-        }
-        private void LoadConfigChar()
-        {
-            string path = System.IO.Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "SpriteSheet", "Gremlins", Settings.StartingChar, "config.txt");
-
-            if (!File.Exists(path))
-            {
-                FatalError("Cannot find character name from config/folder. Please check config file if filename matches",
-                    "Missing Character File");
-            }
-
-            foreach (var line in File.ReadAllLines(path))
-            {
-                if (string.IsNullOrWhiteSpace(line) || !line.Contains("="))
-                {
-                    continue;
-                }
-
-                var parts = line.Split('=');
-                if (parts.Length != 2)
-                {
-                    continue;
-                }
-
-                string key = parts[0].Trim();
-                string value = parts[1].Trim();
-
-                if (!int.TryParse(value, out int intValue))
-                {
-                    continue;
-                }
-                switch (key.ToUpper())
-                {
-                    case "FRAME_RATE":
-                        Settings.FrameRate = intValue;
-                        break;
-                    case "INTRO_FRAME_COUNT":
-                        FrameCounts.Intro = intValue;
-                        break;
-                    case "IDLE_FRAME_COUNT":
-                        FrameCounts.Idle = intValue;
-                        break;
-                    case "UP_FRAME_COUNT":
-                        FrameCounts.Up = intValue;
-                        break;
-                    case "DOWN_FRAME_COUNT":
-                        FrameCounts.Down = intValue;
-                        break;
-                    case "LEFT_FRAME_COUNT":
-                        FrameCounts.Left = intValue;
-                        break;
-                    case "RIGHT_FRAME_COUNT":
-                        FrameCounts.Right = intValue;
-                        break;
-                    case "OUTRO_FRAME_COUNT":
-                        FrameCounts.Outro = intValue;
-                        break;
-                    case "GRAB_FRAME_COUNT":
-                        FrameCounts.Grab = intValue;
-                        break;
-                    case "WALK_IDLE_FRAME_COUNT":
-                        FrameCounts.WalkIdle = intValue;
-                        break;
-                    case "CLICK_FRAME_COUNT":
-                        FrameCounts.Click = intValue;
-                        break;
-                    case "HOVER_FRAME_COUNT":
-                        FrameCounts.Hover = intValue;
-                        break;
-                    case "SLEEP_FRAME_COUNT":
-                        FrameCounts.Sleep = intValue;
-                        break;
-                    case "FIRE_L_COUNT":
-                        FrameCounts.LeftFire = intValue;
-                        break;
-                    case "FIRE_R_COUNT":
-                        FrameCounts.RightFire = intValue;
-                        break;
-                }
-            }
-        }
+        }     
         private void SpriteImage_RightClick(object sender, MouseButtonEventArgs e)
         {
             ResetIdleTimer();
             CurrentFrames.Click = 0;
-            States.IsClick = !States.IsClick;
-            if (States.IsClick)
+            AnimationStates.IsClick = !AnimationStates.IsClick;
+            if (AnimationStates.IsClick)
             {
                 PlaySound("mambo.wav");
             }
@@ -836,11 +461,11 @@ namespace Desktop_Gremlin
 
         private void SpriteImage_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (!States.IsIntro && !States.IsWalking)
+            if (!AnimationStates.IsIntro && !AnimationStates.IsWalking)
             {
-                States.IsHover = true;
+                AnimationStates.IsHover = true;
             }
-            if(!States.IsIntro && !States.IsWalking &&!States.IsSleeping &&!States.IsClick && !Mouse.FollowCursor)
+            if(!AnimationStates.IsIntro && !AnimationStates.IsWalking &&!AnimationStates.IsSleeping &&!AnimationStates.IsClick && !MouseSettings.FollowCursor)
             {
                 PlaySound("hover.wav",3);
             }
@@ -848,9 +473,9 @@ namespace Desktop_Gremlin
 
         private void SpriteImage_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (!States.IsIntro)
+            if (!AnimationStates.IsIntro)
             {
-                States.IsHover = false;
+                AnimationStates.IsHover = false;
                 CurrentFrames.Hover = 0;
             }
         }
@@ -862,11 +487,12 @@ namespace Desktop_Gremlin
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ResetIdleTimer();
-            States.IsDragging = true;
+            AnimationStates.IsDragging = true;
             DragMove();
-            States.IsDragging = false;
-            Mouse.FollowCursor = !Mouse.FollowCursor;
-            if (Mouse.FollowCursor)
+            AnimationStates.IsDragging = false;
+            MouseSettings.FollowCursor = !MouseSettings.FollowCursor;
+            CurrentFrames.Grab = 0;
+            if (MouseSettings.FollowCursor)
             {
                 PlaySound("run.wav");
             }
@@ -875,28 +501,34 @@ namespace Desktop_Gremlin
         {
             _idleTimer.Stop();
             _idleTimer.Start();
-            States.IsSleeping = false;  
+            AnimationStates.IsSleeping = false;  
         }
         private void IdleTimer_Tick(object sender, EventArgs e)
         {
-            if (!States.IsSleeping)
+            if (!AnimationStates.IsSleeping)
             {
-                States.IsSleeping = true;
+                GC.Collect();   
+                AnimationStates.IsSleeping = true;
             }
         }
         private void LeftHotspot_Click(object sender, MouseButtonEventArgs e)
         {
-            Settings.Ammo = Settings.Ammo - 1;  
             ResetIdleTimer();
-            States.IsFiring_Left = true;    
+            AnimationStates.IsFiring_Left = true;
 
         }
-
         private void RightHotspot_Click(object sender, MouseButtonEventArgs e)
         {
-            Settings.Ammo = Settings.Ammo - 1;
             ResetIdleTimer();
-            States.IsFiring_Right = true;
+            AnimationStates.IsFiring_Right = true;
+ 
+        }
+        private void TopHotspot_Click(object sender, MouseButtonEventArgs e)
+        {
+            ResetIdleTimer();
+            CurrentFrames.Pat = 0;
+            AnimationStates.IsPat = true;
+
         }
 
     }

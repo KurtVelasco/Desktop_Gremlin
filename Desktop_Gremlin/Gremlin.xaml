@@ -22,15 +22,20 @@
         <Border x:Name="LeftHotspot"
             Background="#01000000"
             HorizontalAlignment="Left"
-            Width="125"
-            MouseLeftButtonDown="LeftHotspot_Click" Margin="105,255,0,0"/>
+            Width="60"
+            MouseLeftButtonDown="LeftHotspot_Click" Margin="110,95,0,100"/>
 
         <!-- Invisible right click zone -->
         <Border x:Name="RightHotspot"
             Background="#01000000"
             HorizontalAlignment="Left"
-            Width="115"
-            MouseLeftButtonDown="RightHotspot_Click" Margin="230,255,0,0"/>
+            Width="60"
+            MouseLeftButtonDown="RightHotspot_Click" Margin="280,95,0,100"/>
+        <Border x:Name="TopHotspot"
+         Background="#01000000"
+         HorizontalAlignment="Center"
+         Width="135"
+         MouseLeftButtonDown="TopHotspot_Click" Margin="0,0,0,230"/>
 
     </Grid>
 
