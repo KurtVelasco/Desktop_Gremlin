@@ -5,21 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop_Gremlin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="265" Width="445"
+        Title="MainWindow" Height="280" Width="455"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         Topmost="True"
         ResizeMode="NoResize" BorderThickness="0" BorderBrush="Black">
-    <Grid MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseRightButtonDown="SpriteImage_RightClick">
+    <Grid  MouseRightButtonDown="SpriteImage_RightClick">
         <Image Name="SpriteImage"
-           Width="186" Height="200"
+           Width="236" Height="250"
            HorizontalAlignment="Left"
            VerticalAlignment="Top"
-           Canvas.Top="20"  Margin="125,35,0,0" RenderTransformOrigin="0.484,0.525" MouseEnter="SpriteImage_MouseEnter"
+           Canvas.Top="20"  Margin="105,5,0,0" RenderTransformOrigin="0.484,0.525" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseEnter="SpriteImage_MouseEnter"
             MouseLeave="SpriteImage_MouseLeave">
         </Image>
-             
+        <Border x:Name="LeftHotspot"
+            Background="#01000000"
+            HorizontalAlignment="Left"
+            Width="60"
+            MouseLeftButtonDown="LeftHotspot_Click" Margin="110,95,0,100"/>
+
+        <!-- Invisible right click zone -->
+        <Border x:Name="RightHotspot"
+            Background="#01000000"
+            HorizontalAlignment="Left"
+            Width="60"
+            MouseLeftButtonDown="RightHotspot_Click" Margin="280,95,0,100"/>
+        <Border x:Name="TopHotspot"
+         Background="#01000000"
+         HorizontalAlignment="Center"
+         Width="135"
+         MouseLeftButtonDown="TopHotspot_Click" Margin="0,0,0,230"/>
+
     </Grid>
 
 </Window>
