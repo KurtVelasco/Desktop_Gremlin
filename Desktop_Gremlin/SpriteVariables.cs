@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,10 @@ namespace Desktop_Gremlin
         public static int Right { get; set; } = 0;
         public static int Up { get; set; } = 0;
         public static int Down { get; set; } = 0;
+        public static int UpLeft { get; set; } = 0;
+        public static int UpRight { get; set; } = 0;
+        public static int DownLeft { get; set; } = 0;
+        public static int DownRight { get; set; } = 0;
         public static int Outro { get; set; } = 0;
         public static int Grab { get; set; } = 0;
         public static int WalkIdle { get; set; } = 0;
@@ -26,6 +31,10 @@ namespace Desktop_Gremlin
         public static int Reload { get; set; } = 0;
         public static int Pat { get; set; } = 0;
     }
+    public static class FireArms
+    {
+        public static int ReloadArm { get; set; }
+    }
     public static class CurrentFrames
     {
         public static int LeftFire { get; set; } = 0;
@@ -37,6 +46,11 @@ namespace Desktop_Gremlin
         public static int WalkUp { get; set; } = 0;
         public static int WalkRight { get; set; } = 0;
         public static int WalkLeft { get; set; } = 0;
+
+        public static int UpLeft { get; set; } = 0;
+        public static int UpRight { get; set; } = 0;
+        public static int DownLeft { get; set; } = 0;
+        public static int DownRight { get; set; } = 0;
         public static int Grab { get; set; } = 0;
         public static int WalkIdle { get; set; } = 0;
         public static int Click { get; set; } = 0;

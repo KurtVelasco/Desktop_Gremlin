@@ -30,6 +30,7 @@ namespace Desktop_Gremlin
             public int X;
             public int Y;
         }
+        
 
         public Gremlin()
         {
@@ -77,6 +78,11 @@ namespace Desktop_Gremlin
             System.Windows.MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
        
+
+        private void PlayAnimationIdle()
+        {
+            System.Windows.MessageBox.Show("IDIOT", "Hikari");
+        }
 
         //Will eventually update this verbose piece of shit code
         //For now, it works.
@@ -133,7 +139,7 @@ namespace Desktop_Gremlin
                 {
                     if (CurrentFrames.Pat == 0)
                     {
-                        PlaySound("grab.wav");
+                        PlaySound("emote.wav");
                     }
                     CurrentFrames.Pat = PlayAnimation(
                         SpriteManager.Get("pat"),
@@ -289,52 +295,94 @@ namespace Desktop_Gremlin
 
                         this.Left += moveX;
                         this.Top += moveY;
+                        double angle = Math.Atan2(moveY, moveX) * (180.0 / Math.PI);
 
-                        if (Math.Abs(moveX) > Math.Abs(moveY))
+                        if (angle < 0) angle += 360;
+
+
+                        if (angle >= 337.5 || angle < 22.5)
                         {
-                            if (moveX < 0)
-                            {
-                                CurrentFrames.WalkLeft = PlayAnimation(
-                                     SpriteManager.Get("left"),
-                                    CurrentFrames.WalkLeft,
-                                    FrameCounts.Left,
-                                    Settings.FrameWidth,
-                                    Settings.FrameHeight,
-                                    SpriteImage);
-                            }
-                            else
-                            {
-                                CurrentFrames.WalkRight = PlayAnimation(
-                                     SpriteManager.Get("right"),
-                                    CurrentFrames.WalkRight,
-                                    FrameCounts.Right,
-                                    Settings.FrameWidth,
-                                    Settings.FrameHeight,
-                                    SpriteImage);
-                            }
+                            // Right
+                            CurrentFrames.WalkRight = PlayAnimation(
+                                SpriteManager.Get("right"),
+                                CurrentFrames.WalkRight,
+                                FrameCounts.Right,
+                                Settings.FrameWidth,
+                                Settings.FrameHeight,
+                                SpriteImage);
                         }
-                        else
+                        else if (angle >= 22.5 && angle < 67.5)
                         {
-                            if (moveY > 0)
-                            {
-                                CurrentFrames.WalkDown = PlayAnimation(
-                                     SpriteManager.Get("forward"),
-                                    CurrentFrames.WalkDown,
-                                    FrameCounts.Down,
-                                    Settings.FrameWidth,
-                                    Settings.FrameHeight,
-                                    SpriteImage);
-                            }
-                            else
-                            {
-                                CurrentFrames.WalkUp = PlayAnimation(
-                                     SpriteManager.Get("backward"),
-                                    CurrentFrames.WalkUp,
-                                    FrameCounts.Up,
-                                    Settings.FrameWidth,
-                                    Settings.FrameHeight,
-                                    SpriteImage);
-                            }
+                            // Down-Right
+                            CurrentFrames.DownRight = PlayAnimation(
+                                SpriteManager.Get("downRight"),
+                                CurrentFrames.DownRight,
+                                FrameCounts.DownRight,
+                                Settings.FrameWidth,
+                                Settings.FrameHeight,
+                                SpriteImage);
+                        }
+                        else if (angle >= 67.5 && angle < 112.5)
+                        {
+                            // Down
+                            CurrentFrames.WalkDown = PlayAnimation(
+                                SpriteManager.Get("forward"),
+                                CurrentFrames.WalkDown,
+                                FrameCounts.Down,
+                                Settings.FrameWidth,
+                                Settings.FrameHeight,
+                                SpriteImage);
+                        }
+                        else if (angle >= 112.5 && angle < 157.5)
+                        {
+                            // Down-Left
+                            CurrentFrames.DownLeft = PlayAnimation(
+                                SpriteManager.Get("downLeft"),
+                                CurrentFrames.DownLeft,
+                                FrameCounts.DownLeft,
+                                Settings.FrameWidth,
+                                Settings.FrameHeight,
+                                SpriteImage);
+                        }
+                        else if (angle >= 157.5 && angle < 202.5)
+                        {
+                            CurrentFrames.WalkLeft = PlayAnimation(
+                                SpriteManager.Get("left"),
+                                CurrentFrames.WalkLeft,
+                                FrameCounts.Left,
+                                Settings.FrameWidth,
+                                Settings.FrameHeight,
+                                SpriteImage);
+                        }
+                        else if (angle >= 202.5 && angle < 247.5)
+                        {
+                            CurrentFrames.UpLeft = PlayAnimation(
+                                SpriteManager.Get("upLeft"),
+                                CurrentFrames.UpLeft,
+                                FrameCounts.UpLeft,
+                                Settings.FrameWidth,
+                                Settings.FrameHeight,
+                                SpriteImage);
+                        }
+                        else if (angle >= 247.5 && angle < 292.5)
+                        {
+                            CurrentFrames.WalkUp = PlayAnimation(
+                                SpriteManager.Get("backward"),
+                                CurrentFrames.WalkUp,
+                                FrameCounts.Up,
+                                Settings.FrameWidth,
+                                Settings.FrameHeight,
+                                SpriteImage);
+                        }
+                        else if (angle >= 292.5 && angle < 337.5)
+                        {
+                            CurrentFrames.UpRight = PlayAnimation(
+                                SpriteManager.Get("upRight"),
+                                CurrentFrames.UpRight,
+                                FrameCounts.UpRight,
+                                Settings.FrameWidth,
+                                Settings.FrameHeight,
+                                SpriteImage);
                         }
                     }
                     else
@@ -401,9 +449,9 @@ namespace Desktop_Gremlin
         {
             TRAY_ICON = new NotifyIcon();
            
-            if (File.Exists("icon.ico"))
+            if (File.Exists("ico.ico"))
             {
-                TRAY_ICON.Icon = new Icon("icon.ico");
+                TRAY_ICON.Icon = new Icon("ico.ico");
             }
             else
             {
@@ -527,8 +575,9 @@ namespace Desktop_Gremlin
         {
             ResetIdleTimer();
             CurrentFrames.Pat = 0;
-            AnimationStates.IsPat = true;
 
+            AnimationStates.IsPat = true;
+            PlayAnimationIdle();
         }
 
     }

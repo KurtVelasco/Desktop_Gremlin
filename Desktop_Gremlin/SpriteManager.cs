@@ -83,6 +83,14 @@ namespace Desktop_Gremlin
                     return "reload.png";
                 case "pat":
                     return "pat.png";
+                case "upleft":
+                    return "upLeft.png";
+                case "upright":
+                    return "upRight.png";
+                case "downleft":
+                    return "downLeft.png";
+                case "downright":
+                    return "downRight.png";
 
                 default:
                     return null;

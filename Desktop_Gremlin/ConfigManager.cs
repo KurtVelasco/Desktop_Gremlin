@@ -164,6 +164,19 @@ namespace Desktop_Gremlin
                     case "PAT_COUNT":
                         FrameCounts.Pat = intValue;
                         break;
+                    case "UPLEFT_FRAME_COUNT":
+                        FrameCounts.UpLeft = intValue;
+                        break;
+                    case "UPRIGHT_FRAME_COUNT":
+                        FrameCounts.UpRight = intValue;
+                        break;
+                    case "DOWNLEFT_FRAME_COUNT":
+                        FrameCounts.DownLeft = intValue;
+                        break;
+                    case "DOWNRIGHT_FRAME_COUNT":
+                        FrameCounts.DownRight = intValue;
+                        break;
+
                 }
             }
         }
