@@ -7,7 +7,7 @@ For future development: I'll continue adding on with each itearation and differe
 # Updates
 [Windows Only ATM]
 DOWNLOAD (Agnes Tachyon ver1.0): [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v.1.2/Desktop_Gremlin_Tachyon.zip) <br>
-DOWNLOAD Matikanetannhauser (V2.0) : In releases
+DOWNLOAD Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip)
 
 **Ver 2.0 (Yes I skipped 1.1 because I want to)**<br>
 +Updated Sprite manager to maintain memory usage<br>
