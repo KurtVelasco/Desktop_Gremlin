@@ -9,11 +9,11 @@ For future development: I'll continue adding on with each itearation and differe
 DOWNLOAD (Agnes Tachyon ver1.0): [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v.1.2/Desktop_Gremlin_Tachyon.zip) <br>
 DOWNLOAD Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip)
 
-**Ver 2.0 (Yes I skipped 1.1 because I want to)**<br>
-+Updated Sprite manager to maintain memory usage<br>
-+Found a way to add eye movements for different expressions<br>
-+Implemented a play wav (will add more scenarios in the future)<br>
-+Smoother mouse Following<br>
+**Ver 2.2 (Yes I skipped 1.1 because I want to)**<br>
++Added diagonal movements<br>
++Revamp animation states<br>
++Walks independently(sometimes)<br>
++Invisible buttons<br>
 
 **Tracen Academy**<br>
 This version is moslty related to Umamusume. Any related updates for new Umamusume will be
