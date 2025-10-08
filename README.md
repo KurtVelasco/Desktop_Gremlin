@@ -5,9 +5,9 @@ Now annoy yourself while you stare idly into the dark abyss known as your comput
 For future development: I'll continue adding on with each itearation and different characters that I currently like.
 <br>
 # Updates
-[Windows Only ATM]
-DOWNLOAD (Agnes Tachyon ver1.0): [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v.1.2/Desktop_Gremlin_Tachyon.zip) <br>
-DOWNLOAD Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip)
+[Windows Only] <br>
+DOWNLOAD Agnes Tachyon (V1.0): [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v.1.2/Desktop_Gremlin_Tachyon.zip) <br>
+DOWNLOAD Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip) <br>
 
 **Ver 2.2 (Yes I skipped 1.1 because I want to)**<br>
 +Added diagonal movements<br>
