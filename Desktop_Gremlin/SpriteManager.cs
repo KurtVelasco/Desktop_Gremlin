@@ -91,7 +91,18 @@ namespace Desktop_Gremlin
                     return "downLeft.png";
                 case "downright":
                     return "downRight.png";
-
+                case "walkl":
+                    return "walkL.png";
+                case "walkr":
+                    return "walkR.png";
+                case "walkdown":
+                    return "walkDown.png";
+                case "walkup":
+                    return "walkUp.png";
+                case "emote1":
+                    return "emote1.png";
+                case "emote2":
+                    return "emote2.png";
                 default:
                     return null;
             }

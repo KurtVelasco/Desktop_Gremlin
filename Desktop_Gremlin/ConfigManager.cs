@@ -10,7 +10,7 @@ namespace Desktop_Gremlin
             string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.txt");
             if (!File.Exists(path))
             {
-                //FatalError("Cannot find the config file for the main directory", "Missing Config File");
+             
             }
 
             foreach (var line in File.ReadAllLines(path))
@@ -36,7 +36,7 @@ namespace Desktop_Gremlin
                             Settings.StartingChar = value;
                             break;
                         }
-                    case "SPRITE_SPEED":
+                    case "SPRITE_FRAMERATE":
                         {
                             if (int.TryParse(value, out int intValue))
                             {
@@ -73,6 +73,54 @@ namespace Desktop_Gremlin
                             if (int.TryParse(value, out int intValue))
                             {
                                 Settings.FrameWidth = intValue;
+                            }
+                        }
+                        break;
+                    case "MAX_INTERVAL":
+                        {
+                            if (int.TryParse(value, out int intValue))
+                            {
+                                Settings.MaxInterval = intValue;
+                            }
+                        }
+                        break;
+                    case "MIN_INTERVAL":
+                        {
+                            if (int.TryParse(value, out int intValue))
+                            {
+                                Settings.MinInterval = intValue;
+                            }
+                        }
+                        break;
+                    case "RANDOM_MOVE_DISTANCE":
+                        {
+                            if (int.TryParse(value, out int intValue))
+                            {
+                                Settings.MoveDistance = intValue;
+                            }
+                        }
+                        break;
+                    case "ALLOW_RANDOM_ACTIONS":
+                        {
+                            if (bool.TryParse(value, out bool Value))
+                            {
+                                Settings.AllowRandomness = Value;
+                            }
+                        }
+                        break;
+                    case "ALLOW_GRAVITY":
+                        {
+                            if (bool.TryParse(value, out bool Value))
+                            {
+                                Settings.AllowGravity = Value;
+                            }
+                        }
+                        break;
+                    case "SLEEP_TIME":
+                        {
+                            if (int.TryParse(value, out int Value))
+                            {
+                                Settings.SleepTime = Value;
                             }
                         }
                         break;
@@ -113,70 +161,84 @@ namespace Desktop_Gremlin
                 }
                 switch (key.ToUpper())
                 {
-                    case "FRAME_RATE":
-                        Settings.FrameRate = intValue;
-                        break;
-                    case "INTRO_FRAME_COUNT":
+                    case "INTRO":
                         FrameCounts.Intro = intValue;
                         break;
-                    case "IDLE_FRAME_COUNT":
+                    case "IDLE":
                         FrameCounts.Idle = intValue;
                         break;
-                    case "UP_FRAME_COUNT":
+                    case "UP":
                         FrameCounts.Up = intValue;
                         break;
-                    case "DOWN_FRAME_COUNT":
+                    case "DOWN":
                         FrameCounts.Down = intValue;
                         break;
-                    case "LEFT_FRAME_COUNT":
+                    case "LEFT":
                         FrameCounts.Left = intValue;
                         break;
-                    case "RIGHT_FRAME_COUNT":
+                    case "RIGHT":
                         FrameCounts.Right = intValue;
                         break;
-                    case "OUTRO_FRAME_COUNT":
+                    case "OUTRO":
                         FrameCounts.Outro = intValue;
                         break;
-                    case "GRAB_FRAME_COUNT":
+                    case "GRAB":
                         FrameCounts.Grab = intValue;
                         break;
-                    case "WALK_IDLE_FRAME_COUNT":
+                    case "WALK_IDLE":
                         FrameCounts.WalkIdle = intValue;
                         break;
-                    case "CLICK_FRAME_COUNT":
+                    case "CLICK":
                         FrameCounts.Click = intValue;
                         break;
-                    case "HOVER_FRAME_COUNT":
+                    case "HOVER":
                         FrameCounts.Hover = intValue;
                         break;
-                    case "SLEEP_FRAME_COUNT":
+                    case "SLEEP":
                         FrameCounts.Sleep = intValue;
                         break;
-                    case "FIRE_L_COUNT":
+                    case "FIRE_L":
                         FrameCounts.LeftFire = intValue;
                         break;
-                    case "FIRE_R_COUNT":
+                    case "FIRE_R":
                         FrameCounts.RightFire = intValue;
                         break;
-                    case "RELOAD_COUNT":
+                    case "RELOAD":
                         FrameCounts.Reload = intValue;
                         break;
-                    case "PAT_COUNT":
+                    case "PAT":
                         FrameCounts.Pat = intValue;
                         break;
-                    case "UPLEFT_FRAME_COUNT":
+                    case "UPLEFT":
                         FrameCounts.UpLeft = intValue;
                         break;
-                    case "UPRIGHT_FRAME_COUNT":
+                    case "UPRIGHT":
                         FrameCounts.UpRight = intValue;
                         break;
-                    case "DOWNLEFT_FRAME_COUNT":
+                    case "DOWNLEFT":
                         FrameCounts.DownLeft = intValue;
                         break;
-                    case "DOWNRIGHT_FRAME_COUNT":
+                    case "DOWNRIGHT":
                         FrameCounts.DownRight = intValue;
                         break;
-
+                    case "WALK_L":
+                        FrameCounts.WalkL = intValue;
+                        break;
+                    case "WALK_R":
+                        FrameCounts.WalkR = intValue;
+                        break;
+                    case "WALK_U":
+                        FrameCounts.WalkUp = intValue;
+                        break;
+                    case "WALK_D":
+                        FrameCounts.WalkDown = intValue;
+                        break;
+                    case "EMOTE1":
+                        FrameCounts.Emote1 = intValue;
+                        break;
+                    case "EMOTE2":
+                        FrameCounts.Emote2 = intValue;
+                        break;
                 }
             }
         }
