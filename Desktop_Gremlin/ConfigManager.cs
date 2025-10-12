@@ -124,6 +124,22 @@ namespace Desktop_Gremlin
                             }
                         }
                         break;
+                    case "ALLOW_FOOTSTEP_SOUNDS":
+                        {
+                            if (bool.TryParse(value, out bool Value))
+                            {
+                                Settings.FootStepSounds = Value;
+                            }
+                        }
+                        break;
+                    case "AMMO":
+                        {
+                            if (int.TryParse(value, out int Value))
+                            {
+                                Settings.Ammo = Value;
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -238,6 +254,12 @@ namespace Desktop_Gremlin
                         break;
                     case "EMOTE2":
                         FrameCounts.Emote2 = intValue;
+                        break;
+                    case "EMOTE3":
+                        FrameCounts.Emote3 = intValue;
+                        break;
+                    case "EMOTE4":
+                        FrameCounts.Emote4 = intValue;
                         break;
                 }
             }

@@ -22,7 +22,9 @@ public static class AnimationStates
         { "Pat", false },
         { "RandomMovement", false },
         { "Emote1", false },
-        { "Emote2", false }
+        { "Emote2", false },
+        { "Emote3", false },
+        { "Emote4", false }
     };
 
     public static void LockState() => IsLocked = true;
@@ -36,7 +38,9 @@ public static class AnimationStates
     }
     public static void SetState(string stateName)
     {
-        if (IsLocked) return;
+        if (IsLocked) {
+            return;
+        } 
         string normalized = stateName.Trim();
 
         if (!STATES.ContainsKey(normalized))
@@ -61,4 +65,5 @@ public static class AnimationStates
         }
         return true;
     }
+
 }

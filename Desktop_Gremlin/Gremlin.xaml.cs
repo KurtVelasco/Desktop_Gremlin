@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.IO;
-using System.Media;
-using System.Collections.Generic;
+using System.Windows.Media;
 namespace Desktop_Gremlin
 {
 
@@ -18,60 +13,58 @@ namespace Desktop_Gremlin
         //In the future I'm planning to seperate major code snippets into diffrent class files//
         //Instead of barfing evrything in 1 file//
         //Thanks and have a Mamboful day//
-        private NotifyIcon TRAY_ICON;
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);  
     
-        public static Dictionary<string, DateTime> LastPlayed = new Dictionary<string, DateTime>();
+      
         private DateTime _nextRandomActionTime = DateTime.Now.AddSeconds(10);
         private Random _rng = new Random();
-        private DispatcherTimer _masterTimer;
+        private bool _wasIdleLastFrame = false;
+        public static DispatcherTimer _masterTimer;
         private DispatcherTimer _idleTimer;
         private DispatcherTimer _activeRandomMoveTimer;
+        private MediaPlayer _walkLoopPlayer;
+        private bool _isWalkingSoundPlaying = false;
+        private TrayManager _trayManager;
         public struct POINT
         {
             public int X;
             public int Y;
         }
-
-
         public Gremlin()
         {
-
-            this.ShowInTaskbar = false;
             InitializeComponent();
+
             SpriteImage.Source = new CroppedBitmap();
             ConfigManager.LoadMasterConfig();
             ConfigManager.LoadConfigChar();
-            SetupTrayIcon();
+
+            _trayManager = new TrayManager(this);
+            _trayManager.SetupTrayIcon();
+
             InitializeAnimations();
-            PlaySound("intro.wav");
+            InitializeTimers();
+            MediaManager.PlaySound("intro.wav");
+        }
+        public void InitializeTimers()
+        {
+
             _idleTimer = new DispatcherTimer();
             _idleTimer.Interval = TimeSpan.FromSeconds(Settings.SleepTime);
-            _idleTimer.Tick += IdleTimer_Tick; ;
+            _idleTimer.Tick += IdleTimer_Tick;
             _idleTimer.Start();
+
+            _walkLoopPlayer = new MediaPlayer();
+            _walkLoopPlayer.Open(new Uri(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds", "Aoba", "steps.wav")));
+            _walkLoopPlayer.Volume = 1; 
+            _walkLoopPlayer.MediaEnded += (s, e) =>
+            {
+                _walkLoopPlayer.Position = TimeSpan.Zero;
+                _walkLoopPlayer.Play(); 
+            };
         }
-        private int PlayAnimation(string sheetName, int currentFrame, int frameCount, System.Windows.Controls.Image targetImage, bool PlayOnce = false)
-        {
-            BitmapImage sheet = SpriteManager.Get(sheetName);
-
-            if (sheet == null)
-            {
-                return currentFrame;
-            }
-            int x = (currentFrame % Settings.SpriteColumn) * Settings.FrameWidth;
-            int y = (currentFrame / Settings.SpriteColumn) * Settings.FrameHeight;
-
-            if (x + Settings.FrameWidth > sheet.PixelWidth || y + Settings.FrameHeight > sheet.PixelHeight)
-            {
-                return currentFrame;
-            }
-
-            targetImage.Source = new CroppedBitmap(sheet, new Int32Rect(x, y, Settings.FrameWidth, Settings.FrameHeight));
-
-            return (currentFrame + 1) % frameCount;
-        }     
+       
         private void InitializeAnimations()
         {
             _masterTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
@@ -79,49 +72,85 @@ namespace Desktop_Gremlin
             {
                 if (AnimationStates.GetState("Intro"))
                 {
-                    CurrentFrames.Intro = PlayAnimation("intro",CurrentFrames.Intro,FrameCounts.Intro,SpriteImage);
+                    AnimationStates.LockState();
+                    CurrentFrames.Intro = AnimationPlayer.PlayAnimation("intro",CurrentFrames.Intro,FrameCounts.Intro,SpriteImage);
 
                     if (CurrentFrames.Intro == 0)
                     {
                         AnimationStates.ResetAllExceptIdle();   
+                        AnimationStates.UnlockState();
                     }
                 }
                 if (AnimationStates.GetState("Dragging"))
                 {
-                    CurrentFrames.Grab = PlayAnimation("grab",CurrentFrames.Grab,
+                    CurrentFrames.Grab = AnimationPlayer.PlayAnimation("grab",CurrentFrames.Grab,
                         FrameCounts.Grab,SpriteImage);
                 }
                 if (AnimationStates.GetState("Emote1"))
                 {
-                    AnimationStates.LockState();
-                    CurrentFrames.Emote1 = PlayAnimation("emote1", CurrentFrames.Emote1,
-                        FrameCounts.Emote1, SpriteImage);
+                    AnimationStates.LockState(); 
+                    CurrentFrames.Emote1 = AnimationPlayer.PlayAnimation("emote1", CurrentFrames.Emote1, FrameCounts.Emote1, SpriteImage);
+                    if (CurrentFrames.Emote1 == 0)
+                    { 
+                      AnimationStates.UnlockState(); 
+                      AnimationStates.ResetAllExceptIdle(); 
+                    }
                 }
                 if (AnimationStates.GetState("Emote2"))
                 {
-                    CurrentFrames.Emote2 = PlayAnimation("emote2", CurrentFrames.Emote2,
-                        FrameCounts.Emote2, SpriteImage);
+                    AnimationStates.LockState();
+                    CurrentFrames.Emote2 = AnimationPlayer.PlayAnimation("emote2", CurrentFrames.Emote2, FrameCounts.Emote2, SpriteImage);
                     if (CurrentFrames.Emote2 == 0)
                     {
                         AnimationStates.UnlockState();
                         AnimationStates.ResetAllExceptIdle();
                     }
                 }
-                if (AnimationStates.GetState("Idle"))
+                if (AnimationStates.GetState("Emote3"))
                 {
-                    CurrentFrames.Idle = PlayAnimation("idle", CurrentFrames.Idle,
-                        FrameCounts.Idle, SpriteImage);
+                    AnimationStates.LockState();
+                    CurrentFrames.Emote3 = AnimationPlayer.PlayAnimation("emote3", CurrentFrames.Emote3, FrameCounts.Emote3, SpriteImage);
+                    if (CurrentFrames.Emote3 == 0)
+                    {
+                        AnimationStates.UnlockState();
+                        AnimationStates.ResetAllExceptIdle();
+                    }
+                }
+                if (AnimationStates.GetState("Emote4"))
+                {
+                    AnimationStates.LockState();
+                    CurrentFrames.Emote4 = AnimationPlayer.PlayAnimation("emote4", CurrentFrames.Emote4, FrameCounts.Emote4, SpriteImage);
+                    if (CurrentFrames.Emote4 == 0)
+                    {
+                        AnimationStates.UnlockState();
+                        AnimationStates.ResetAllExceptIdle();
+                    }
+                }
+                if (AnimationStates.GetState("Reload"))
+                {
+                    if(CurrentFrames.Reload == 0)
+                    {
+                        MediaManager.PlaySound("reload.wav");
+                    };
+                    CurrentFrames.Reload = AnimationPlayer.PlayAnimation("reload", CurrentFrames.Reload,
+                        FrameCounts.Reload, SpriteImage);
+                    if (CurrentFrames.Reload == 0)
+                    {
+                        Settings.CurrentAmmo = Settings.Ammo;
+                        AnimationStates.UnlockState();
+                        AnimationStates.ResetAllExceptIdle();
+                    }
                 }
                 if (AnimationStates.GetState("Idle"))
                 {
-                    CurrentFrames.Idle = PlayAnimation("idle",CurrentFrames.Idle,
-                        FrameCounts.Idle,SpriteImage);
+                    CurrentFrames.Idle = AnimationPlayer.PlayAnimation("idle", CurrentFrames.Idle,
+                        FrameCounts.Idle, SpriteImage);
                 }
                 if (AnimationStates.GetState("Click"))
                 {
                     AnimationStates.UnlockState();
                     AnimationStates.LockState();
-                    CurrentFrames.Click = PlayAnimation("click",
+                    CurrentFrames.Click = AnimationPlayer.PlayAnimation("click",
                     CurrentFrames.Click,
                     FrameCounts.Click,SpriteImage);
 
@@ -133,7 +162,7 @@ namespace Desktop_Gremlin
                 }
                 if (AnimationStates.GetState("Hover"))
                 {
-                    CurrentFrames.Hover = PlayAnimation(
+                    CurrentFrames.Hover = AnimationPlayer.PlayAnimation(
                         "hover",
                         CurrentFrames.Hover,
                         FrameCounts.Hover,
@@ -142,7 +171,7 @@ namespace Desktop_Gremlin
                 }
                 if (AnimationStates.GetState("Sleeping"))
                 {
-                    CurrentFrames.Sleep = PlayAnimation(
+                    CurrentFrames.Sleep = AnimationPlayer.PlayAnimation(
                        "sleep",
                        CurrentFrames.Sleep,
                        FrameCounts.Sleep,
@@ -151,7 +180,7 @@ namespace Desktop_Gremlin
                 if (AnimationStates.GetState("Pat"))
                 {
                     AnimationStates.LockState();
-                    CurrentFrames.Pat = PlayAnimation(
+                    CurrentFrames.Pat = AnimationPlayer.PlayAnimation(
                       "pat",
                       CurrentFrames.Pat,
                       FrameCounts.Pat,
@@ -203,7 +232,7 @@ namespace Desktop_Gremlin
 
                         if (angle >= 337.5 || angle < 22.5)
                         {
-                            CurrentFrames.Right = PlayAnimation(
+                            CurrentFrames.Right = AnimationPlayer.PlayAnimation(
                                 "right",
                                 CurrentFrames.Right,
                                 FrameCounts.Right,
@@ -211,7 +240,7 @@ namespace Desktop_Gremlin
                         }
                         else if (angle >= 22.5 && angle < 67.5)
                         {
-                            CurrentFrames.DownRight = PlayAnimation(
+                            CurrentFrames.DownRight = AnimationPlayer.PlayAnimation(
                                 "downRight",
                                 CurrentFrames.DownRight,
                                 FrameCounts.DownRight,
@@ -219,7 +248,7 @@ namespace Desktop_Gremlin
                         }
                         else if (angle >= 67.5 && angle < 112.5)
                         {
-                            CurrentFrames.Down = PlayAnimation(
+                            CurrentFrames.Down = AnimationPlayer.PlayAnimation(
                                 "forward",
                                 CurrentFrames.Down,
                                 FrameCounts.Down,
@@ -227,7 +256,7 @@ namespace Desktop_Gremlin
                         }
                         else if (angle >= 112.5 && angle < 157.5)
                         {
-                            CurrentFrames.DownLeft = PlayAnimation(
+                            CurrentFrames.DownLeft = AnimationPlayer.PlayAnimation(
                                 "downLeft",
                                 CurrentFrames.DownLeft,
                                 FrameCounts.DownLeft,
@@ -235,7 +264,7 @@ namespace Desktop_Gremlin
                         }
                         else if (angle >= 157.5 && angle < 202.5)
                         {
-                            CurrentFrames.Left = PlayAnimation(
+                            CurrentFrames.Left = AnimationPlayer.PlayAnimation(
                                 "left",
                                 CurrentFrames.Left,
                                 FrameCounts.Left,
@@ -243,7 +272,7 @@ namespace Desktop_Gremlin
                         }
                         else if (angle >= 202.5 && angle < 247.5)
                         {
-                            CurrentFrames.UpLeft = PlayAnimation(
+                            CurrentFrames.UpLeft = AnimationPlayer.PlayAnimation(
                                 "upLeft",
                                 CurrentFrames.UpLeft,
                                 FrameCounts.UpLeft,
@@ -251,57 +280,128 @@ namespace Desktop_Gremlin
                         }
                         else if (angle >= 247.5 && angle < 292.5)
                         {
-                            CurrentFrames.WalkUp = PlayAnimation(
+                            CurrentFrames.Up = AnimationPlayer.PlayAnimation(
                                 "backward",
-                                CurrentFrames.WalkUp,
+                                CurrentFrames.Up,
                                 FrameCounts.Up,
                                 SpriteImage);
                         }
                         else if (angle >= 292.5 && angle < 337.5)
                         {
-                            CurrentFrames.UpRight = PlayAnimation(
+                            CurrentFrames.UpRight = AnimationPlayer.PlayAnimation(
                                 "upRight",
                                 CurrentFrames.UpRight,
                                 FrameCounts.UpRight,
                                 SpriteImage);
+                        }                       
+                        if (!_isWalkingSoundPlaying &&Settings.FootStepSounds)
+                        {
+                            _walkLoopPlayer.Play();
+                            _isWalkingSoundPlaying = true;
                         }
+                                              
                     }
                     else
                     {
-                        CurrentFrames.WalkIdle = PlayAnimation(
+                        CurrentFrames.WalkIdle = AnimationPlayer.PlayAnimation(
                             "wIdle",
                             CurrentFrames.WalkIdle,
                             FrameCounts.WalkIdle,
                             SpriteImage);
+
+                        if (_isWalkingSoundPlaying && Settings.FootStepSounds) 
+                        {
+                            _walkLoopPlayer.Stop();
+                            _isWalkingSoundPlaying = false;
+                        }
+                        
                     }
+                 
 
                 }
+                bool isIdleNow = AnimationStates.IsCompletelyIdle();
+
                 if (Settings.AllowRandomness)
                 {
-                    if (DateTime.Now >= _nextRandomActionTime)
+                    if (isIdleNow && !_wasIdleLastFrame)
                     {
-                        PerformRandomAction();
-
                         int interval = _rng.Next(Settings.MinInterval, Settings.MaxInterval);
                         _nextRandomActionTime = DateTime.Now.AddSeconds(interval);
                     }
+                    if (isIdleNow && DateTime.Now >= _nextRandomActionTime)
+                    {
+                        AnimationStates.SetState("Random");
+
+                        int action = _rng.Next(0, 7);
+                        switch (action)
+                        {
+                            case 0:
+                                RandomMove();
+                                break;
+                            case 1:
+                                AnimationStates.SetState("Reload");
+                                AnimationStates.LockState();
+                                break;
+                            case 2:
+                                CurrentFrames.Pat = 0;
+                                AnimationStates.UnlockState();
+                                AnimationStates.SetState("Pat");
+                                MediaManager.PlaySound("pat.wav");
+                                break;
+                            case 3:
+                                CurrentFrames.Click = 0;
+                                AnimationStates.UnlockState();
+                                AnimationStates.SetState("Click");
+                                MediaManager.PlaySound("mambo.wav");
+                                break;
+                            case 4:
+                                ResetIdleTimer();
+                                CurrentFrames.Emote1 = 0;
+                                AnimationStates.UnlockState();
+                                if (Settings.CurrentAmmo <= 0)
+                                {
+                                    AnimationStates.SetState("Reload");
+                                    AnimationStates.LockState();
+                                }
+                                else
+                                {
+                                    AnimationStates.SetState("Emote1");
+                                    MediaManager.PlaySound("emote2.wav");
+                                    Settings.CurrentAmmo--;
+                                }
+                                break;
+                            case 5:
+                                ResetIdleTimer();
+                                CurrentFrames.Emote2 = 0;
+                                AnimationStates.UnlockState();
+                                if (Settings.CurrentAmmo <= 0)
+                                {
+                                    AnimationStates.SetState("Reload");
+                                    AnimationStates.LockState();
+                                }
+                                else
+                                {
+                                    AnimationStates.SetState("Emote2");
+                                    MediaManager.PlaySound("emote2.wav");
+                                    Settings.CurrentAmmo--;
+                                }
+                                break;
+                            case 6:
+                                RandomMove();
+                                break;
+                        }
+                  
+                        int intervalAfterAction = _rng.Next(Settings.MinInterval, Settings.MaxInterval);
+                        _nextRandomActionTime = DateTime.Now.AddSeconds(intervalAfterAction);
+                    }
                 }
+                _wasIdleLastFrame = isIdleNow;
             };      
             _masterTimer.Start();     
-        }
-        private void PerformRandomAction()
-        {
-            if (AnimationStates.IsCompletelyIdle())
-            {
-                RandomMove();
-            }
-
         }
         private void RandomMove()
         {
             _activeRandomMoveTimer?.Stop();
-
-            AnimationStates.SetState("Random");
 
             double moveX = (_rng.NextDouble() - 0.5) * Settings.MoveDistance * 2;
             double moveY = (_rng.NextDouble() - 0.5) * Settings.MoveDistance * 2;
@@ -322,7 +422,14 @@ namespace Desktop_Gremlin
 
             moveTimer.Tick += (s, e) =>
             {
-           
+
+                if (moveCount >= step || !AnimationStates.GetState("Random"))
+                {
+                    moveTimer.Stop();
+                    _activeRandomMoveTimer = null;
+                    AnimationStates.SetState("Idle");
+                    return;
+                }
                 this.Left += dx;
                 this.Top += dy;
                 moveCount++;
@@ -330,12 +437,12 @@ namespace Desktop_Gremlin
                 {
                     if (dx > 0)
                     {
-                        CurrentFrames.WalkR = PlayAnimation("walkR", CurrentFrames.WalkR,
+                        CurrentFrames.WalkR = AnimationPlayer.PlayAnimation("walkR", CurrentFrames.WalkR,
                             FrameCounts.WalkR, SpriteImage);
                     }
                     else
                     {
-                        CurrentFrames.WalkL = PlayAnimation("walkL", CurrentFrames.WalkL,
+                        CurrentFrames.WalkL = AnimationPlayer.PlayAnimation("walkL", CurrentFrames.WalkL,
                             FrameCounts.WalkL, SpriteImage);
                     }
                 }
@@ -343,115 +450,18 @@ namespace Desktop_Gremlin
                 {
                     if (dy > 0)
                     {
-                        CurrentFrames.WalkDown = PlayAnimation("walkDown", CurrentFrames.WalkDown,
+                        CurrentFrames.WalkDown =    AnimationPlayer.PlayAnimation("walkDown", CurrentFrames.WalkDown,
                             FrameCounts.WalkDown, SpriteImage);
                     }
                     else
                     {
-                        CurrentFrames.WalkUp = PlayAnimation("walkUp", CurrentFrames.WalkUp,
+                        CurrentFrames.WalkUp = AnimationPlayer.PlayAnimation("walkUp", CurrentFrames.WalkUp,
                             FrameCounts.WalkUp,SpriteImage);
                     }
                 }
-
-                if (moveCount >= step || !AnimationStates.GetState("Random") )
-                {
-                    moveTimer.Stop();
-                    AnimationStates.SetState("Idle");
-                    _activeRandomMoveTimer = null;
-                }
+           
             };
             moveTimer.Start();
-        }
-        private void ResetApp()
-        {
-            TRAY_ICON.Visible = false;
-            string exePath = Process.GetCurrentProcess().MainModule.FileName;
-            Process.Start(exePath);
-            System.Windows.Application.Current.Shutdown();
-        }
-        private void CloseApp()
-        {
-            DispatcherTimer _closeTimer = new DispatcherTimer();
-            _masterTimer?.Stop();
-            _activeRandomMoveTimer?.Stop(); 
-            _closeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
-            _closeTimer.Tick += (s, e) =>
-            {
-                try
-                {
-                    CurrentFrames.Outro = PlayAnimation(
-                        "outro",
-                        CurrentFrames.Outro,
-                        FrameCounts.Outro,
-                        SpriteImage);
-
-                    if (CurrentFrames.Outro == 0)
-                    {
-                        TRAY_ICON.Visible = false;
-                        TRAY_ICON?.Dispose();
-                        System.Windows.Application.Current.Shutdown();
-                    }
-                }
-                catch (Exception ex)
-                {
-                     
-                    TRAY_ICON.Visible = false;
-                    TRAY_ICON?.Dispose();               
-                    System.Windows.Application.Current.Shutdown();
-                }
-            };
-            _closeTimer.Start();
-        }
-        private void SetupTrayIcon()
-        {
-            TRAY_ICON = new NotifyIcon();
-           
-            if (File.Exists("ico.ico"))
-            {
-                TRAY_ICON.Icon = new Icon("ico.ico");
-            }
-            else
-            {
-                TRAY_ICON.Icon = SystemIcons.Application;
-            }        
- 
-            TRAY_ICON.Visible = true;
-            TRAY_ICON.Text = "Gremlin";
-
-            var menu = new ContextMenuStrip();
-            menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add("Reappear", null, (s, e) => ResetApp());
-            menu.Items.Add("Close", null, (s, e) => CloseApp());
-            TRAY_ICON.ContextMenuStrip = menu;
-        }
-        private void PlaySound(string fileName, double delaySeconds = 0)
-        {
-            string path = System.IO.Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Sounds", Settings.StartingChar, fileName);
-
-            if (!File.Exists(path))
-                return;
-
-            if (delaySeconds > 0)
-            {
-                if (LastPlayed.TryGetValue(fileName, out DateTime lastTime))
-                {
-                    if ((DateTime.Now - lastTime).TotalSeconds < delaySeconds)
-                        return;
-                }
-            }
-
-            try
-            {
-                SoundPlayer sp = new SoundPlayer(path);
-                sp.Play();
-                LastPlayed[fileName] = DateTime.Now;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Sound error: " + ex.Message);
-            }
         }
         private void SpriteImage_RightClick(object sender, MouseButtonEventArgs e)
         {
@@ -459,18 +469,13 @@ namespace Desktop_Gremlin
             CurrentFrames.Click = 0;
             AnimationStates.UnlockState();
             AnimationStates.SetState("Click");
-            PlaySound("mambo.wav");
-                }
+            MediaManager.PlaySound("mambo.wav");
+        }
 
         private void SpriteImage_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-
             AnimationStates.SetState("Hover");
-            if (AnimationStates.GetState("Hover"))
-            {
-                PlaySound("hover.wav", 5);
-            }
-            
+            MediaManager.PlaySound("hover.wav", 5);           
         }
         private void SpriteImage_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -479,17 +484,12 @@ namespace Desktop_Gremlin
             CurrentFrames.Hover = 0;
             
         }
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-            TRAY_ICON?.Dispose();
-        }
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ResetIdleTimer();
             AnimationStates.UnlockState();
             AnimationStates.SetState("Dragging");
-            PlaySound("grab.wav");
+            MediaManager.PlaySound("grab.wav");
             DragMove();
             AnimationStates.SetState("Idle");
             MouseSettings.FollowCursor = !MouseSettings.FollowCursor;
@@ -502,7 +502,7 @@ namespace Desktop_Gremlin
 
             if (MouseSettings.FollowCursor)
             {
-                PlaySound("run.wav");
+                MediaManager.PlaySound("run.wav");
             }
         }
         private void ResetIdleTimer()
@@ -523,24 +523,85 @@ namespace Desktop_Gremlin
             CurrentFrames.Pat = 0;
             AnimationStates.UnlockState();
             AnimationStates.SetState("Pat");
-            PlaySound("pat.wav");
+            MediaManager.PlaySound("pat.wav");
         }
         private void LeftHotspot_Click(object sender, MouseButtonEventArgs e)
         {
+          
             ResetIdleTimer();
             CurrentFrames.Emote1 = 0;
             AnimationStates.UnlockState();
-            AnimationStates.SetState("Emote1");
-            PlaySound("emote1.wav");
+            if (Settings.CurrentAmmo <= 0)
+            {
+                AnimationStates.SetState("Reload");
+                AnimationStates.LockState();
+ 
+            }
+            else
+            {
+                AnimationStates.SetState("Emote1");
+                MediaManager.PlaySound("emote2.wav");
+            }
+            Settings.CurrentAmmo--;
+        }
+        private void LeftDownHotspot_Click(object sender, MouseButtonEventArgs e)
+        {
+
+            ResetIdleTimer();
+            CurrentFrames.Emote3 = 0;
+            AnimationStates.UnlockState();
+            if (Settings.CurrentAmmo <= 0)
+            {
+                AnimationStates.SetState("Reload");
+                AnimationStates.LockState();
+
+            }
+            else
+            {
+                AnimationStates.SetState("Emote3");
+                MediaManager.PlaySound("emote2.wav");
+            }
+            Settings.CurrentAmmo--;
+        }
+        private void RightDownHotspot_Click(object sender, MouseButtonEventArgs e)
+        {
+
+            ResetIdleTimer();
+            CurrentFrames.Emote4 = 0;
+            AnimationStates.UnlockState();
+            if (Settings.CurrentAmmo <= 0)
+            {
+                AnimationStates.SetState("Reload");
+                AnimationStates.LockState();
+
+            }
+            else
+            {
+                AnimationStates.SetState("Emote4");
+                MediaManager.PlaySound("emote2.wav");
+            }
+            Settings.CurrentAmmo--;
         }
         private void RightHotspot_Click(object sender, MouseButtonEventArgs e)
         {
+
             ResetIdleTimer();
             CurrentFrames.Emote2 = 0;
             AnimationStates.UnlockState();
-            AnimationStates.SetState("Emote2");
-            AnimationStates.LockState();
-            PlaySound("emote2.wav");
+            if (Settings.CurrentAmmo <= 0)
+            {
+
+                AnimationStates.SetState("Reload");
+                AnimationStates.LockState();
+
+            }
+            else
+            {
+                AnimationStates.SetState("Emote2");
+                MediaManager.PlaySound("emote2.wav");
+            }
+
+            Settings.CurrentAmmo--;
         }
     }
 }

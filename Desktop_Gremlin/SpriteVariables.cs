@@ -27,6 +27,8 @@
     public static int WalkUp { get; set; } = 0;
     public static int Emote1 { get; set; } = 0;
     public static int Emote2 { get; set; } = 0;
+    public static int Emote3 { get; set; } = 0;
+    public static int Emote4 { get; set; } = 0;
 }
 public static class CurrentFrames
 {
@@ -57,5 +59,7 @@ public static class CurrentFrames
     public static int WalkDown { get; set;} = 0;
     public static int Emote1 { get; set; } = 0;
     public static int Emote2 { get; set; } = 0;
+    public static int Emote3 { get; set; } = 0;
+    public static int Emote4 { get; set; } = 0;
 }
 
