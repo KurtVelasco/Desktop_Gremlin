@@ -5,9 +5,15 @@ Now annoy yourself while you stare idly into the dark abyss known as your comput
 For future development: I'll continue adding on with each itearation and different characters that I currently like.
 <br>
 # Updates
-[Windows Only] <br>
-DOWNLOAD Agnes Tachyon (V1.0): [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v.1.2/Desktop_Gremlin_Tachyon.zip) <br>
-DOWNLOAD Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip) <br>
+
+*If your browser false-detects it, well try another browser<br><br>
+[Windows Only UmaMusume] <br>
+Agnes Tachyon (V1.0): [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v.1.2/Desktop_Gremlin_Tachyon.zip) <br>
+Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip) <br>
+Rice Shower (V2.2): [Clich Here to Donwload](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/2.2/Tracen_v2.1_Rice.zip)<br>
+
+[Blue Archive] <br>
+Aoba [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.3/Aoba_v2.3.zip)<br>
 
 **Ver 2.2 (Yes I skipped 1.1 because I want to)**<br>
 +Added diagonal movements<br>
