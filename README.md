@@ -13,9 +13,9 @@ Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelas
 Rice Shower (V2.2): [Clich Here to Donwload](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/2.2/Tracen_v2.1_Rice.zip)<br>
 
 [Blue Archive] <br>
-Aoba [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.3/Aoba_v2.3.zip)<br>
+Aoba: [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.3/Aoba_v2.3.zip)<br>
 
-**Ver 2.2 (Yes I skipped 1.1 because I want to)**<br>
+**Ver 2.2**<br>
 +Added diagonal movements<br>
 +Revamp animation states<br>
 +Walks independently(sometimes)<br>
