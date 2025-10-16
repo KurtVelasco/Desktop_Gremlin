@@ -15,6 +15,7 @@
         <Image Name="SpriteImage"
            Width="236" Height="250"
            HorizontalAlignment="Left"
+           Source="SpriteSheet/"
            VerticalAlignment="Top"
            Canvas.Top="20"  Margin="105,5,0,0" RenderTransformOrigin="0.484,0.525" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseEnter="SpriteImage_MouseEnter"
             MouseLeave="SpriteImage_MouseLeave">
@@ -25,12 +26,24 @@
             Width="60"
             MouseLeftButtonDown="LeftHotspot_Click" Margin="110,95,0,100"/>
 
+        <Border x:Name="LeftDownHotspot"
+             Background="#01000000"
+             HorizontalAlignment="Left"
+             Width="60"
+             MouseLeftButtonDown="LeftDownHotspot_Click" Margin="110,175,0,35"/>
+
 
         <Border x:Name="RightHotspot"
             Background="#01000000"
             HorizontalAlignment="Left"
             Width="60"
             MouseLeftButtonDown="RightHotspot_Click" Margin="260,95,0,100"/>
+
+        <Border x:Name="RightDownHotspot"
+            Background="#01000000"
+            HorizontalAlignment="Left"
+            Width="60"
+            MouseLeftButtonDown="RightDownHotspot_Click" Margin="260,170,0,35"/>
         <Border x:Name="TopHotspot"
          Background="#01000000"
          HorizontalAlignment="Center"
