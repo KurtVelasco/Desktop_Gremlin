@@ -159,6 +159,9 @@ public static class ConfigManager
                 case "IDLE":
                     FrameCounts.Idle = intValue;
                     break;
+                case "IDLE2":
+                    FrameCounts.Idle2 = intValue;
+                    break;
                 case "UP":
                     FrameCounts.Up = intValue;
                     break;

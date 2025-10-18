@@ -14,7 +14,7 @@
     public static int SleepTime { get; set; } = 0;
     public static int Ammo { get; set; } = 0;
     public static int CurrentAmmo { get; set; } = 0;
-    public static string CurrentIdle { get; set; } = "idle";
+    public static int CurrendIdle { get; set; } = 0;    
     public static bool FootStepSounds { get; set; } = false;    
 }
 public static class MouseSettings

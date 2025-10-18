@@ -13,24 +13,24 @@
         ResizeMode="NoResize" BorderThickness="0" BorderBrush="Black" ShowInTaskbar="True">
     <Grid  MouseRightButtonDown="SpriteImage_RightClick">
         <Image Name="SpriteImage"
-           Width="236" Height="250"
+           Width="200" Height="200"
            HorizontalAlignment="Left"
            Source="SpriteSheet/"
            VerticalAlignment="Top"
-           Canvas.Top="20"  Margin="105,5,0,0" RenderTransformOrigin="0.484,0.525" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseEnter="SpriteImage_MouseEnter"
+           Canvas.Top="20"  Margin="125,55,0,0" RenderTransformOrigin="0.484,0.525" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseEnter="SpriteImage_MouseEnter"
             MouseLeave="SpriteImage_MouseLeave">
         </Image>
         <Border x:Name="LeftHotspot"
             Background="#01000000"
             HorizontalAlignment="Left"
             Width="60"
-            MouseLeftButtonDown="LeftHotspot_Click" Margin="110,95,0,100"/>
+            MouseLeftButtonDown="LeftHotspot_Click" Margin="115,95,0,100"/>
 
         <Border x:Name="LeftDownHotspot"
              Background="#01000000"
              HorizontalAlignment="Left"
              Width="60"
-             MouseLeftButtonDown="LeftDownHotspot_Click" Margin="110,175,0,35"/>
+             MouseLeftButtonDown="LeftDownHotspot_Click" Margin="115,170,0,35"/>
 
 
         <Border x:Name="RightHotspot"
@@ -46,9 +46,30 @@
             MouseLeftButtonDown="RightDownHotspot_Click" Margin="260,170,0,35"/>
         <Border x:Name="TopHotspot"
          Background="#01000000"
-         HorizontalAlignment="Center"
-         Width="135"
-         MouseLeftButtonDown="TopHotspot_Click" Margin="0,35,0,195"/>
+         HorizontalAlignment="Left"
+         Width="95"
+         MouseLeftButtonDown="TopHotspot_Click" Margin="170,65,0,165"/>
+        <Border x:Name="ScrollingBorder" Background="White"
+            CornerRadius="10"        
+            BorderBrush="LightGreen"
+            BorderThickness="1.5"
+            Width="0" Height="40"
+            Padding="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Margin="135,0,0,35">
+            <Canvas ClipToBounds="True">
+                <TextBlock x:Name="ScrollingText"
+                       Text=""
+                       Foreground="RosyBrown"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       FontFamily="Agency FB"
+                       Canvas.Left="0"
+                       Canvas.Top="5"/>
+            </Canvas>
+        </Border>
+
 
     </Grid>
 

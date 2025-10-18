@@ -1,6 +1,7 @@
 ﻿public static class FrameCounts
 {
     public static int Intro { get; set; } = 0;
+    public static int Idle2 { get; set; } = 0;
     public static int Idle { get; set; } = 0;
     public static int Left { get; set; } = 0;
     public static int Right { get; set; } = 0;
@@ -36,6 +37,7 @@ public static class CurrentFrames
     public static int RightFire { get; set; } = 0;
     public static int Intro { get; set; } = 0;
     public static int Idle { get; set; } = 0;
+    public static int Idle2 { get; set; } = 0;  
     public static int Outro { get; set; } = 0;
     public static int Down { get; set; } = 0;
     public static int Up { get; set; } = 0;

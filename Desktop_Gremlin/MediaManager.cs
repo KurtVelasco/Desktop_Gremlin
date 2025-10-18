@@ -25,6 +25,7 @@ public static class MediaManager
         using (SoundPlayer sp = new SoundPlayer(path))
         {
             sp.Play();
+            LastPlayed[fileName] = DateTime.Now;
         }
     }
 }

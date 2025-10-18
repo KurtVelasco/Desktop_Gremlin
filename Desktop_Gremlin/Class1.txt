@@ -215,3 +215,26 @@
                         _nextRandomActionTime = DateTime.Now.AddSeconds(interval);
                     }
                 }
+
+
+                private void RightHotspot_Click(object sender, MouseButtonEventArgs e)
+        {
+
+            ResetIdleTimer();
+            CurrentFrames.Emote3 = 0;
+            AnimationStates.UnlockState();
+            if (Settings.CurrentAmmo <= 0)
+            {
+
+                AnimationStates.SetState("Reload");
+                AnimationStates.LockState();
+
+            }
+            else
+            {
+                AnimationStates.SetState("Emote3");
+                MediaManager.PlaySound("emote2.wav");
+            }
+
+            Settings.CurrentAmmo--;
+        }

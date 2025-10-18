@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 public static class AnimationStates
 {
+    private static Random _random = new Random();  
     public static bool IsLocked { get; set; } = false;
     private static readonly Dictionary<string, bool> _animationStates = new Dictionary<string, bool>()
     {
@@ -10,6 +11,7 @@ public static class AnimationStates
         { "Random", false },
         { "Hover", false },
         { "Idle", false },
+        { "Outro", false },
         { "Walking", false },
         { "Dragging", false },
         { "WalkIdle", false },
@@ -25,13 +27,39 @@ public static class AnimationStates
         { "Emote3", false },
         { "Emote4", false },
     };
+    //(ichi ni tsuite yoi don!)        ohisama pappaka kaisei reesu (hai)
+                                                                            //    chokochoko nanigeni(sowa so what)
+                                                                            //daichi daini daisan shi go(dan dan dan dan deban ga chikazuki)
+                                                                            //mentama giragira shussou desu(hai)
+                                                                            //kyou mo mechamecha hachamecha da(chyaa!)
+        //uuuuu(umadacchi)
+        //uuuu(umapyoi umapyoi)
+        //uuu(sukidacchi) uuu(umapoi)
+        //uma uma umya umya san ni ichi Fight!!     
     public static void ResetAllExceptIdle()
     {
         foreach (var key in _animationStates.Keys.ToList())
         {
             _animationStates[key] = key.Equals("Idle", StringComparison.OrdinalIgnoreCase);
         }
+        ChangeIdle();
     }
+    public static void ChangeIdle()
+    {
+       int idleState = _random.Next(0, 3);
+       switch(idleState)
+       {
+            case 0:
+                Settings.CurrendIdle = 0;   
+                break;
+            case 1:
+                Settings.CurrendIdle = 1;
+                break;
+            case 2:
+                Settings.CurrendIdle = 0;
+                break;
+        }   
+    }   
     public static void SetState(string stateName)
     {
         if (IsLocked)

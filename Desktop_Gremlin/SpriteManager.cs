@@ -25,6 +25,8 @@ namespace Desktop_Gremlin
             {
                 case "idle":
                     return "idle.png";
+                case "idle2":
+                    return "idle2.png";
                 case "intro":
                     return "intro.png";
                 case "left":
