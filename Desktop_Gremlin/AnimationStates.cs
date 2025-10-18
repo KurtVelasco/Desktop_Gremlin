@@ -21,7 +21,9 @@ public static class AnimationStates
         { "Pat", false },
         { "RandomMovement", false },
         { "Emote1", false },
-        { "Emote2", false }
+        { "Emote2", false },
+        { "Emote3", false },
+        { "Emote4", false },
     };
     public static void ResetAllExceptIdle()
     {
@@ -32,15 +34,11 @@ public static class AnimationStates
     }
     public static void SetState(string stateName)
     {
-<<<<<<< Updated upstream
-        if (IsLocked) return;
-=======
         if (IsLocked)
         {
             return;
         } 
 
->>>>>>> Stashed changes
         string normalized = stateName.Trim();
 
         if (!_animationStates.ContainsKey(normalized))
@@ -67,10 +65,6 @@ public static class AnimationStates
         }
         return true;
     }
-<<<<<<< Updated upstream
-=======
     public static void LockState() => IsLocked = true;
     public static void UnlockState() => IsLocked = false;
-
->>>>>>> Stashed changes
 }

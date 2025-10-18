@@ -49,15 +49,7 @@ public static class ConfigManager
                             Settings.FollowRadius = intValue;
                         }
                         break;
-                    }
-                case "SPRITE_COLUMN":
-                    {
-                        if (int.TryParse(value, out int intValue))
-                        {
-                            Settings.SpriteColumn = intValue;
-                        }
-                        break;
-                    }
+                    }         
                 case "MAX_INTERVAL":
                     {
                         if (int.TryParse(value, out int intValue))
@@ -87,14 +79,10 @@ public static class ConfigManager
                         if (bool.TryParse(value, out bool Value))
                         {
                             Settings.AllowRandomness = Value;
-                        }
-<<<<<<< Updated upstream
-                        break;
-                }
-=======
+                        }               
                     }
                     break;
-                case "ALLOW_GRAVITY":
+             case "ALLOW_GRAVITY":
                     {
                         if (bool.TryParse(value, out bool Value))
                         {
@@ -126,10 +114,12 @@ public static class ConfigManager
                         }
                     }
                     break;
->>>>>>> Stashed changes
+                }
             }
+              
         }
-    }
+    
+
     public static void LoadConfigChar()
     {
         string path = System.IO.Path.Combine(
@@ -157,97 +147,6 @@ public static class ConfigManager
 
             string key = parts[0].Trim();
             string value = parts[1].Trim();
-
-<<<<<<< Updated upstream
-                string key = parts[0].Trim();
-                string value = parts[1].Trim();
-
-                if (!int.TryParse(value, out int intValue))
-                {
-                    continue;
-                }
-                switch (key.ToUpper())
-                {
-                    case "INTRO":
-                        FrameCounts.Intro = intValue;
-                        break;
-                    case "IDLE":
-                        FrameCounts.Idle = intValue;
-                        break;
-                    case "UP":
-                        FrameCounts.Up = intValue;
-                        break;
-                    case "DOWN":
-                        FrameCounts.Down = intValue;
-                        break;
-                    case "LEFT":
-                        FrameCounts.Left = intValue;
-                        break;
-                    case "RIGHT":
-                        FrameCounts.Right = intValue;
-                        break;
-                    case "OUTRO":
-                        FrameCounts.Outro = intValue;
-                        break;
-                    case "GRAB":
-                        FrameCounts.Grab = intValue;
-                        break;
-                    case "WALK_IDLE":
-                        FrameCounts.WalkIdle = intValue;
-                        break;
-                    case "CLICK":
-                        FrameCounts.Click = intValue;
-                        break;
-                    case "HOVER":
-                        FrameCounts.Hover = intValue;
-                        break;
-                    case "SLEEP":
-                        FrameCounts.Sleep = intValue;
-                        break;
-                    case "FIRE_L":
-                        FrameCounts.LeftFire = intValue;
-                        break;
-                    case "FIRE_R":
-                        FrameCounts.RightFire = intValue;
-                        break;
-                    case "RELOAD":
-                        FrameCounts.Reload = intValue;
-                        break;
-                    case "PAT":
-                        FrameCounts.Pat = intValue;
-                        break;
-                    case "UPLEFT":
-                        FrameCounts.UpLeft = intValue;
-                        break;
-                    case "UPRIGHT":
-                        FrameCounts.UpRight = intValue;
-                        break;
-                    case "DOWNLEFT":
-                        FrameCounts.DownLeft = intValue;
-                        break;
-                    case "DOWNRIGHT":
-                        FrameCounts.DownRight = intValue;
-                        break;
-                    case "WALK_L":
-                        FrameCounts.WalkL = intValue;
-                        break;
-                    case "WALK_R":
-                        FrameCounts.WalkR = intValue;
-                        break;
-                    case "WALK_U":
-                        FrameCounts.WalkUp = intValue;
-                        break;
-                    case "WALK_D":
-                        FrameCounts.WalkDown = intValue;
-                        break;
-                    case "EMOTE1":
-                        FrameCounts.Emote1 = intValue;
-                        break;
-                    case "EMOTE2":
-                        FrameCounts.Emote2 = intValue;
-                        break;
-                }
-=======
             if (!int.TryParse(value, out int intValue))
             {
                 continue;
@@ -347,7 +246,6 @@ public static class ConfigManager
                 case "COLUMN":
                     Settings.SpriteColumn = intValue;
                     break;
->>>>>>> Stashed changes
             }
         }
     }
