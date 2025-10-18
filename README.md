@@ -8,7 +8,7 @@ For future development: I'll continue adding on with each itearation and differe
 
 *If your browser false-detects it, well try another browser<br><br>
 [Windows Only UmaMusume] <br>
-Agnes Tachyon (V1.0): [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v.1.2/Desktop_Gremlin_Tachyon.zip) <br>
+Agnes Tachyon (V2.4) Updated: [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.4/Tachyon_v2.4.zip) <br>
 Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip) <br>
 Rice Shower (V2.2): [Clich Here to Donwload](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/2.2/Tracen_v2.1_Rice.zip)<br>
 
