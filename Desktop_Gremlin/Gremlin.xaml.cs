@@ -664,7 +664,6 @@ namespace Desktop_Gremlin
             var menu = new ContextMenuStrip();
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add("Reappear", null, (s, e) => ResetApp());
-            menu.Items.Add("Close", null, (s, e) => CloseApp());
             _trayIcon.ContextMenuStrip = menu;
         }
 
@@ -677,13 +676,6 @@ namespace Desktop_Gremlin
 
         }
 
-        private void CloseApp()
-        {
-            CurrentFrames.Outro = 0;
-            _isClosed = true;
-            AnimationStates.SetState("Outro");
-            MediaManager.PlaySound("outro.wav");
-        }
     }
 }
 
