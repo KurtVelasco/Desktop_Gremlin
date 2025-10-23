@@ -11,7 +11,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 namespace Desktop_Gremlin
 {
-
     public partial class Gremlin : Window
     {
         //To those reading this, I'm sorry for this messy code, or not//

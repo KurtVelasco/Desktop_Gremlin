@@ -27,15 +27,6 @@ public static class AnimationStates
         { "Emote3", false },
         { "Emote4", false },
     };
-    //(ichi ni tsuite yoi don!)        ohisama pappaka kaisei reesu (hai)
-                                                                            //    chokochoko nanigeni(sowa so what)
-                                                                            //daichi daini daisan shi go(dan dan dan dan deban ga chikazuki)
-                                                                            //mentama giragira shussou desu(hai)
-                                                                            //kyou mo mechamecha hachamecha da(chyaa!)
-        //uuuuu(umadacchi)
-        //uuuu(umapyoi umapyoi)
-        //uuu(sukidacchi) uuu(umapoi)
-        //uma uma umya umya san ni ichi Fight!!     
     public static void ResetAllExceptIdle()
     {
         foreach (var key in _animationStates.Keys.ToList())
