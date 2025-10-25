@@ -7,10 +7,10 @@ public static class AnimationStates
     public static bool IsLocked { get; set; } = false;
     private static readonly Dictionary<string, bool> _animationStates = new Dictionary<string, bool>()
     {
-        { "Intro", true },
+        { "Intro", false },
         { "Random", false },
         { "Hover", false },
-        { "Idle", false },
+        { "Idle", true },
         { "Outro", false },
         { "Walking", false },
         { "Dragging", false },

@@ -38,6 +38,7 @@ namespace Desktop_Gremlin
         private DispatcherTimer _masterTimer;
         private DispatcherTimer _idleTimer;
         private DispatcherTimer _activeRandomMoveTimer;
+        private int _clickCount = 0;    
 
         private bool _isClosed = false;
         public struct POINT
@@ -54,8 +55,7 @@ namespace Desktop_Gremlin
             ConfigManager.LoadMasterConfig();
             ConfigManager.LoadConfigChar();
             InitializeAnimations();
-            InitializeTimers();
-            SetupTrayIcon();    
+            InitializeTimers();   
             MediaManager.PlaySound("intro.wav");
         }
         public void InitializeTimers()
@@ -102,32 +102,37 @@ namespace Desktop_Gremlin
             {        
                 if (AnimationStates.GetState("Idle"))
                 {
-                    switch (Settings.CurrendIdle)
-                    {
-                        case 0:
-                            CurrentFrames.Idle = PlayAnimation("idle", CurrentFrames.Idle,
-                        FrameCounts.Idle, SpriteImage);
-                            break;
-                        case 1:
-                            CurrentFrames.Idle2 = PlayAnimation("idle2", CurrentFrames.Idle2,
-                        FrameCounts.Idle2, SpriteImage);
-                            break;
-                    }
+                    CurrentFrames.Idle = PlayAnimation("idle", CurrentFrames.Idle,
+                    FrameCounts.Idle, SpriteImage);                                             
                 }             
                 if (AnimationStates.GetState("Click"))
                 {
-                    AnimationStates.UnlockState();
-                    AnimationStates.LockState();
                     CurrentFrames.Click = PlayAnimation("click",
                     CurrentFrames.Click,
                     FrameCounts.Click,SpriteImage);
 
                     if (CurrentFrames.Click == 0)
                     {
+                        MediaManager.PlaySound("emote1.wav");
                         AnimationStates.UnlockState();
                         AnimationStates.ResetAllExceptIdle();
                     }
-                }                        
+                }
+                if (AnimationStates.GetState("Emote1"))
+                {
+                    AnimationStates.UnlockState();
+                    AnimationStates.LockState();
+                    CurrentFrames.Emote1 = PlayAnimation("emote1",
+                    CurrentFrames.Emote1,
+                    FrameCounts.Emote1, SpriteImage);
+
+                    if (CurrentFrames.Emote1 == 0)
+                    {
+                        _clickCount = 0;
+                        AnimationStates.UnlockState();
+                        AnimationStates.ResetAllExceptIdle();
+                    }
+                }
             };      
             _masterTimer.Start();     
         }
@@ -135,9 +140,20 @@ namespace Desktop_Gremlin
         private void SpriteImage_RightClick(object sender, MouseButtonEventArgs e)
         {
             CurrentFrames.Click = 0;
-            AnimationStates.UnlockState();
-            AnimationStates.SetState("Click");
-            MediaManager.PlaySound("mambo.wav");
+            if(_clickCount < 3)
+            {
+                _clickCount++;
+                AnimationStates.SetState("Click");
+                CurrentFrames.Idle = 0;
+            }
+            else
+            {
+                AnimationStates.UnlockState();
+                AnimationStates.SetState("Emote1");
+                MediaManager.PlaySound("mambo.wav");
+                _clickCount = 0;
+                CurrentFrames.Idle = 0;
+            }
         }
 
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -145,41 +161,7 @@ namespace Desktop_Gremlin
             DragMove();           
         }
            
-      
-        private readonly Window _window;
-        private NotifyIcon _trayIcon;
-        private DispatcherTimer _closeTimer;
-        public void SetupTrayIcon()
-        {
-            _trayIcon = new NotifyIcon();
-
-            if (File.Exists("ico.ico"))
-            {
-                _trayIcon.Icon = new Icon("ico.ico");
-            }
-            else
-            {
-                _trayIcon.Icon = SystemIcons.Application;
-            }
-
-            _trayIcon.Visible = true;
-            _trayIcon.Text = "Gremlin";
-
-            var menu = new ContextMenuStrip();
-            menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add("Reappear", null, (s, e) => ResetApp());
-            _trayIcon.ContextMenuStrip = menu;
-        }
-
-        private void ResetApp()
-        {
-            CurrentFrames.Outro = 0;
-            _isClosed = false;  
-            AnimationStates.SetState("Outro");
-            MediaManager.PlaySound("outro.wav");    
-
-        }
-
+     
     }
 }
 
