@@ -160,8 +160,44 @@ namespace Desktop_Gremlin
         {            
             DragMove();           
         }
-           
-     
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            if (_isClosed)
+                return;
+
+            _isClosed = true;
+
+            CleanUpResources();
+        }
+        private void CleanUpResources()
+        {
+            try
+            {
+                _masterTimer?.Stop();
+                _idleTimer?.Stop();
+                _activeRandomMoveTimer?.Stop();
+
+                _walkLoopPlayer?.Stop();
+                _walkLoopPlayer?.Close();
+
+                if (TRAY_ICON != null)
+                {
+                    TRAY_ICON.Visible = false;
+                    TRAY_ICON.Dispose();
+                    TRAY_ICON = null;
+                }
+                System.Windows.Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Cleanup failed: {ex.Message}");
+            }
+        }
+
+
+
     }
 }
 
