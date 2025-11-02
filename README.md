@@ -11,7 +11,7 @@ For future development: I'll continue adding on with each itearation and differe
 Agnes Tachyon (V2.4) Updated: [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.4/Tachyon_v2.4.zip) <br>
 Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip) <br>
 Rice Shower (V2.2): [Clich Here to Donwload](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/2.2/Tracen_v2.1_Rice.zip)<br>
-
+GoldShip (v2.5)  [GoldShipu](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.5/GoldShip_v2.5.zip)<br>
 [Blue Archive] <br>
 Aoba: [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.3/Aoba_v2.3.zip)<br>
 
