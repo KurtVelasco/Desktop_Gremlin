@@ -6,6 +6,8 @@
     public static double FollowRadius { get; set; } = 0;
     public static int FrameWidth { get; set; } = 0;
     public static int FrameHeight { get; set; } = 0;
+    public static int FrameWidthJs { get; set; } = 0;
+    public static int FrameHeightJs { get; set; } = 0;
     public static int MinInterval { get; set; } = 0;
     public static int MaxInterval { get; set; } = 0;
     public static int MoveDistance { get; set; } = 0;

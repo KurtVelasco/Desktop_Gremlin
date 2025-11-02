@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Desktop_Gremlin;
+using System;
 using System.IO;
 
 public static class ConfigManager
@@ -8,7 +9,8 @@ public static class ConfigManager
         string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.txt");
         if (!File.Exists(path))
         {
-             
+            Gremlin.ErrorClose("Cannot find the Main config.txt", "Missing config.txt");
+            return;
         }
 
         foreach (var line in File.ReadAllLines(path))
@@ -128,8 +130,8 @@ public static class ConfigManager
 
         if (!File.Exists(path))
         {
-            //FatalError("Cannot find character name from config/folder. Please check config file if filename matches",
-            //    "Missing Character File");
+            Gremlin.ErrorClose("Cannot find the SpriteSheet config.txt", "Missing config.txt");
+            return;
         }
 
         foreach (var line in File.ReadAllLines(path))
@@ -240,6 +242,9 @@ public static class ConfigManager
                 case "EMOTE4":
                     FrameCounts.Emote4 = intValue;
                     break;
+                case "JUMPSCARE":
+                    FrameCounts.JumpScare = intValue;
+                    break;
                 case "WIDTH":
                     Settings.FrameWidth = intValue;
                     break;
@@ -248,6 +253,12 @@ public static class ConfigManager
                     break;
                 case "COLUMN":
                     Settings.SpriteColumn = intValue;
+                    break;
+                case "WIDTH_JS":
+                    Settings.FrameWidthJs = intValue;
+                    break;
+                case "HEIGHT_JS":
+                    Settings.FrameHeightJs = intValue;
                     break;
             }
         }

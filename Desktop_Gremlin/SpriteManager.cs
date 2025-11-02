@@ -81,6 +81,8 @@ namespace Desktop_Gremlin
                     return "emote3.png";
                 case "emote4":
                     return "emote4.png";
+                case "jumpscare":
+                    return "jumpScare.png";
                 default:
                     return null;
             }

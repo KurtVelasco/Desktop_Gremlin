@@ -30,6 +30,8 @@
     public static int Emote2 { get; set; } = 0;
     public static int Emote3 { get; set; } = 0;
     public static int Emote4 { get; set; } = 0;
+    public static int JumpScare { get; set; } = 0;  
+
 }
 public static class CurrentFrames
 {
@@ -63,5 +65,6 @@ public static class CurrentFrames
     public static int Emote2 { get; set; } = 0;
     public static int Emote3 { get; set; } = 0;
     public static int Emote4 { get; set; } = 0;
+    public static int JumpScare { get; set; } = 0;
 }
 
