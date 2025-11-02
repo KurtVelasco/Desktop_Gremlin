@@ -17,23 +17,45 @@ namespace Desktop_Gremlin
             InitializeComponent();
            
         }
-        private int Playanimation(string sheetName)
+        private int PlayAnimation(string sheetName, int currentFrame, int frameCount, System.Windows.Controls.Image targetImage, bool PlayOnce = false)
         {
             BitmapImage sheet = SpriteManager.Get(sheetName);
+
             if (sheet == null)
             {
-                return 0;
-            }   
-            int x = 0;  
-            int y = 0;  
+                return currentFrame;
+            }
+            int x = (currentFrame % Settings.SpriteColumn) * Settings.FrameWidth;
+            int y = (currentFrame / Settings.SpriteColumn) * Settings.FrameHeight;
 
+            if (x + Settings.FrameWidth > sheet.PixelWidth || y + Settings.FrameHeight > sheet.PixelHeight)
+            {
+                return currentFrame;
+            }
 
-            if(x+ Settings.)
+            targetImage.Source = new CroppedBitmap(sheet, new Int32Rect(x, y, Settings.FrameWidth, Settings.FrameHeight));
+
+            return (currentFrame + 1) % frameCount;
+        }
+        public void InitializeAnimation()
+        {
+            _jumpTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
+            _jumpTimer.Tick += (s, e) =>
+            {
+               CurrentFrames.JumpScare = PlayAnimation("jumpscare", CurrentFrames.JumpScare, FrameCounts.JumpScare, 
+                   SpriteImage);
+            };
+            if(CurrentFrames.JumpScare <= 0)
+            {
+                _jumpTimer.Stop();
+                this.Close();   
+            }
+            _jumpTimer.Start();
         }
 
 
-      
 
-        
+
+
     }
 }
