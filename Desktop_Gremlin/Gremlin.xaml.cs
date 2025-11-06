@@ -685,23 +685,13 @@ namespace Desktop_Gremlin
             _trayIcon.Text = "Gremlin";
 
             var menu = new ContextMenuStrip();
-            menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add("Reappear", null, (s, e) => ResetApp());
             menu.Items.Add("Close", null, (s, e) => CloseApp());
             _trayIcon.ContextMenuStrip = menu;
         }
 
-        private void ResetApp()
-        {
-            CurrentFrames.Outro = 0;
-            _isClosed = false;  
-            AnimationStates.SetState("Outro");
-            MediaManager.PlaySound("outro.wav");    
-
-        }
-
         private void CloseApp()
         {
+            AnimationStates.UnlockState();
             CurrentFrames.Outro = 0;
             _isClosed = true;
             AnimationStates.SetState("Outro");

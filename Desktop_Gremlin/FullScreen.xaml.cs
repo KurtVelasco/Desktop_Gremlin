@@ -15,7 +15,8 @@ namespace Desktop_Gremlin
         public FullScreen()
         {
             InitializeComponent();
-           
+            InitializeAnimation();  
+
         }
         private int PlayAnimation(string sheetName, int currentFrame, int frameCount, System.Windows.Controls.Image targetImage, bool PlayOnce = false)
         {
@@ -25,15 +26,15 @@ namespace Desktop_Gremlin
             {
                 return currentFrame;
             }
-            int x = (currentFrame % Settings.SpriteColumn) * Settings.FrameWidth;
-            int y = (currentFrame / Settings.SpriteColumn) * Settings.FrameHeight;
+            int x = (currentFrame % Settings.SpriteColumn) * Settings.FrameWidthJs;
+            int y = (currentFrame / Settings.SpriteColumn) * Settings.FrameHeightJs;
 
-            if (x + Settings.FrameWidth > sheet.PixelWidth || y + Settings.FrameHeight > sheet.PixelHeight)
+            if (x + Settings.FrameWidthJs > sheet.PixelWidth || y + Settings.FrameHeightJs > sheet.PixelHeight)
             {
                 return currentFrame;
             }
 
-            targetImage.Source = new CroppedBitmap(sheet, new Int32Rect(x, y, Settings.FrameWidth, Settings.FrameHeight));
+            targetImage.Source = new CroppedBitmap(sheet, new Int32Rect(x, y, Settings.FrameWidthJs, Settings.FrameHeightJs));
 
             return (currentFrame + 1) % frameCount;
         }
@@ -42,14 +43,15 @@ namespace Desktop_Gremlin
             _jumpTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
             _jumpTimer.Tick += (s, e) =>
             {
-               CurrentFrames.JumpScare = PlayAnimation("jumpscare", CurrentFrames.JumpScare, FrameCounts.JumpScare, 
+               CurrentFrames.JumpScare = PlayAnimation("jumpscare", CurrentFrames.JumpScare, 
+                   FrameCounts.JumpScare, 
                    SpriteImage);
-            };
-            if(CurrentFrames.JumpScare <= 0)
-            {
-                _jumpTimer.Stop();
-                this.Close();   
-            }
+                if (CurrentFrames.JumpScare <= 0)
+                {
+                    _jumpTimer.Stop();
+                    this.Close();
+                }
+            };  
             _jumpTimer.Start();
         }
 

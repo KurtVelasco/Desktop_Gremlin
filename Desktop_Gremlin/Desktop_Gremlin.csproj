@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AB45768A-DDAF-4E83-AE0D-62B62D6C3029}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Desktop_Gremlin</RootNamespace>
-    <AssemblyName>Desktop_Gremlin</AssemblyName>
+    <RootNamespace>GoldShip</RootNamespace>
+    <AssemblyName>Goldship</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
