@@ -22,11 +22,19 @@ public static class MediaManager
                     return;
             }
         }
-        using (SoundPlayer sp = new SoundPlayer(path))
+        try
         {
-            sp.Play();
-            LastPlayed[fileName] = DateTime.Now;
+            using (SoundPlayer sp = new SoundPlayer(path))
+            {
+                sp.Play();
+                LastPlayed[fileName] = DateTime.Now;
+            }
         }
+        catch (Exception e)
+        {
+            File.WriteAllText("crash.txt", e.ToString());
+        }
+
     }
 }
 

@@ -54,10 +54,5 @@ namespace Desktop_Gremlin
             };  
             _jumpTimer.Start();
         }
-
-
-
-
-
     }
 }
