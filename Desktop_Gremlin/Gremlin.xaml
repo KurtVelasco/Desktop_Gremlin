@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop_Gremlin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="450"
+        Title="MainWindow" Height="280" Width="455"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -13,7 +13,7 @@
         ResizeMode="NoResize" BorderThickness="0" BorderBrush="Black" ShowInTaskbar="True">
     <Grid  MouseRightButtonDown="SpriteImage_RightClick">
         <Image Name="SpriteImage"
-           Width="276" Height="285"
+           Width="236" Height="250"
            HorizontalAlignment="Left"
            Source="SpriteSheet/"
            VerticalAlignment="Top"
@@ -37,18 +37,18 @@
             Background="#01000000"
             HorizontalAlignment="Left"
             Width="60"
-            MouseLeftButtonDown="RightHotspot_Click" Margin="285,95,0,100"/>
+            MouseLeftButtonDown="RightHotspot_Click" Margin="260,95,0,100"/>
 
         <Border x:Name="RightDownHotspot"
-             Background="#01000000"
-             HorizontalAlignment="Left"
-             Width="60"
-             MouseLeftButtonDown="RightDownHotspot_Click" Margin="285,170,0,35"/>
+            Background="#01000000"
+            HorizontalAlignment="Left"
+            Width="60"
+            MouseLeftButtonDown="RightDownHotspot_Click" Margin="260,170,0,35"/>
         <Border x:Name="TopHotspot"
-             Background="#01000000"
-             HorizontalAlignment="Left"
-             Width="95"
-             MouseLeftButtonDown="TopHotspot_Click" Margin="185,25,0,205"/>
+         Background="#01000000"
+         HorizontalAlignment="Left"
+         Width="95"
+         MouseLeftButtonDown="TopHotspot_Click" Margin="170,65,0,165"/>
         <Border x:Name="ScrollingBorder" Background="White"
             CornerRadius="10"        
             BorderBrush="LightGreen"

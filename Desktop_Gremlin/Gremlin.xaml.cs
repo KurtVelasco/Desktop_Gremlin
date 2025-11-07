@@ -34,10 +34,7 @@ namespace Desktop_Gremlin
         private bool _isWalkingSoundPlaying = false;
         private bool _wasIdleLastFrame = false;
 
-        private readonly Window _window;
-        private NotifyIcon _trayIcon;
-        private DispatcherTimer _closeTimer;
-
+        
 
         private DispatcherTimer _masterTimer;
         private DispatcherTimer _idleTimer;
@@ -138,7 +135,6 @@ namespace Desktop_Gremlin
                 }
                 if (AnimationStates.GetState("Emote2"))
                 {
-                    AnimationStates.LockState();
                     CurrentFrames.Emote2 = PlayAnimation("emote2", CurrentFrames.Emote2,
                         FrameCounts.Emote2, SpriteImage);
                     if (CurrentFrames.Emote2 == 0)
@@ -152,23 +148,11 @@ namespace Desktop_Gremlin
                     AnimationStates.LockState();
                     CurrentFrames.Emote3 = PlayAnimation("emote3", CurrentFrames.Emote3,
                         FrameCounts.Emote3, SpriteImage);
-                    if (CurrentFrames.Emote3 == 0)
-                    {
-                        AnimationStates.UnlockState();
-                        AnimationStates.ResetAllExceptIdle();
-                    }
-
                 }
                 if (AnimationStates.GetState("Emote4"))
                 {
-                    AnimationStates.LockState();
-                    CurrentFrames.Emote4 = PlayAnimation("emote4", CurrentFrames.Emote4,
-                        FrameCounts.Emote4, SpriteImage);
-                    if (CurrentFrames.Emote4 == 0)
-                    {
-                        AnimationStates.UnlockState();
-                        AnimationStates.ResetAllExceptIdle();
-                    }
+                   CurrentFrames.Emote4 = PlayAnimation("emote4", CurrentFrames.Emote4,
+                        FrameCounts.Emote4, SpriteImage);                  
                 }
                 if (AnimationStates.GetState("Idle"))
                 {
@@ -388,7 +372,31 @@ namespace Desktop_Gremlin
                             case 0:
                                 RandomMove();
                                 break;               
-                           
+                            case 1:
+                                RandomMove();
+                                MediaManager.PlaySound("walk.wav");
+                                break;
+                            case 2:
+                                CurrentFrames.Emote2 = 0;
+                                AnimationStates.SetState("Emote2");
+                                MediaManager.PlaySound("emote2.wav");
+                                break;
+                            case 3:
+                                RandomMove();
+                                break;
+                            case 4:
+                                RandomMove();
+                                MediaManager.PlaySound("grab.wav");
+                                break;
+                            case 5:
+                                CurrentFrames.Pat = 0;
+                                AnimationStates.SetState("Pat");
+                                MediaManager.PlaySound("pat.wav");
+                                break;
+                            case 6:
+                                MediaManager.PlaySound("run.wav");
+                                RandomMove();
+                                break;
                         }
 
                         int intervalAfterAction = _rng.Next(Settings.MinInterval, Settings.MaxInterval);
@@ -564,21 +572,102 @@ namespace Desktop_Gremlin
         private void RightHotspot_Click(object sender, MouseButtonEventArgs e)
         {
             ResetIdleTimer();
-            CurrentFrames.Emote3 = 0;
-            AnimationStates.UnlockState();
-            AnimationStates.SetState("Emote3");
-            MediaManager.PlaySound("emote3.wav");
+            //CurrentFrames.Emote3 = 0;
+            //AnimationStates.UnlockState();
+            //AnimationStates.SetState("Emote3");
+            if (CurrentFrames.JumpScare <= 0)
+            {
+                MediaManager.PlaySound("emote3.wav");
+                FullScreen fullscreen = new FullScreen();
+                fullscreen.Show();
+            }
 
         }
         private void RightDownHotspot_Click(object sender, MouseButtonEventArgs e)
         {
             ResetIdleTimer();
-            CurrentFrames.Emote4 = 0;
+            CurrentFrames.Emote3 = 0;
             AnimationStates.UnlockState();
             AnimationStates.SetState("Emote4");
             MediaManager.PlaySound("emote4.wav");
+            AnimationStates.LockState();
         }
-       
+        private DispatcherTimer SCROLL_TIMER;
+        private DispatcherTimer CLOSE_TIMER;
+        private void ReopenScrollingBorder(string text)
+        {
+            SCROLL_TIMER?.Stop();
+            CLOSE_TIMER?.Stop();
+
+            ScrollingText.Visibility = Visibility.Collapsed;
+            ScrollingBorder.Width = 0;
+            ScrollingBorder.Visibility = Visibility.Collapsed;
+
+            DispatcherTimer openTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(15) };
+            openTimer.Tick += (s, e) =>
+            {
+                if (ScrollingBorder.Width == 0)
+                {
+                    ScrollingBorder.Visibility = Visibility.Visible;
+                }
+                if (ScrollingBorder.Width < 200)
+                {
+                    ScrollingBorder.Width += 10;
+                }
+                else
+                {
+                    openTimer.Stop();
+                    ScrollingText.Text = text;
+                    ScrollingText.Visibility = Visibility.Visible;
+                    StartScrolling();
+                }
+            };
+            openTimer.Start();
+        }
+        private double SCROLL_POS;
+        private void StartScrolling()
+        {
+            SCROLL_TIMER?.Stop();
+            SCROLL_POS = (int)ScrollingBorder.Width;
+            var transform = new TranslateTransform(SCROLL_POS, 0);
+            ScrollingText.RenderTransform = transform;
+
+            SCROLL_TIMER = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(30) };
+            SCROLL_TIMER.Tick += (s, e) =>
+            {
+                SCROLL_POS -= 2;
+                transform.X = SCROLL_POS;
+
+                if (SCROLL_POS < -ScrollingText.ActualWidth)
+                {
+                    SCROLL_TIMER.Stop();
+                    StartClosingAnimation();
+                }
+            };
+            SCROLL_TIMER.Start();
+        }
+
+        private void StartClosingAnimation()
+        {
+            CLOSE_TIMER = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(15) };
+            CLOSE_TIMER.Tick += (s, e) =>
+            {
+                if (ScrollingBorder.Width > 0)
+                {
+                    ScrollingBorder.Width -= 10;
+                }
+                else
+                {
+                    CLOSE_TIMER.Stop();
+                    ScrollingBorder.Visibility = Visibility.Collapsed;
+                }
+            };
+            CLOSE_TIMER.Start();
+        }
+
+        private readonly Window _window;
+        private NotifyIcon _trayIcon;
+        private DispatcherTimer _closeTimer;
         public void SetupTrayIcon()
         {
             _trayIcon = new NotifyIcon();
