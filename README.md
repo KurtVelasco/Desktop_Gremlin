@@ -6,7 +6,12 @@
 [![Ko-fi](https://img.shields.io/badge/support_me_on_ko--fi-F16061?style=for-the-badge&logo=kofi&logoColor=f5f5f5)](https://ko-fi.com/kritzkingvoid)
 [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@kritzkingvoid)
 # Updates
-
+```ruby
+//2.6
+//Added 2 new options in config.txt ALLOW_COLOR_HOTSPOT and SHOW_TASKBAR
+//Can now resize the gremlin using SPRITE_SCALE 
+//Fixed a bug regarding the PCM Wav files crashing
+```
 ```c#
 ALLOW_COLOR_HOTSPOT = true //Makes the Hotspot visible in case you resize the image and want to know where the hotspots are
 ```
@@ -45,7 +50,8 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 | Problem | Possible Solution |
 |---------|-----------------|
 | Browser falsely detects download | Try using a different browser or temporarily disable strict security settings. |
-
+| Gremlin not following my mouse | Try lowering the FOLLOW_RADIUS in config.txt |
+| Gremlin not animatiing while dragging | Performance options in windows. Check "Animate controls and elements inside windows" |
 
 # 📋 Q AND A
 **Linux Version?**<br>
