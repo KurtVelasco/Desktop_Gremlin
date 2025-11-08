@@ -1,36 +1,51 @@
-# 📄 Gremlin 
-<img width="897" height="262" alt="image" src="https://github.com/user-attachments/assets/6df11775-dbb7-428a-8b06-50edea96539b" />
 
-Now annoy yourself while you stare idly into the dark abyss known as your computer.**<br>
-For future development: I'll continue adding on with each itearation and different characters that I currently like.
-
-Donate for my Manhattan Cafe Funds if you enjoyed it:  <br>
-☕ https://ko-fi.com/kritzkingvoid
+# Desktop Gremlin 
+<img width="925" height="436" alt="image" src="https://github.com/user-attachments/assets/7f3f1631-b2d2-4b8e-adc4-b287dd81d784" />
 <br>
+
+[![Ko-fi](https://img.shields.io/badge/support_me_on_ko--fi-F16061?style=for-the-badge&logo=kofi&logoColor=f5f5f5)](https://ko-fi.com/kritzkingvoid)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@kritzkingvoid)
 # Updates
 
-*If your browser false-detects it, well try another browser<br><br>
-[Windows Only UmaMusume] <br>
-Agnes Tachyon (V2.4) Updated: [Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.4/Tachyon_v2.4.zip) <br>
-Matikanetannhauser (V2.0) :[Click Here to Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip) <br>
-Rice Shower (V2.2): [Clich Here to Donwload](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/2.2/Tracen_v2.1_Rice.zip)<br>
-GoldShip (v2.5)  [GoldShipu](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.5/GoldShip_v2.5.zip)<br>
-[Blue Archive] <br>
-Aoba: [Don't Click, she dissapeared](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.3/Aoba_v2.3.zip)<br>
+```c#
+ALLOW_COLOR_HOTSPOT = true //Makes the Hotspot visible in case you resize the image and want to know where the hotspots are
+```
+<img width="527" height="385" alt="image" src="https://github.com/user-attachments/assets/45434679-7b5b-49c1-9055-a753252e2e86" />
 
-**Ver 2.2**<br>
-+Added diagonal movements<br>
-+Revamp animation states<br>
-+Walks independently(sometimes)<br>
-+Invisible buttons<br>
 
-**Tracen Academy**<br>
-This version is moslty related to Umamusume. Any related updates for new Umamusume will be
-updated in Tracen Academy version.
 
-**Kivotos**<br>
-This version is moslty related to Blue Archive. Any related updates for new students will be
-updated in Kivotos version.
+```c#
+SHOW_TASKBAR = true //Show the Icon in the Task bar
+```
+
+## Windows-Only UmaMusume
+# Links
+
+**Note:** If your browser falsely detects a file, please try using a different browser.
+
+---
+| Character | Version | Download Link |
+|-----------|---------|---------------|
+| Agnes Tachyon | v2.4 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.4/Tachyon_v2.4.zip) |
+| Matikanetannhauser | v2.0 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.1/Desktop_Gremlin_Tracen_v2.zip) |
+| Rice Shower | v2.2 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/2.2/Tracen_v2.1_Rice.zip) |
+| GoldShip | v2.5 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.5/GoldShip_v2.5.zip) |
+
+---
+
+## Blue Archive
+
+| Character | Download Link |
+|-----------|---------------|
+| Aoba | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.3/Aoba_v2.3.zip) *(Note: she disappeared!)* |
+
+
+## 🛠️ Troubleshooting
+
+| Problem | Possible Solution |
+|---------|-----------------|
+| Browser falsely detects download | Try using a different browser or temporarily disable strict security settings. |
+
 
 # 📋 Q AND A
 **Linux Version?**<br>
