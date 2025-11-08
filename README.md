@@ -3,6 +3,9 @@
 
 Now annoy yourself while you stare idly into the dark abyss known as your computer.**<br>
 For future development: I'll continue adding on with each itearation and different characters that I currently like.
+
+Donate for my Manhattan Cafe Funds if you enjoyed it:  <br>
+☕ https://ko-fi.com/kritzkingvoid
 <br>
 # Updates
 
