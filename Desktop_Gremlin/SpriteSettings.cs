@@ -18,6 +18,9 @@
     public static int CurrentAmmo { get; set; } = 0;
     public static int CurrendIdle { get; set; } = 0;    
     public static bool FootStepSounds { get; set; } = false;    
+    public static bool AllowColoredHotSpot { get; set; } = false;
+    public static bool ShowTaskBar { get; set; } = false;
+    public static double SpriteSize  { get; set; } = 1.0;
 }
 public static class MouseSettings
 {

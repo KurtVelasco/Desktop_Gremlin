@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -28,13 +28,17 @@ namespace Desktop_Gremlin
 
         private Random _rng = new Random();
 
+        //private DateTime lastDeleteTime = DateTime.MinValue;
+        //private TimeSpan deleteInterval = TimeSpan.FromMilliseconds(300);
+        //private static int MAX_TARGETS = 70;
+        //private static int deleteIndex = 1;
 
         private MediaPlayer _walkLoopPlayer;
 
         private bool _isWalkingSoundPlaying = false;
         private bool _wasIdleLastFrame = false;
 
-        
+
 
         private DispatcherTimer _masterTimer;
         private DispatcherTimer _idleTimer;
@@ -59,6 +63,7 @@ namespace Desktop_Gremlin
             SetupTrayIcon();
             AnimationStates.LockState();
             MediaManager.PlaySound("intro.wav");
+            XamlSettings(Settings.AllowColoredHotSpot,Settings.ShowTaskBar,Settings.SpriteSize);
         }
         public void InitializeTimers()
         {
@@ -124,7 +129,6 @@ namespace Desktop_Gremlin
                 }
                 if (AnimationStates.GetState("Emote1"))
                 {
-                    AnimationStates.LockState();
                     CurrentFrames.Emote1 = PlayAnimation("emote1", CurrentFrames.Emote1,
                         FrameCounts.Emote1, SpriteImage);
                     if (CurrentFrames.Emote1 == 0)
@@ -145,14 +149,23 @@ namespace Desktop_Gremlin
                 }
                 if (AnimationStates.GetState("Emote3"))
                 {
-                    AnimationStates.LockState();
                     CurrentFrames.Emote3 = PlayAnimation("emote3", CurrentFrames.Emote3,
-                        FrameCounts.Emote3, SpriteImage);
+                     FrameCounts.Emote3, SpriteImage);
+                    if (CurrentFrames.Emote3 == 0)
+                    {
+                        AnimationStates.UnlockState();
+                        AnimationStates.ResetAllExceptIdle();
+                    }
                 }
                 if (AnimationStates.GetState("Emote4"))
                 {
                    CurrentFrames.Emote4 = PlayAnimation("emote4", CurrentFrames.Emote4,
-                        FrameCounts.Emote4, SpriteImage);                  
+                        FrameCounts.Emote4, SpriteImage);
+                    if (CurrentFrames.Emote4 == 0)
+                    {
+                        AnimationStates.UnlockState();
+                        AnimationStates.ResetAllExceptIdle();
+                    }
                 }
                 if (AnimationStates.GetState("Idle"))
                 {
@@ -171,8 +184,7 @@ namespace Desktop_Gremlin
                         FrameCounts.Idle, SpriteImage);
                 }
                 if (AnimationStates.GetState("Outro"))
-                {
-                    AnimationStates.LockState();    
+                { 
                     CurrentFrames.Outro = PlayAnimation("outro", CurrentFrames.Outro,
                         FrameCounts.Outro, SpriteImage);
                     if (CurrentFrames.Outro == 0)
@@ -194,8 +206,6 @@ namespace Desktop_Gremlin
 
                 if (AnimationStates.GetState("Click"))
                 {
-                    AnimationStates.UnlockState();
-                    AnimationStates.LockState();
                     CurrentFrames.Click = PlayAnimation("click",
                     CurrentFrames.Click,
                     FrameCounts.Click,SpriteImage);
@@ -235,6 +245,12 @@ namespace Desktop_Gremlin
                         AnimationStates.UnlockState();
                         AnimationStates.ResetAllExceptIdle();
                     }
+        //            if (CurrentFrames.Pat >= 40 && CurrentFrames.Pat <= 129 &&
+        //DateTime.Now - lastDeleteTime >= deleteInterval)
+        //            {
+        //                DeleteOneTargetFile();
+        //                lastDeleteTime = DateTime.Now;
+        //            }
                 }
                 if (MouseSettings.FollowCursor && AnimationStates.GetState("Walking"))
                 {
@@ -366,37 +382,30 @@ namespace Desktop_Gremlin
                     {
                         AnimationStates.SetState("Random");
 
-                        int action = _rng.Next(0, 7);
+                        int action = _rng.Next(0, 4);
                         switch (action)
                         {
                             case 0:
-                                RandomMove();
-                                break;               
+                                CurrentFrames.Click = 0;
+                                AnimationStates.UnlockState();
+                                AnimationStates.SetState("Click");
+                                MediaManager.PlaySound("mambo.wav");
+                                AnimationStates.LockState();
+                                break;
                             case 1:
-                                RandomMove();
-                                MediaManager.PlaySound("walk.wav");
+                                CurrentFrames.Emote4 = 0;
+                                AnimationStates.UnlockState();
+                                AnimationStates.SetState("Emote4");
+                                MediaManager.PlaySound("emote4.wav");
+                                AnimationStates.LockState();
                                 break;
                             case 2:
-                                CurrentFrames.Emote2 = 0;
-                                AnimationStates.SetState("Emote2");
-                                MediaManager.PlaySound("emote2.wav");
+                                RandomMove();
                                 break;
                             case 3:
                                 RandomMove();
                                 break;
-                            case 4:
-                                RandomMove();
-                                MediaManager.PlaySound("grab.wav");
-                                break;
-                            case 5:
-                                CurrentFrames.Pat = 0;
-                                AnimationStates.SetState("Pat");
-                                MediaManager.PlaySound("pat.wav");
-                                break;
-                            case 6:
-                                MediaManager.PlaySound("run.wav");
-                                RandomMove();
-                                break;
+
                         }
 
                         int intervalAfterAction = _rng.Next(Settings.MinInterval, Settings.MaxInterval);
@@ -439,12 +448,12 @@ namespace Desktop_Gremlin
                 {
                     if (dx > 0)
                     {
-                        CurrentFrames.WalkR = PlayAnimation("walkR", CurrentFrames.WalkR,
+                        CurrentFrames.WalkR = PlayAnimation("right", CurrentFrames.WalkR,
                             FrameCounts.WalkR, SpriteImage);
                     }
                     else
                     {
-                        CurrentFrames.WalkL = PlayAnimation("walkL", CurrentFrames.WalkL,
+                        CurrentFrames.WalkL = PlayAnimation("left", CurrentFrames.WalkL,
                             FrameCounts.WalkL, SpriteImage);
                     }
                 }
@@ -452,12 +461,12 @@ namespace Desktop_Gremlin
                 {
                     if (dy > 0)
                     {
-                        CurrentFrames.WalkDown = PlayAnimation("walkDown", CurrentFrames.WalkDown,
+                        CurrentFrames.WalkDown = PlayAnimation("forward", CurrentFrames.WalkDown,
                             FrameCounts.WalkDown, SpriteImage);
                     }
                     else
                     {
-                        CurrentFrames.WalkUp = PlayAnimation("walkUp", CurrentFrames.WalkUp,
+                        CurrentFrames.WalkUp = PlayAnimation("backward", CurrentFrames.WalkUp,
                             FrameCounts.WalkUp,SpriteImage);
                     }
                 }
@@ -479,6 +488,7 @@ namespace Desktop_Gremlin
             AnimationStates.UnlockState();
             AnimationStates.SetState("Click");
             MediaManager.PlaySound("mambo.wav");
+            AnimationStates.LockState();
         }
 
         private void SpriteImage_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -551,6 +561,7 @@ namespace Desktop_Gremlin
             AnimationStates.UnlockState();
             AnimationStates.SetState("Pat");
             MediaManager.PlaySound("pat.wav");
+            AnimationStates.LockState();
         }
         private void LeftHotspot_Click(object sender, MouseButtonEventArgs e)
         {
@@ -559,6 +570,7 @@ namespace Desktop_Gremlin
             AnimationStates.UnlockState();
             AnimationStates.SetState("Emote1");
             MediaManager.PlaySound("emote1.wav");
+            AnimationStates.LockState();
         }
         private void LeftDownHotspot_Click(object sender, MouseButtonEventArgs e)
         {
@@ -568,25 +580,23 @@ namespace Desktop_Gremlin
             AnimationStates.UnlockState();
             AnimationStates.SetState("Emote2");
             MediaManager.PlaySound("emote2.wav");
+            AnimationStates.LockState();
         }
         private void RightHotspot_Click(object sender, MouseButtonEventArgs e)
         {
             ResetIdleTimer();
-            //CurrentFrames.Emote3 = 0;
-            //AnimationStates.UnlockState();
-            //AnimationStates.SetState("Emote3");
-            if (CurrentFrames.JumpScare <= 0)
-            {
-                MediaManager.PlaySound("emote3.wav");
-                FullScreen fullscreen = new FullScreen();
-                fullscreen.Show();
-            }
+            CurrentFrames.Emote3 = 0;
+            AnimationStates.UnlockState();
+            AnimationStates.SetState("Emote3");
+            MediaManager.PlaySound("emote3.wav");
+            AnimationStates.LockState();
+
 
         }
         private void RightDownHotspot_Click(object sender, MouseButtonEventArgs e)
         {
             ResetIdleTimer();
-            CurrentFrames.Emote3 = 0;
+            CurrentFrames.Emote4 = 0;
             AnimationStates.UnlockState();
             AnimationStates.SetState("Emote4");
             MediaManager.PlaySound("emote4.wav");
@@ -697,6 +707,107 @@ namespace Desktop_Gremlin
             AnimationStates.SetState("Outro");
             MediaManager.PlaySound("outro.wav");
         }
+        private void XamlSettings(bool useColors, bool showTaskBar, double scale = 1.0)
+        {
+            if (useColors)
+            {
+                LeftHotspot.Background = new SolidColorBrush(Colors.Red);
+                LeftDownHotspot.Background = new SolidColorBrush(Colors.Yellow);
+                RightHotspot.Background = new SolidColorBrush(Colors.Blue);
+                RightDownHotspot.Background = new SolidColorBrush(Colors.Orange);
+                TopHotspot.Background = new SolidColorBrush(Colors.Purple);
+            }
+            else
+            {
+                var noColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#01000000"));
+                LeftHotspot.Background = noColor;
+                LeftDownHotspot.Background = noColor;
+                RightHotspot.Background = noColor;
+                RightDownHotspot.Background = noColor;
+                TopHotspot.Background = noColor;
+            }
+
+            this.ShowInTaskbar = showTaskBar;
+
+            double originalWidth = 300;
+            double originalHeight = 300;
+
+            double newWidth = originalWidth * scale;
+            double newHeight = originalHeight * scale;
+
+            SpriteImage.Width = newWidth;
+            SpriteImage.Height = newHeight;
+
+            double centerX = (600 - newWidth) / 2;
+            double centerY = (600 - newHeight) / 2;
+
+            SpriteImage.Margin = new Thickness(centerX, centerY, 0, 0);
+
+            double leftX = 195, leftY = 145;
+            double leftDownX = 194, leftDownY = 310;
+            double rightX = 375, rightY = 145;
+            double rightDownX = 375, rightDownY = 315;
+            double topX = 264, topY = 145;
+
+            double scaleX = newWidth / originalWidth;
+            double scaleY = newHeight / originalHeight;
+
+            double leftW = 36, leftH = 165;
+            double leftDownW = 36, leftDownH = 105;
+            double rightW = 34, rightH = 170;
+            double rightDownW = 34, rightDownH = 100;
+            double topW = 76, topH = 55;
+
+            LeftHotspot.Width = leftW * scaleX;
+            LeftHotspot.Height = leftH * scaleY;
+
+            LeftDownHotspot.Width = leftDownW * scaleX;
+            LeftDownHotspot.Height = leftDownH * scaleY;
+
+            RightHotspot.Width = rightW * scaleX;
+            RightHotspot.Height = rightH * scaleY;
+
+            RightDownHotspot.Width = rightDownW * scaleX;
+            RightDownHotspot.Height = rightDownH * scaleY;
+
+            TopHotspot.Width = topW * scaleX;
+            TopHotspot.Height = topH * scaleY;
+
+            LeftHotspot.Margin = new Thickness(centerX + (leftX - 150) * scaleX, centerY + (leftY - 150) * scaleY, 0, 0);
+            LeftDownHotspot.Margin = new Thickness(centerX + (leftDownX - 150) * scaleX, centerY + (leftDownY - 150) * scaleY, 0, 0);
+            RightHotspot.Margin = new Thickness(centerX + (rightX - 150) * scaleX, centerY + (rightY - 150) * scaleY, 0, 0);
+            RightDownHotspot.Margin = new Thickness(centerX + (rightDownX - 150) * scaleX, centerY + (rightDownY - 150) * scaleY, 0, 0);
+            TopHotspot.Margin = new Thickness(centerX + (topX - 150) * scaleX, centerY + (topY - 150) * scaleY, 0, 0);
+        }
+        //private void DeleteOneTargetFile()
+        //{
+        //    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+
+        //    string filename = $"target{deleteIndex}.txt";
+        //    string fullPath = Path.Combine(desktopPath, filename);
+
+        //    if (File.Exists(fullPath))
+        //    {
+        //        try
+        //        {
+        //            FileSystem.DeleteFile(fullPath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+        //        }
+        //        catch
+        //        {
+        //            // silently ignore errors
+        //        }
+        //    }
+
+        //    
+        //    deleteIndex++;
+
+        //   
+        //    if (deleteIndex > MAX_TARGETS) 
+        //        deleteIndex = 1;
+        //}
+
+
+
     }
 }
 

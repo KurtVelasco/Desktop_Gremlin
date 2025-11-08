@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GoldShip.Properties {
+namespace Koyuki.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

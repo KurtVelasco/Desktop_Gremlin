@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop_Gremlin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="280" Width="455"
+        Title="MainWindow" Height="600" Width="600"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -13,42 +13,39 @@
         ResizeMode="NoResize" BorderThickness="0" BorderBrush="Black" ShowInTaskbar="True">
     <Grid  MouseRightButtonDown="SpriteImage_RightClick">
         <Image Name="SpriteImage"
-           Width="236" Height="250"
+           Width="300" Height="300"
            HorizontalAlignment="Left"
            Source="SpriteSheet/"
            VerticalAlignment="Top"
-            Margin="105,5,0,0" RenderTransformOrigin="0.484,0.525" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseEnter="SpriteImage_MouseEnter"
-            MouseLeave="SpriteImage_MouseLeave">
+           Margin="150,150,0,0" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseEnter="SpriteImage_MouseEnter"
+           MouseLeave="SpriteImage_MouseLeave">
         </Image>
+
         <Border x:Name="LeftHotspot"
-            Background="#01000000"
+            Background="red"
             HorizontalAlignment="Left"
-            Width="60"
-            MouseLeftButtonDown="LeftHotspot_Click" Margin="115,95,0,100"/>
-
+            Width="40"
+            MouseLeftButtonDown="LeftHotspot_Click" Margin="195,145,0,0" Height="165" VerticalAlignment="Top"/>
         <Border x:Name="LeftDownHotspot"
-             Background="#01000000"
+             Background="yellow"
              HorizontalAlignment="Left"
-             Width="60"
-             MouseLeftButtonDown="LeftDownHotspot_Click" Margin="115,170,0,35"/>
-
-
+             Width="41"
+             MouseLeftButtonDown="LeftDownHotspot_Click" Margin="194,310,0,0" Height="105" VerticalAlignment="Top"/>
         <Border x:Name="RightHotspot"
-            Background="#01000000"
+            Background="blue"
             HorizontalAlignment="Left"
-            Width="60"
-            MouseLeftButtonDown="RightHotspot_Click" Margin="260,95,0,100"/>
-
+            Width="39"
+            MouseLeftButtonDown="RightHotspot_Click" Margin="370,145,0,0" Height="170" VerticalAlignment="Top"/>
         <Border x:Name="RightDownHotspot"
-            Background="#01000000"
+            Background="Orange"
             HorizontalAlignment="Left"
-            Width="60"
-            MouseLeftButtonDown="RightDownHotspot_Click" Margin="260,170,0,35"/>
+            Width="39"
+            MouseLeftButtonDown="RightDownHotspot_Click" Margin="370,315,0,0" Height="100" VerticalAlignment="Top"/>
         <Border x:Name="TopHotspot"
-         Background="#01000000"
-         HorizontalAlignment="Left"
-         Width="95"
-         MouseLeftButtonDown="TopHotspot_Click" Margin="170,65,0,165"/>
+            Background="Purple"
+            HorizontalAlignment="Left"
+            Width="76"
+            MouseLeftButtonDown="TopHotspot_Click" Margin="264,145,0,0" Height="55" VerticalAlignment="Top"/>
         <Border x:Name="ScrollingBorder" Background="White"
             CornerRadius="10"        
             BorderBrush="LightGreen"
@@ -57,7 +54,7 @@
             Padding="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Margin="135,0,0,35">
+            Margin="130,0,0,35">
             <Canvas ClipToBounds="True">
                 <TextBlock x:Name="ScrollingText"
                        Text=""
@@ -72,7 +69,6 @@
 
 
     </Grid>
-
 </Window>
 
 

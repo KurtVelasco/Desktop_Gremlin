@@ -51,7 +51,7 @@ public static class ConfigManager
                             Settings.FollowRadius = intValue;
                         }
                         break;
-                    }         
+                    }
                 case "MAX_INTERVAL":
                     {
                         if (int.TryParse(value, out int intValue))
@@ -81,10 +81,10 @@ public static class ConfigManager
                         if (bool.TryParse(value, out bool Value))
                         {
                             Settings.AllowRandomness = Value;
-                        }               
+                        }
                     }
                     break;
-             case "ALLOW_GRAVITY":
+                case "ALLOW_GRAVITY":
                     {
                         if (bool.TryParse(value, out bool Value))
                         {
@@ -116,10 +116,37 @@ public static class ConfigManager
                         }
                     }
                     break;
-                }
+
+                case "ALLOW_COLOR_HOTSPOT":
+                    {
+                        if (bool.TryParse(value, out bool Value))
+                        {
+                            Settings.AllowColoredHotSpot = Value;
+                        }
+                    }
+                    break;
+                case "SHOW_TASKBAR":
+                    {
+                        if (bool.TryParse(value, out bool Value))
+                        {
+                            Settings.ShowTaskBar = Value;
+                        }
+                    }
+                    break;
+                case "SPRITE_SCALE":
+                    {
+                        if (double.TryParse(value, out double Value))
+                        {
+                            Settings.SpriteSize = Value;
+                        }
+                    }
+                    break;
+
+
             }
-              
+
         }
+    }
     
 
     public static void LoadConfigChar()
