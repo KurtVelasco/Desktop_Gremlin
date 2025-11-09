@@ -58,7 +58,7 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 A. Prob in the future
 <br><br>
 **Can you add X character?**<br>
-A. I mostly base it off characters that I like so maybe, unless someone requested it through Kofi.
+A. I mostly base it off characters that I like so maybe.
 <br><br>
 **Virus Detected?**<br>
 A. I would be suprise if you can find a github download without getting false-positived by Virustotal/Defender. 
