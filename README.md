@@ -42,7 +42,7 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 
 | Character | Download Link |
 |-----------|---------------|
-| Aoba | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.3/Aoba_v2.3.zip) *(Note: she disappeared!)* |
+| Koyuki | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.6/Koyuki_v2.6.zip) |
 
 
 ## 🛠️ Troubleshooting
