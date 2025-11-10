@@ -7,6 +7,10 @@
 [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@kritzkingvoid)
 # Updates
 ```ruby
+//2.2 +
+//Added Diagonal movements sprites
+//Added more animation triggers (Hotspots)
+
 //2.6
 //Added 2 new options in config.txt ALLOW_COLOR_HOTSPOT and SHOW_TASKBAR
 //Can now resize the gremlin using SPRITE_SCALE 
