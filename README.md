@@ -56,6 +56,7 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 | Browser falsely detects download | Try using a different browser or temporarily disable strict security settings. |
 | Gremlin not following my mouse | Try lowering the FOLLOW_RADIUS in config.txt |
 | Gremlin not animatiing while dragging | Performance options in windows. Check "Animate controls and elements inside windows" |
+| Transparency not working | Settings → Personalization → Colors → Transparency Effects → On **OR** Settings → Accessibility → Contrast Themes → None |
 
 # 📋 Q AND A
 **Linux Version?**<br>
