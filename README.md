@@ -59,6 +59,15 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 | Transparency not working | Settings → Personalization → Colors → Transparency Effects → On **OR** Settings → Accessibility → Contrast Themes → None |
 | Gremlin Sprites are off-settings | Redownload the config file text |
 
+## 🛠️ Q & A
+
+| Q | A |
+|---------|-----------------|
+| Is this Umamusume only? | No. I also do Blue Archive and prob Arknights in the future. |
+| Best Girl? | Manhattan Cafe and Calstone Light O |
+| Can you do X characters? | I just add stuff I personally like or someone paid for a specific character|
+
+
 
 ![idle-ezgif com-crop](https://github.com/user-attachments/assets/97495dc4-1a5c-4e11-ac2f-cbf3c882adfe)
 
