@@ -57,20 +57,9 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 | Gremlin not following my mouse | Try lowering the FOLLOW_RADIUS in config.txt |
 | Gremlin not animatiing while dragging | Performance options in windows. Check "Animate controls and elements inside windows" |
 | Transparency not working | Settings → Personalization → Colors → Transparency Effects → On **OR** Settings → Accessibility → Contrast Themes → None |
+| Gremlin Sprites are off-settings | Redownload the config file text |
 
-# 📋 Q AND A
-**Linux Version?**<br>
-A. Prob in the future
-<br><br>
-**Can you add X character?**<br>
-A. I mostly base it off characters that I like so maybe.
-<br><br>
-**Virus Detected?**<br>
-A. I would be suprise if you can find a github download without getting false-positived by Virustotal/Defender. 
-   I can assure that it's safe, but thats up to you.
-<br><br>
-**Can you Add X Feature**<br>
-A. I'm always adding new stuff throught each iteration when adding a character.
+
 ![idle-ezgif com-crop](https://github.com/user-attachments/assets/97495dc4-1a5c-4e11-ac2f-cbf3c882adfe)
 
 
