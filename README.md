@@ -7,21 +7,22 @@
 [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@kritzkingvoid)
 # Updates
 ```ruby
-//2.2 +
-//Added Diagonal movements sprites
-//Added more animation triggers (Hotspots)
+//2.7 Oguri Cap
+//Added more Configurable Options in config.txt
+//Added a new Item Target Function
 
-//2.6
+//2.6 Koyuki and GoldShip
 //Added 2 new options in config.txt ALLOW_COLOR_HOTSPOT and SHOW_TASKBAR
 //Can now resize the gremlin using SPRITE_SCALE 
 //Fixed a bug regarding the PCM Wav files crashing
 ```
 ```c#
+FORCE_FAKE_TRANSPARENT = true //If for some reason it's translucent or opaque. This is a hack will prevent input around the sprite
+```
+```c#
 ALLOW_COLOR_HOTSPOT = true //Makes the Hotspot visible in case you resize the image and want to know where the hotspots are
 ```
 <img width="527" height="385" alt="image" src="https://github.com/user-attachments/assets/45434679-7b5b-49c1-9055-a753252e2e86" />
-
-
 
 ```c#
 SHOW_TASKBAR = true //Show the Icon in the Task bar
