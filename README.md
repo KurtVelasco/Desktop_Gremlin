@@ -5,6 +5,12 @@
 
 [![Ko-fi](https://img.shields.io/badge/support_me_on_ko--fi-F16061?style=for-the-badge&logo=kofi&logoColor=f5f5f5)](https://ko-fi.com/kritzkingvoid)
 [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@kritzkingvoid)
+
+# Linux
+| Ver| Download Link |
+|-----------|---------------|
+| Linux Versiov | [Download](https://github.com/iluvgirlswithglasses/linux-desktop-gremlin) |
+Thank you [@iluvgirlwithglasses](https://github.com/iluvgirlswithglasses),written in Python
 # Updates
 ```ruby
 //2.7 Oguri Cap
