@@ -32,10 +32,8 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 # Linux
 | Ver| Download Link |
 |-----------|---------------|
-| Linux Version | [Download](https://github.com/iluvgirlswithglasses/linux-desktop-gremlin) |
-Thank you [@iluvgirlwithglasses](https://github.com/iluvgirlswithglasses),written in Python
+| Linux Version | [Download](https://github.com/iluvgirlswithglasses/linux-desktop-gremlin) Thank you [@iluvgirlwithglasses](https://github.com/iluvgirlswithglasses), written in Python|
 
-## Windows-Only UmaMusume
 # Links
 
 **Note:** If your browser falsely detects a file, please try using a different browser.
