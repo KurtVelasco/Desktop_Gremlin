@@ -78,7 +78,3 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 
 
 
-
-![idle-ezgif com-crop](https://github.com/user-attachments/assets/97495dc4-1a5c-4e11-ac2f-cbf3c882adfe)
-
-
