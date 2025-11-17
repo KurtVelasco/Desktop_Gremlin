@@ -18,9 +18,9 @@ namespace Desktop_Gremlin
             InitializeAnimation();  
 
         }
-        private int PlayAnimation(string sheetName, int currentFrame, int frameCount, System.Windows.Controls.Image targetImage, bool PlayOnce = false)
+        private int PlayAnimation(string sheetName,string action, int currentFrame, int frameCount, System.Windows.Controls.Image targetImage, bool PlayOnce = false)
         {
-            BitmapImage sheet = SpriteManager.Get(sheetName);
+            BitmapImage sheet = SpriteManager.Get(sheetName,action);
 
             if (sheet == null)
             {
@@ -43,7 +43,7 @@ namespace Desktop_Gremlin
             _jumpTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
             _jumpTimer.Tick += (s, e) =>
             {
-               CurrentFrames.JumpScare = PlayAnimation("jumpscare", CurrentFrames.JumpScare, 
+               CurrentFrames.JumpScare = PlayAnimation("jumpscare","Action", CurrentFrames.JumpScare, 
                    FrameCounts.JumpScare, 
                    SpriteImage);
                 if (CurrentFrames.JumpScare <= 0)

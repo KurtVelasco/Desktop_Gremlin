@@ -26,6 +26,7 @@ public static class AnimationStates
         { "Emote2", false },
         { "Emote3", false },
         { "Emote4", false },
+        { "FollowItem", false },
     };
     public static void ResetAllExceptIdle()
     {
@@ -51,13 +52,21 @@ public static class AnimationStates
                 break;
         }   
     }   
+    public static void PlayOutro()
+    {
+        foreach (var key in _animationStates.Keys.ToList())
+        {
+            _animationStates[key] = false;
+        }
+
+        _animationStates["Outro"] = true;
+    }
     public static void SetState(string stateName)
     {
         if (IsLocked)
         {
             return;
         } 
-
         string normalized = stateName.Trim();
 
         if (!_animationStates.ContainsKey(normalized))

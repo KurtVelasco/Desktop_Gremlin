@@ -1,0 +1,16 @@
+﻿<Window x:Class="Koyuki.Target"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Koyuki"
+        mc:Ignorable="d"
+        Title="Target" Height="80" Width="80" Background="Transparent"
+        ResizeMode="NoResize" BorderThickness="0" ShowInTaskbar="True"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Topmost="True">
+    <Grid>
+        <Image x:Name="SpriteFood" Source="SpriteSheet/food.png"  />
+    </Grid>
+</Window>

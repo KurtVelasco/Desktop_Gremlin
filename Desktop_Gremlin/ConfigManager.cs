@@ -1,6 +1,13 @@
 ﻿using Desktop_Gremlin;
 using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 public static class ConfigManager
 {
@@ -9,7 +16,7 @@ public static class ConfigManager
         string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.txt");
         if (!File.Exists(path))
         {
-            Gremlin.ErrorClose("Cannot find the Main config.txt", "Missing config.txt");
+            Gremlin.ErrorClose("Cannot find the Main config.txt", "Missing config.txt", true);
             return;
         }
 
@@ -56,7 +63,7 @@ public static class ConfigManager
                     {
                         if (int.TryParse(value, out int intValue))
                         {
-                            Settings.MaxInterval = intValue;
+                            Settings.RandomMaxInterval = intValue;
                         }
                     }
                     break;
@@ -64,7 +71,7 @@ public static class ConfigManager
                     {
                         if (int.TryParse(value, out int intValue))
                         {
-                            Settings.MinInterval = intValue;
+                            Settings.RandomMinInterval = intValue;
                         }
                     }
                     break;
@@ -141,14 +148,75 @@ public static class ConfigManager
                         }
                     }
                     break;
-
-
+                case "FORCE_FAKE_TRANSPARENT":
+                    {
+                        if (bool.TryParse(value, out bool Value))
+                        {
+                            Settings.FakeTransparent = Value;
+                        }
+                    }
+                    break;
+                case "ALLOW_ERROR_MESSAGES":
+                    {
+                        if (bool.TryParse(value, out bool Value))
+                        {
+                            Settings.AllowErrorMessages = Value;
+                        }
+                    }
+                    break;
+                case "MAX_ACCELERATION":
+                    {
+                        if (int.TryParse(value, out int Value))
+                        {
+                            Settings.MaxItemAcceleration = Value;
+                        }
+                    }
+                    break;
+                case "FOLLOW_ACCELERATION":
+                    {
+                        if (double.TryParse(value, out double Value))
+                        {
+                            Settings.ItemAcceleration = Value;
+                        }
+                    }
+                    break;
+                case "CURRENT_ACCELERATION":
+                    {
+                        if (double.TryParse(value, out double Value))
+                        {
+                            Settings.ItemAcceleration = Value;
+                        }
+                    }
+                    break;
+                case "MAX_EATING_SIZE":
+                    {
+                        if (int.TryParse(value, out int Value))
+                        {
+                            Settings.FoodItemGetSize = Value;
+                        }
+                    }
+                    break;
+                case "ITEM_WIDTH":
+                    {
+                        if (int.TryParse(value, out int Value))
+                        {
+                            Settings.ItemWidth = Value;
+                        }
+                    }
+                    break;
+                case "ITEM_HEIGHT":
+                    {
+                        if (int.TryParse(value, out int Value))
+                        {
+                            Settings.ItemHeight = Value;
+                        }
+                    }
+                    break;
             }
 
         }
     }
     
-
     public static void LoadConfigChar()
     {
         string path = System.IO.Path.Combine(
@@ -157,7 +225,7 @@ public static class ConfigManager
 
         if (!File.Exists(path))
         {
-            Gremlin.ErrorClose("Cannot find the SpriteSheet config.txt", "Missing config.txt");
+            Gremlin.ErrorClose("Cannot find the SpriteSheet config.txt", "Missing config.txt", true );
             return;
         }
 
@@ -191,47 +259,17 @@ public static class ConfigManager
                 case "IDLE2":
                     FrameCounts.Idle2 = intValue;
                     break;
-                case "UP":
+                case "RUNUP":
                     FrameCounts.Up = intValue;
                     break;
-                case "DOWN":
+                case "RUNDOWN":
                     FrameCounts.Down = intValue;
                     break;
-                case "LEFT":
+                case "RUNLEFT":
                     FrameCounts.Left = intValue;
                     break;
-                case "RIGHT":
+                case "RUNRIGHT":
                     FrameCounts.Right = intValue;
-                    break;
-                case "OUTRO":
-                    FrameCounts.Outro = intValue;
-                    break;
-                case "GRAB":
-                    FrameCounts.Grab = intValue;
-                    break;
-                case "WALK_IDLE":
-                    FrameCounts.WalkIdle = intValue;
-                    break;
-                case "CLICK":
-                    FrameCounts.Click = intValue;
-                    break;
-                case "HOVER":
-                    FrameCounts.Hover = intValue;
-                    break;
-                case "SLEEP":
-                    FrameCounts.Sleep = intValue;
-                    break;
-                case "FIRE_L":
-                    FrameCounts.LeftFire = intValue;
-                    break;
-                case "FIRE_R":
-                    FrameCounts.RightFire = intValue;
-                    break;
-                case "RELOAD":
-                    FrameCounts.Reload = intValue;
-                    break;
-                case "PAT":
-                    FrameCounts.Pat = intValue;
                     break;
                 case "UPLEFT":
                     FrameCounts.UpLeft = intValue;
@@ -245,16 +283,46 @@ public static class ConfigManager
                 case "DOWNRIGHT":
                     FrameCounts.DownRight = intValue;
                     break;
-                case "WALK_L":
+                case "OUTRO":
+                    FrameCounts.Outro = intValue;
+                    break;
+                case "GRAB":
+                    FrameCounts.Grab = intValue;
+                    break;
+                case "RUNIDLE":
+                    FrameCounts.RunIdle = intValue;
+                    break;
+                case "CLICK":
+                    FrameCounts.Click = intValue;
+                    break;
+                case "HOVER":
+                    FrameCounts.Hover = intValue;
+                    break;
+                case "SLEEP":
+                    FrameCounts.Sleep = intValue;
+                    break;
+                case "FIREL":
+                    FrameCounts.LeftFire = intValue;
+                    break;
+                case "FIRER":
+                    FrameCounts.RightFire = intValue;
+                    break;
+                case "RELOAD":
+                    FrameCounts.Reload = intValue;
+                    break;
+                case "PAT":
+                    FrameCounts.Pat = intValue;
+                    break;             
+                case "WALKLEFT":
                     FrameCounts.WalkL = intValue;
                     break;
-                case "WALK_R":
+                case "WALKRIGHT":
                     FrameCounts.WalkR = intValue;
                     break;
-                case "WALK_U":
+                case "WALKUP":
                     FrameCounts.WalkUp = intValue;
                     break;
-                case "WALK_D":
+                case "WALKDOWN":
                     FrameCounts.WalkDown = intValue;
                     break;
                 case "EMOTE1":
@@ -281,14 +349,164 @@ public static class ConfigManager
                 case "COLUMN":
                     Settings.SpriteColumn = intValue;
                     break;
-                case "WIDTH_JS":
+                case "WIDTHJS":
                     Settings.FrameWidthJs = intValue;
                     break;
-                case "HEIGHT_JS":
+                case "HEIGHTJS":
                     Settings.FrameHeightJs = intValue;
                     break;
             }
         }
     }
+
+    public static void ApplyXamlSettings(Gremlin window)
+    {
+        if (window == null)
+        {
+            return;
+        }
+        bool useColors = Settings.AllowColoredHotSpot;
+        bool showTaskBar = Settings.ShowTaskBar;
+        double scale = Settings.SpriteSize;
+
+        ApplySettings(window, Settings.AllowColoredHotSpot, Settings.ShowTaskBar,Settings.SpriteSize,Settings.FakeTransparent );
+    }
+    private static void ApplySettings(Gremlin window, bool useColors, bool showTaskBar, double scale, bool useFakeTransparent)
+    {
+        Border LeftHotspot = window.LeftHotspot;
+        Border LeftDownHotspot = window.LeftDownHotspot;
+        Border RightHotspot = window.RightHotspot;
+        Border RightDownHotspot = window.RightDownHotspot;
+        Border TopHotspot = window.TopHotspot;
+        System.Windows.Controls.Image SpriteImage = window.SpriteImage;
+
+        if (useColors)
+        {
+            LeftHotspot.Background = new SolidColorBrush(Colors.Red);
+            LeftDownHotspot.Background = new SolidColorBrush(Colors.Yellow);
+            RightHotspot.Background = new SolidColorBrush(Colors.Blue);
+            RightDownHotspot.Background = new SolidColorBrush(Colors.Orange);
+            TopHotspot.Background = new SolidColorBrush(Colors.Purple);
+        }
+        else
+        {
+            var noColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#01000000"));
+            LeftHotspot.Background = noColor;
+            LeftDownHotspot.Background = noColor;
+            RightHotspot.Background = noColor;
+            RightDownHotspot.Background = noColor;
+            TopHotspot.Background = noColor;
+        }
+
+        window.ShowInTaskbar = showTaskBar;
+
+        if (useFakeTransparent)
+        {
+            window.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#01000000"));
+        }
+
+
+        double baseLeftW = LeftHotspot.Width, baseLeftH = LeftHotspot.Height;
+        double baseLeftDownW = LeftDownHotspot.Width, baseLeftDownH = LeftDownHotspot.Height;
+        double baseRightW = RightHotspot.Width, baseRightH = RightHotspot.Height;
+        double baseRightDownW = RightDownHotspot.Width, baseRightDownH = RightDownHotspot.Height;
+        double baseTopW = TopHotspot.Width, baseTopH = TopHotspot.Height;
+
+        double originalWidth = SpriteImage.Width;
+        double originalHeight = SpriteImage.Height;
+
+        double newWidth = originalWidth * scale;
+        double newHeight = originalHeight * scale;
+        window.Width = window.Height * scale;
+        window.Height = window.Height * scale;  
+
+        SpriteImage.Width = newWidth;
+        SpriteImage.Height = newHeight;
+        double leftHotspotOffsetX = LeftHotspot.Margin.Left - SpriteImage.Margin.Left;
+        double leftHotspotOffsetY = LeftHotspot.Margin.Top - SpriteImage.Margin.Top;
+
+        double leftDownOffsetX = LeftDownHotspot.Margin.Left - SpriteImage.Margin.Left;
+        double leftDownOffsetY = LeftDownHotspot.Margin.Top - SpriteImage.Margin.Top;
+
+        double rightOffsetX = RightHotspot.Margin.Left - SpriteImage.Margin.Left;
+        double rightOffsetY = RightHotspot.Margin.Top - SpriteImage.Margin.Top;
+
+        double rightDownOffsetX = RightDownHotspot.Margin.Left - SpriteImage.Margin.Left;
+        double rightDownOffsetY = RightDownHotspot.Margin.Top - SpriteImage.Margin.Top;
+
+        double topOffsetX = TopHotspot.Margin.Left - SpriteImage.Margin.Left;
+        double topOffsetY = TopHotspot.Margin.Top - SpriteImage.Margin.Top;
+
+        double centerX = (window.Width - newWidth) / 2;
+        double centerY = (window.Height - newHeight) / 2;
+
+        SpriteImage.Margin = new Thickness(centerX, centerY, 0, 0);
+
+        double scaleX = newWidth / originalWidth;
+        double scaleY = newHeight / originalHeight;
+        ScaleHotspot(LeftHotspot, leftHotspotOffsetX, leftHotspotOffsetY, scaleX, scaleY, centerX, centerY, baseLeftW, baseLeftH);
+        ScaleHotspot(LeftDownHotspot, leftDownOffsetX, leftDownOffsetY, scaleX, scaleY, centerX, centerY, baseLeftDownW, baseLeftDownH);
+        ScaleHotspot(RightHotspot, rightOffsetX, rightOffsetY, scaleX, scaleY, centerX, centerY, baseRightW, baseRightH);
+        ScaleHotspot(RightDownHotspot, rightDownOffsetX, rightDownOffsetY, scaleX, scaleY, centerX, centerY, baseRightDownW, baseRightDownH);
+        ScaleHotspot(TopHotspot, topOffsetX, topOffsetY, scaleX, scaleY, centerX, centerY, baseTopW, baseTopH);
+    }
+
+    private static void ScaleHotspot(Border hotspot, double offsetX, double offsetY, double scaleX,
+    double scaleY, double centerX, double centerY, double baseWidth, double baseHeight)
+    {
+        hotspot.Width = baseWidth * scaleX;
+        hotspot.Height = baseHeight * scaleY;
+        hotspot.Margin = new Thickness(centerX + offsetX * scaleX, centerY + offsetY * scaleY, 0, 0);
+        
+    }
+    public class AppConfig
+    {
+        private readonly Window _window;
+        private NotifyIcon _trayIcon;
+        public AppConfig(Window window)
+        {
+            _window = window;
+            SetupTrayIcon();
+        }   
+        public void SetupTrayIcon()
+        {
+            _trayIcon = new NotifyIcon();
+
+            if (File.Exists("SpriteSheet/System/ico.ico"))
+            {
+                _trayIcon.Icon = new Icon("SpriteSheet/System/ico.ico");
+            }
+            else
+            {
+                _trayIcon.Icon = SystemIcons.Application;
+            }
+
+            _trayIcon.Visible = true;
+            _trayIcon.Text = "Gremlin";
+
+            var menu = new ContextMenuStrip();
+            menu.Items.Add("Stylish Close", null, (s, e) => CloseApp());
+            menu.Items.Add("Force Close", null, (s, e) => ForceClose());
+            menu.Items.Add("Restart", null, (s, e) => RestartApp());
+            _trayIcon.ContextMenuStrip = menu;
+        }
+
+        private void CloseApp()
+        {
+            AnimationStates.PlayOutro();    
+        }
+        private void ForceClose()
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+        private void RestartApp()
+        {
+            AnimationStates.PlayOutro();
+            string exePath = Process.GetCurrentProcess().MainModule.FileName;
+            Process.Start(exePath);
+            System.Windows.Application.Current.Shutdown();
+        }
+    }
+
 }
 
