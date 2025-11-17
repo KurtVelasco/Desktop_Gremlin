@@ -43,7 +43,7 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 |-----------|---------|---------------|
 | Haru | v2.0 Outdated | [Updating]() |
 | Agnes Tachyon | v2.4 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.4/Tachyon_v2.4.zip) |
-| Matikanetannhauser | v2.0 | [Updating]() |
+| Matikanetannhauser | v2.0 Updating | [Updating]() |
 | Rice Shower | v2.2 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/2.2/Tracen_v2.1_Rice.zip) |
 | GoldShip | v2.5 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.5/GoldShip_v2.5.zip) |
 | Oguri | v2.7 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.7/Oguri_v2.7.zip) |
