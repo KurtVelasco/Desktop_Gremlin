@@ -62,10 +62,12 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 | Problem | Possible Solution |
 |---------|-----------------|
 | Browser falsely detects download | Try using a different browser or temporarily disable strict security settings. |
+| Gremlin to Big or out-screen | This is mostly a screen scaling issue -> set sprite scaling to lower or 0.1 |
 | Gremlin not following my mouse | Try lowering the FOLLOW_RADIUS in config.txt |
 | Gremlin not animatiing while dragging | Performance options in windows. Check "Animate controls and elements inside windows" |
 | Transparency not working | Settings → Personalization → Colors → Transparency Effects → On **OR** Settings → Accessibility → Contrast Themes → None |
 | Gremlin Sprites are off-settings | Redownload the config file text |
+
 
 ## 🛠️ Q & A
 
