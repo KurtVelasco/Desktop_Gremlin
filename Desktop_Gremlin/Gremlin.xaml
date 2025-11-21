@@ -5,47 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop_Gremlin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="600"
+        Title="MainWindow" Height="300" Width="300"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         Topmost="True"
-        ResizeMode="NoResize" BorderThickness="0" BorderBrush="Black" ShowInTaskbar="True">
+        ResizeMode="NoResize" BorderThickness="0" BorderBrush="Black" ShowInTaskbar="True"
+        WindowStartupLocation="CenterScreen">
     <Grid  MouseRightButtonDown="SpriteImage_RightClick">
         <Image Name="SpriteImage"
            Width="300" Height="300"
            HorizontalAlignment="Left"
-           Source="SpriteSheet/"
+
+           Source="SpriteSheet/food.png"
            VerticalAlignment="Top"
-           Margin="150,150,0,0" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseEnter="SpriteImage_MouseEnter"
+           MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseEnter="SpriteImage_MouseEnter"
            MouseLeave="SpriteImage_MouseLeave">
         </Image>
-
+        <Image Name="Effect"
+           Width="300" Height="300"
+           HorizontalAlignment="Left"
+           VerticalAlignment="Top">
+        </Image>
         <Border x:Name="LeftHotspot"
             Background="red"
             HorizontalAlignment="Left"
             Width="40"
-            MouseLeftButtonDown="LeftHotspot_Click" Margin="195,145,0,0" Height="165" VerticalAlignment="Top"/>
+            MouseLeftButtonDown="LeftHotspot_Click" Margin="50,25,0,0" Height="140" VerticalAlignment="Top"/>
         <Border x:Name="LeftDownHotspot"
              Background="yellow"
              HorizontalAlignment="Left"
              Width="41"
-             MouseLeftButtonDown="LeftDownHotspot_Click" Margin="194,310,0,0" Height="105" VerticalAlignment="Top"/>
+             MouseLeftButtonDown="LeftDownHotspot_Click" Margin="49,165,0,0" Height="130" VerticalAlignment="Top"/>
         <Border x:Name="RightHotspot"
             Background="blue"
             HorizontalAlignment="Left"
             Width="39"
-            MouseLeftButtonDown="RightHotspot_Click" Margin="370,145,0,0" Height="170" VerticalAlignment="Top"/>
+            MouseLeftButtonDown="RightHotspot_Click" Margin="225,25,0,0" Height="145" VerticalAlignment="Top"/>
         <Border x:Name="RightDownHotspot"
             Background="Orange"
             HorizontalAlignment="Left"
             Width="39"
-            MouseLeftButtonDown="RightDownHotspot_Click" Margin="370,315,0,0" Height="100" VerticalAlignment="Top"/>
+            MouseLeftButtonDown="RightDownHotspot_Click" Margin="225,170,0,0" Height="125" VerticalAlignment="Top" RenderTransformOrigin="2.436,0.56"/>
         <Border x:Name="TopHotspot"
             Background="Purple"
             HorizontalAlignment="Left"
-            Width="76"
-            MouseLeftButtonDown="TopHotspot_Click" Margin="264,145,0,0" Height="55" VerticalAlignment="Top"/>
+            Width="90"
+            MouseLeftButtonDown="TopHotspot_Click" Margin="115,30,0,0" Height="50" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+        </Border>
         <Border x:Name="ScrollingBorder" Background="White"
             CornerRadius="10"        
             BorderBrush="LightGreen"

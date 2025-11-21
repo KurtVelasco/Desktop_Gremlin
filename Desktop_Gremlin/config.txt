@@ -1,4 +1,4 @@
-﻿START_CHAR = Koyuki
+﻿START_CHAR = Doto
 
 //Visual Settings
 SPRITE_FRAMERATE = 60
@@ -7,19 +7,36 @@ SPRITE_FRAMERATE = 60
 FOLLOW_RADIUS = 100.0
 
 //Character Actions Settings
-SLEEP_TIME = 200
+SLEEP_TIME = 150
 ALLOW_RANDOM_ACTIONS = true
-MAX_INTERVAL = 10
-MIN_INTERVAL = 5
+MAX_INTERVAL = 45
+MIN_INTERVAL = 30
 RANDOM_MOVE_DISTANCE = 120
 
-//Blue Archive Settings
-AMMO = 0 
-ALLOW_FOOTSTEP_SOUNDS = true
-
+//Change Sprite Size 
 //Sprite Image Size 0.75/1.0/1.5/2.0 
-SPRITE_SCALE = 1.0	
+SPRITE_SCALE = 1.0
 
 //Debug Settings
 ALLOW_COLOR_HOTSPOT = false
-SHOW_TASKBAR = false
+SHOW_TASKBAR = true
+ALLOW_ERROR_MESSAGES = false
+
+
+//If for some reason the Mainwindow is opaque
+FORCE_FAKE_TRANSPARENT = false
+//Side effect: You might not be able to click through around the sprite
+
+
+//Food and Item Settings Oguri*
+CURRENT_ACCELERATION = 1.0
+FOLLOW_ACCELERATION = 0.2
+MAX_ACCELERATION = 1000
+MAX_EATING_SIZE = 20
+ITEM_WIDTH = 80
+ITEM_HEIGHT = 80
+
+//Companion Character Doto*
+COMPANION_CHAR = Opera
+COMPANIONS_SCALE = 0.50
+

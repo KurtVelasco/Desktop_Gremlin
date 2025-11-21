@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-public static class AnimationStates
+
+public class AnimationStates
 {
-    private static Random _random = new Random();  
-    public static bool IsLocked { get; set; } = false;
-    private static readonly Dictionary<string, bool> _animationStates = new Dictionary<string, bool>()
+    private readonly Random _random = new Random();
+    public bool IsLocked { get; private set; } = false;
+
+    private readonly Dictionary<string, bool> _animationStates = new Dictionary<string, bool>()
     {
         { "Intro", true },
         { "Random", false },
@@ -13,7 +15,7 @@ public static class AnimationStates
         { "Idle", false },
         { "Outro", false },
         { "Walking", false },
-        { "Dragging", false },
+        { "Grab", false },
         { "WalkIdle", false },
         { "Click", false },
         { "Sleeping", false },
@@ -28,7 +30,8 @@ public static class AnimationStates
         { "Emote4", false },
         { "FollowItem", false },
     };
-    public static void ResetAllExceptIdle()
+
+    public void ResetAllExceptIdle()
     {
         foreach (var key in _animationStates.Keys.ToList())
         {
@@ -36,13 +39,15 @@ public static class AnimationStates
         }
         ChangeIdle();
     }
-    public static void ChangeIdle()
+
+    public void ChangeIdle()
     {
-       int idleState = _random.Next(0, 3);
-       switch(idleState)
-       {
+        int idleState = _random.Next(0, 3);
+
+        switch (idleState)
+        {
             case 0:
-                Settings.CurrendIdle = 0;   
+                Settings.CurrendIdle = 0;
                 break;
             case 1:
                 Settings.CurrendIdle = 1;
@@ -50,41 +55,40 @@ public static class AnimationStates
             case 2:
                 Settings.CurrendIdle = 0;
                 break;
-        }   
-    }   
-    public static void PlayOutro()
+        }
+    }
+
+    public void PlayOutro()
     {
         foreach (var key in _animationStates.Keys.ToList())
         {
             _animationStates[key] = false;
         }
-
         _animationStates["Outro"] = true;
     }
-    public static void SetState(string stateName)
+
+    public void SetState(string stateName)
     {
         if (IsLocked)
-        {
             return;
-        } 
+
         string normalized = stateName.Trim();
 
         if (!_animationStates.ContainsKey(normalized))
-        {
             return;
-        }
+
         foreach (var key in _animationStates.Keys.ToList())
-        {
             _animationStates[key] = false;
-        }
 
         _animationStates[normalized] = true;
     }
-    public static bool GetState(string stateName)
+
+    public bool GetState(string stateName)
     {
         return _animationStates.TryGetValue(stateName, out bool value) && value;
     }
-    public static bool IsCompletelyIdle()
+
+    public bool IsCompletelyIdle()
     {
         foreach (var kv in _animationStates)
         {
@@ -93,6 +97,8 @@ public static class AnimationStates
         }
         return true;
     }
-    public static void LockState() => IsLocked = true;
-    public static void UnlockState() => IsLocked = false;
+
+    public void LockState() => IsLocked = true;
+    public void UnlockState() => IsLocked = false;
 }
+

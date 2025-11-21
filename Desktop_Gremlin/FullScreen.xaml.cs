@@ -40,19 +40,19 @@ namespace Desktop_Gremlin
         }
         public void InitializeAnimation()
         {
-            _jumpTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
-            _jumpTimer.Tick += (s, e) =>
-            {
-               CurrentFrames.JumpScare = PlayAnimation("jumpscare","Action", CurrentFrames.JumpScare, 
-                   FrameCounts.JumpScare, 
-                   SpriteImage);
-                if (CurrentFrames.JumpScare <= 0)
-                {
-                    _jumpTimer.Stop();
-                    this.Close();
-                }
-            };  
-            _jumpTimer.Start();
+            //_jumpTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
+            //_jumpTimer.Tick += (s, e) =>
+            //{
+            //   CurrentFrames.JumpScare = PlayAnimation("jumpscare","Action", CurrentFrames.JumpScare, 
+            //       FrameCounts.JumpScare, 
+            //       SpriteImage);
+            //    if (CurrentFrames.JumpScare <= 0)
+            //    {
+            //        _jumpTimer.Stop();
+            //        this.Close();
+            //    }
+            //};  
+            //_jumpTimer.Start();
         }
 
 

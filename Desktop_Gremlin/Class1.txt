@@ -1,240 +1,159 @@
-﻿if (AnimationStates.IsSleeping && !AnimationStates.IsIntro)
-                {
-                    CurrentFrames.Sleep =
-                    PlayAnimation(SpriteManager.Get("sleep"),
-                    CurrentFrames.Sleep,
-                    FrameCounts.Sleep, 
-                    SpriteImage);
-                }   
-                if (AnimationStates.IsIntro)
-                {
-                    CurrentFrames.Intro = PlayAnimation(
-                        SpriteManager.Get("intro"),
-                        CurrentFrames.Intro,
-                        FrameCounts.Intro,
-                        SpriteImage);
+﻿        //private void DeleteOneTargetFile()
+        //{
+        //    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
-                    if (CurrentFrames.Intro == 0)
-                    {
-                        AnimationStates.IsIntro = false;
-                    }
-                }
-                if (AnimationStates.IsDragging)
-                {
-                    if (CurrentFrames.Grab == 0)
-                    {
-                        PlaySound("grab.wav");
-                    }
-                    CurrentFrames.Grab = PlayAnimation(
-                        SpriteManager.Get("grab"),
-                        CurrentFrames.Grab,
-                        FrameCounts.Grab,
-                        SpriteImage);
-      
-                    AnimationStates.IsIntro = false;
-                    AnimationStates.IsClick = false;
-                    AnimationStates.IsSleeping = false;
-                }
-                if (AnimationStates.IsPat)
-                {
-                    if (CurrentFrames.Pat == 0)
-                    {
-                        PlaySound("emote.wav");
-                    }
-                    CurrentFrames.Pat = PlayAnimation(
-                        SpriteManager.Get("pat"),
-                        CurrentFrames.Pat,
-                        FrameCounts.Pat,
-                        SpriteImage);
-                    AnimationStates.IsIntro = false;
-                    AnimationStates.IsClick = false;
-                    AnimationStates.IsSleeping = false;
+        //    string filename = $"target{deleteIndex}.txt";
+        //    string fullPath = Path.Combine(desktopPath, filename);
 
-                    if (CurrentFrames.Pat == 0)
-                    {
-                        AnimationStates.IsPat = false;   
-                    }
-                }
+        //    if (File.Exists(fullPath))
+        //    {
+        //        try
+        //        {
+        //            FileSystem.DeleteFile(fullPath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+        //        }
+        //        catch
+        //        {
+        //            // silently ignore errors
+        //        }
+        //    }
 
-                if (AnimationStates.IsHover && !AnimationStates.IsDragging && !AnimationStates.IsSleeping)
-                {
-                    CurrentFrames.Hover = PlayAnimation(
-                        SpriteManager.Get("hover"),
-                        CurrentFrames.Hover,
-                        FrameCounts.Hover,
-                        SpriteImage);
-                    AnimationStates.IsPat = false;
-                }
-                if (AnimationStates.IsClick)
-                {
-                    CurrentFrames.Click = PlayAnimation(
-                        SpriteManager.Get("click"),
-                        CurrentFrames.Click,
-                        FrameCounts.Click,
-                        SpriteImage);
+        //    
+        //    deleteIndex++;
 
-                    AnimationStates.IsIntro = false;
-                    AnimationStates.IsSleeping = false;
-                    if (CurrentFrames.Click == 0)
-                    {
-                        AnimationStates.IsClick = false;
-                    }
-                }
-                if (!AnimationStates.IsSleeping && !AnimationStates.IsIntro && !AnimationStates.IsDragging 
-                && !AnimationStates.IsWalkIdle && !AnimationStates.IsClick && !AnimationStates.IsHover && !AnimationStates.IsFiring_Left &&!AnimationStates.IsFiring_Right
-                && Settings.Ammo > 0 && !AnimationStates.IsPat && !AnimationStates.IsRandom)
-                {
-                    CurrentFrames.Idle = PlayAnimation(
-                        SpriteManager.Get("idle"),
-                        CurrentFrames.Idle,
-                        FrameCounts.Idle,
-                        SpriteImage);
-                }
-                if (MouseSettings.FollowCursor &&!AnimationStates.IsPat && !AnimationStates.IsDragging && !AnimationStates.IsClick && !AnimationStates.IsSleeping)
-                {
-                    POINT cursorPos;
-                    GetCursorPos(out cursorPos);
-                    var cursorScreen = new System.Windows.Point(cursorPos.X, cursorPos.Y);
-
-                    double halfW = SpriteImage.ActualWidth > 0 ? SpriteImage.ActualWidth / 2.0 : Settings.FrameWidth / 2.0;
-                    double halfH = SpriteImage.ActualHeight > 0 ? SpriteImage.ActualHeight / 2.0 : Settings.FrameHeight / 2.0;
-                    var spriteCenterScreen = SpriteImage.PointToScreen(new System.Windows.Point(halfW, halfH));
+        //   
+        //    if (deleteIndex > MAX_TARGETS) 
+        //        deleteIndex = 1;
+        //}
+        //private DateTime lastDeleteTime = DateTime.MinValue;
+        //private TimeSpan deleteInterval = TimeSpan.FromMilliseconds(300);
+        //private static int MAX_TARGETS = 70;
+        //private static int deleteIndex = 1;
 
 
-                    var source = PresentationSource.FromVisual(this);
-                    System.Windows.Media.Matrix transformFromDevice = System.Windows.Media.Matrix.Identity;
-                    if (source?.CompositionTarget != null)
-                    {
-                        transformFromDevice = source.CompositionTarget.TransformFromDevice;
-                    }
-
-                    var spriteCenterWpf = transformFromDevice.Transform(spriteCenterScreen);
-                    var cursorWpf = transformFromDevice.Transform(cursorScreen);
-
-                    double dx = cursorWpf.X - spriteCenterWpf.X;
-                    double dy = cursorWpf.Y - spriteCenterWpf.Y;
-                    double distance = Math.Sqrt(dx * dx + dy * dy);
-
-                    if (distance > Settings.FollowRadius)
-                    {
-                        double step = Math.Min(MouseSettings.Speed, distance - Settings.FollowRadius);
-                        double nx = dx / distance;
-                        double ny = dy / distance;
-                        double moveX = nx * step;
-                        double moveY = ny * step;
-
-                        this.Left += moveX;
-                        this.Top += moveY;
-                        double angle = Math.Atan2(moveY, moveX) * (180.0 / Math.PI);
-
-                        if (angle < 0) angle += 360;
 
 
-                        if (angle >= 337.5 || angle < 22.5)
-                        {
-                            CurrentFrames.Right = PlayAnimation(
-                                SpriteManager.Get("right"),
-                                CurrentFrames.Right,
-                                FrameCounts.Right,
-                                SpriteImage);
-                        }
-                        else if (angle >= 22.5 && angle < 67.5)
-                        {
-                            CurrentFrames.DownRight = PlayAnimation(
-                                SpriteManager.Get("downRight"),
-                                CurrentFrames.DownRight,
-                                FrameCounts.DownRight,
-                                SpriteImage);
-                        }
-                        else if (angle >= 67.5 && angle < 112.5)
-                        {
-                            CurrentFrames.Down = PlayAnimation(
-                                SpriteManager.Get("forward"),
-                                CurrentFrames.Down,
-                                FrameCounts.Down,
-                                SpriteImage);
-                        }
-                        else if (angle >= 112.5 && angle < 157.5)
-                        {
-                            CurrentFrames.DownLeft = PlayAnimation(
-                                SpriteManager.Get("downLeft"),
-                                CurrentFrames.DownLeft,
-                                FrameCounts.DownLeft,
-                                SpriteImage);
-                        }
-                        else if (angle >= 157.5 && angle < 202.5)
-                        {
-                            CurrentFrames.Left = PlayAnimation(
-                                SpriteManager.Get("left"),
-                                CurrentFrames.Left,
-                                FrameCounts.Left,
-                                SpriteImage);
-                        }
-                        else if (angle >= 202.5 && angle < 247.5)
-                        {
-                            CurrentFrames.UpLeft = PlayAnimation(
-                                SpriteManager.Get("upLeft"),
-                                CurrentFrames.UpLeft,
-                                FrameCounts.UpLeft,
-                                SpriteImage);
-                        }
-                        else if (angle >= 247.5 && angle < 292.5)
-                        {
-                            CurrentFrames.WalkUp = PlayAnimation(
-                                SpriteManager.Get("backward"),
-                                CurrentFrames.WalkUp,
-                                FrameCounts.Up,
-                                SpriteImage);
-                        }
-                        else if (angle >= 292.5 && angle < 337.5)
-                        {
-                            CurrentFrames.UpRight = PlayAnimation(
-                                SpriteManager.Get("upRight"),
-                                CurrentFrames.UpRight,
-                                FrameCounts.UpRight,
-                                SpriteImage);
-                        }
-                    }
-                    else
-                    {
-                        CurrentFrames.WalkIdle = PlayAnimation(
-                            SpriteManager.Get("wIdle"),
-                            CurrentFrames.WalkIdle,
-                            FrameCounts.WalkIdle,
-                            SpriteImage);
-                    }
-                }
-
-                if (Settings.AllowRandomness)
-                {
-                    if (DateTime.Now >= _nextRandomActionTime)
-                    {
-                        PerformRandomAction();
-
-                        int interval = _rng.Next(Settings.MinInterval, Settings.MaxInterval);
-                        _nextRandomActionTime = DateTime.Now.AddSeconds(interval);
-                    }
-                }
-
-
-                private void RightHotspot_Click(object sender, MouseButtonEventArgs e)
+         private void StartFollowingFood()
         {
-
-            ResetIdleTimer();
-            CurrentFrames.Emote3 = 0;
-            AnimationStates.UnlockState();
-            if (Settings.CurrentAmmo <= 0)
+            double _startingSpeed = Settings.CurrentItemAcceleration;
+            _followTimer?.Stop();
+            _followTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000.0 / Settings.FrameRate) };
+            _followTimer.Tick += (s, e) =>
             {
+                if (_currentFood == null || !_currentFood.IsVisible)
+                {
+                    _followTimer.Stop();
+                    AnimationStates.UnlockState();
+                    MediaManager.PlaySound("sleep.wav");
+                    AnimationStates.SetState("Sleeping");
+                    AnimationStates.LockState();
+                    return;
+                }
 
-                AnimationStates.SetState("Reload");
-                AnimationStates.LockState();
+                System.Windows.Point foodCenter = _currentFood.GetCenter();
+                double gremlinCenterX = this.Left + this.ActualWidth / 2;
+                double gremlinCenterY = this.Top + this.ActualHeight / 2;
+                double dx = foodCenter.X - gremlinCenterX;
+                double dy = foodCenter.Y - gremlinCenterY;
+                double distance = Math.Sqrt(dx * dx + dy * dy);
 
-            }
-            else
-            {
-                AnimationStates.SetState("Emote3");
-                MediaManager.PlaySound("emote2.wav");
-            }
+                if (distance < Settings.FoodItemGetSize || !AnimationStates.GetState("FollowItem"))
+                {
+                    _currentFood.Close();
+                    return;
+                }
 
-            Settings.CurrentAmmo--;
+                _startingSpeed = Math.Min(_startingSpeed + Settings.ItemAcceleration, Settings.MaxItemAcceleration);
+                double step = Math.Min(_startingSpeed, distance);
+
+                this.Left += dx / distance * step;
+                this.Top += dy / distance * step;
+
+                double angle = Math.Atan2(dy, dx) * (180 / Math.PI);
+                if (angle < 0) angle += 360;
+
+                if (angle >= 337.5 || angle < 22.5)
+                {
+                    CurrentFrames.Right = SpriteManager.PlayAnimation("runRight","Run", CurrentFrames.Right, FrameCounts.Right, SpriteImage);
+                }
+                else if (angle >= 22.5 && angle < 67.5)
+                {
+                    CurrentFrames.DownRight = SpriteManager.PlayAnimation("downRight","Run", CurrentFrames.DownRight, FrameCounts.DownRight, SpriteImage);
+                }
+                else if (angle >= 67.5 && angle < 112.5)
+                {
+                    CurrentFrames.Down = SpriteManager.PlayAnimation("runDown","Run", CurrentFrames.Down, FrameCounts.Down, SpriteImage);
+                }
+                else if (angle >= 112.5 && angle < 157.5)
+                {
+                    CurrentFrames.DownLeft = SpriteManager.PlayAnimation("downLeft","Run", CurrentFrames.DownLeft, FrameCounts.DownLeft, SpriteImage);
+                }
+                else if (angle >= 157.5 && angle < 202.5)
+                {
+                    CurrentFrames.Left = SpriteManager.PlayAnimation("runLeft","Run", CurrentFrames.Left, FrameCounts.Left, SpriteImage);
+                }
+                else if (angle >= 202.5 && angle < 247.5)
+                {
+                    CurrentFrames.UpLeft = SpriteManager.PlayAnimation("upLeft","Run", CurrentFrames.UpLeft, FrameCounts.UpLeft, SpriteImage);
+                }
+                else if (angle >= 247.5 && angle < 292.5)
+                {
+                    CurrentFrames.Up = SpriteManager.PlayAnimation("runUp","Run", CurrentFrames.Up, FrameCounts.Up, SpriteImage);
+                }
+                else if (angle >= 292.5 && angle < 337.5)
+                {
+                    CurrentFrames.UpRight = SpriteManager.PlayAnimation("upRight","Run", CurrentFrames.UpRight, FrameCounts.UpRight, SpriteImage);
+                }
+
+                AnimationStates.SetState("Walking");
+            };
+            _followTimer.Start();
         }
+
+
+         private void TopHotspot_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (AnimationStates.GetState("FollowItem"))
+            {
+                return;
+            }
+            AnimationStates.UnlockState();
+            AnimationStates.SetState("FollowItem");
+            AnimationStates.LockState();
+            MediaManager.PlaySound("spawn.wav");
+            double screenWidth = SystemParameters.WorkArea.Width;
+            double screenHeight = SystemParameters.WorkArea.Height;
+
+            Random rng = new Random();
+            double randomLeft = rng.NextDouble() * (screenWidth - Settings.ItemWidth) + SystemParameters.WorkArea.Left;
+            double randomTop = rng.NextDouble() * (screenHeight - Settings.ItemHeight) + SystemParameters.WorkArea.Top;
+            _currentFood = new Target
+            {
+                Left = randomLeft,
+                Top = randomTop
+            };
+            _currentFood.Show();
+            StartFollowingFood();
+        }
+             if (AnimationStates.GetState("Sleeping"))
+                {
+                    CurrentFrames.Sleep = SpriteManager.PlayAnimation(
+                       "sleep",
+                       "Actions",   
+                       CurrentFrames.Sleep,
+                       FrameCounts.Sleep,
+                       SpriteImage);
+                }
+                if (AnimationStates.GetState("Pat"))
+                {
+                    AnimationStates.LockState();
+                    CurrentFrames.Pat = SpriteManager.PlayAnimation(
+                      "pat",
+                      "Actions",
+                      CurrentFrames.Pat,
+                      FrameCounts.Pat,
+                      SpriteImage);
+                    if (CurrentFrames.Pat == 0) {
+                        AnimationStates.UnlockState();
+                        AnimationStates.ResetAllExceptIdle();
+                    }
+                }

@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 public static class ConfigManager
 {
@@ -41,6 +40,11 @@ public static class ConfigManager
                 case "START_CHAR":
                     {
                         Settings.StartingChar = value;
+                        break;
+                    }
+                case "COMPANION_CHAR":
+                    {
+                        Settings.CompanionChar = value;
                         break;
                     }
                 case "SPRITE_FRAMERATE":
@@ -212,21 +216,30 @@ public static class ConfigManager
                         }
                     }
                     break;
+                case "COMPANIONS_SCALE":
+                    {
+                        if (double.TryParse(value, out double Value))
+                        {
+                            Settings.CompanionScale = Value;
+                        }
+                    }
+                    break;
             }
 
         }
     }
     
-    public static void LoadConfigChar()
+    public static FrameCounts LoadConfigChar(string character)
     {
+        var result = new FrameCounts();
         string path = System.IO.Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory,
-            "SpriteSheet", "Gremlins", Settings.StartingChar, "config.txt");
+            "SpriteSheet", "Gremlins", character, "config.txt");
 
         if (!File.Exists(path))
         {
-            Gremlin.ErrorClose("Cannot find the SpriteSheet config.txt", "Missing config.txt", true );
-            return;
+            Gremlin.ErrorClose("Cannot find the SpriteSheet config.txt", "Missing config.txt", true);
+            return result;
         }
 
         foreach (var line in File.ReadAllLines(path))
@@ -235,129 +248,65 @@ public static class ConfigManager
             {
                 continue;
             }
+                
 
             var parts = line.Split('=');
             if (parts.Length != 2)
             {
                 continue;
             }
-
+            
             string key = parts[0].Trim();
             string value = parts[1].Trim();
+
             if (!int.TryParse(value, out int intValue))
             {
                 continue;
             }
+                
             switch (key.ToUpper())
             {
-                case "INTRO":
-                    FrameCounts.Intro = intValue;
-                    break;
-                case "IDLE":
-                    FrameCounts.Idle = intValue;
-                    break;
-                case "IDLE2":
-                    FrameCounts.Idle2 = intValue;
-                    break;
-                case "RUNUP":
-                    FrameCounts.Up = intValue;
-                    break;
-                case "RUNDOWN":
-                    FrameCounts.Down = intValue;
-                    break;
-                case "RUNLEFT":
-                    FrameCounts.Left = intValue;
-                    break;
-                case "RUNRIGHT":
-                    FrameCounts.Right = intValue;
-                    break;
-                case "UPLEFT":
-                    FrameCounts.UpLeft = intValue;
-                    break;
-                case "UPRIGHT":
-                    FrameCounts.UpRight = intValue;
-                    break;
-                case "DOWNLEFT":
-                    FrameCounts.DownLeft = intValue;
-                    break;
-                case "DOWNRIGHT":
-                    FrameCounts.DownRight = intValue;
-                    break;
-                case "OUTRO":
-                    FrameCounts.Outro = intValue;
-                    break;
-                case "GRAB":
-                    FrameCounts.Grab = intValue;
-                    break;
-                case "RUNIDLE":
-                    FrameCounts.RunIdle = intValue;
-                    break;
-                case "CLICK":
-                    FrameCounts.Click = intValue;
-                    break;
-                case "HOVER":
-                    FrameCounts.Hover = intValue;
-                    break;
-                case "SLEEP":
-                    FrameCounts.Sleep = intValue;
-                    break;
-                case "FIREL":
-                    FrameCounts.LeftFire = intValue;
-                    break;
-                case "FIRER":
-                    FrameCounts.RightFire = intValue;
-                    break;
-                case "RELOAD":
-                    FrameCounts.Reload = intValue;
-                    break;
-                case "PAT":
-                    FrameCounts.Pat = intValue;
-                    break;             
-                case "WALKLEFT":
-                    FrameCounts.WalkL = intValue;
-                    break;
-                case "WALKRIGHT":
-                    FrameCounts.WalkR = intValue;
-                    break;
-                case "WALKUP":
-                    FrameCounts.WalkUp = intValue;
-                    break;
-                case "WALKDOWN":
-                    FrameCounts.WalkDown = intValue;
-                    break;
-                case "EMOTE1":
-                    FrameCounts.Emote1 = intValue;
-                    break;
-                case "EMOTE2":
-                    FrameCounts.Emote2 = intValue;
-                    break;
-                case "EMOTE3":
-                    FrameCounts.Emote3 = intValue;
-                    break;
-                case "EMOTE4":
-                    FrameCounts.Emote4 = intValue;
-                    break;
-                case "JUMPSCARE":
-                    FrameCounts.JumpScare = intValue;
-                    break;
-                case "WIDTH":
-                    Settings.FrameWidth = intValue;
-                    break;
-                case "HEIGHT":
-                    Settings.FrameHeight = intValue;
-                    break;
-                case "COLUMN":
-                    Settings.SpriteColumn = intValue;
-                    break;
-                case "WIDTHJS":
-                    Settings.FrameWidthJs = intValue;
-                    break;
-                case "HEIGHTJS":
-                    Settings.FrameHeightJs = intValue;
-                    break;
+                case "INTRO": result.Intro = intValue; break;
+                case "IDLE": result.Idle = intValue; break;
+                case "IDLE2": result.Idle2 = intValue; break;
+                case "RUNUP": result.Up = intValue; break;
+                case "RUNDOWN": result.Down = intValue; break;
+                case "RUNLEFT": result.Left = intValue; break;
+                case "RUNRIGHT": result.Right = intValue; break;
+                case "UPLEFT": result.UpLeft = intValue; break;
+                case "UPRIGHT": result.UpRight = intValue; break;
+                case "DOWNLEFT": result.DownLeft = intValue; break;
+                case "DOWNRIGHT": result.DownRight = intValue; break;
+                case "OUTRO": result.Outro = intValue; break;
+                case "GRAB": result.Grab = intValue; break;
+                case "RUNIDLE": result.RunIdle = intValue; break;
+                case "CLICK": result.Click = intValue; break;
+                case "HOVER": result.Hover = intValue; break;
+                case "SLEEP": result.Sleep = intValue; break;
+                case "FIREL": result.LeftFire = intValue; break;
+                case "FIRER": result.RightFire = intValue; break;
+                case "RELOAD": result.Reload = intValue; break;
+                case "PAT": result.Pat = intValue; break;
+                case "WALKLEFT": result.WalkL = intValue; break;
+                case "WALKRIGHT": result.WalkR = intValue; break;
+                case "WALKUP": result.WalkUp = intValue; break;
+                case "WALKDOWN": result.WalkDown = intValue; break;
+                case "EMOTE1": result.Emote1 = intValue; break;
+                case "EMOTE2": result.Emote2 = intValue; break;
+                case "EMOTE3": result.Emote3 = intValue; break;
+                case "EMOTE4": result.Emote4 = intValue; break;
+                case "JUMPSCARE": result.JumpScare = intValue; break;
+                case "POOF": result.Poof = intValue; break;
+                case "WIDTH": Settings.FrameWidth = intValue; break;
+                case "HEIGHT": Settings.FrameHeight = intValue; break;
+                case "COLUMN": Settings.SpriteColumn = intValue; break;
+                case "WIDTHJS": Settings.FrameWidthJs = intValue; break;
+                case "HEIGHTJS": Settings.FrameHeightJs = intValue; break;
             }
         }
+        return result;
     }
+
 
     public static void ApplyXamlSettings(Gremlin window)
     {
@@ -365,6 +314,7 @@ public static class ConfigManager
         {
             return;
         }
+
         bool useColors = Settings.AllowColoredHotSpot;
         bool showTaskBar = Settings.ShowTaskBar;
         double scale = Settings.SpriteSize;
@@ -463,9 +413,11 @@ public static class ConfigManager
     {
         private readonly Window _window;
         private NotifyIcon _trayIcon;
-        public AppConfig(Window window)
+        public AnimationStates _states;    
+        public AppConfig(Window window, AnimationStates states)
         {
             _window = window;
+            _states = states;
             SetupTrayIcon();
         }   
         public void SetupTrayIcon()
@@ -491,9 +443,9 @@ public static class ConfigManager
             _trayIcon.ContextMenuStrip = menu;
         }
 
-        private void CloseApp()
+        public void CloseApp()
         {
-            AnimationStates.PlayOutro();    
+           _states.PlayOutro();  
         }
         private void ForceClose()
         {
@@ -501,7 +453,6 @@ public static class ConfigManager
         }
         private void RestartApp()
         {
-            AnimationStates.PlayOutro();
             string exePath = Process.GetCurrentProcess().MainModule.FileName;
             Process.Start(exePath);
             System.Windows.Application.Current.Shutdown();
