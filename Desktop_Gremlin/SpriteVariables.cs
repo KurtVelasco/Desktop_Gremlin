@@ -102,7 +102,11 @@ public static class Settings
     public static int ItemWidth { get; set; } = 0;
     public static int ItemHeight { get; set; } = 0;
     public static bool AllowErrorMessages { get; set; } = false;  
-    public static double CompanionScale { get; set; } = 0;   
+    public static double CompanionScale { get; set; } = 0;
+    public static bool ManualReize { get; set; } = false;
+    public static bool ForceCenter { get; set; } = false;
+    public static bool EnableMinSize { get; set; } = false;
+    public static double VolumeLevel { get; set; } = 1.0;   
 }
 public static class MouseSettings   
 {

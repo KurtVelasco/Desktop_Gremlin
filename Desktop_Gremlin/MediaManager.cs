@@ -1,32 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Media;
 using System.IO;
+using System.Windows.Media;
+
 public static class MediaManager
 {
     private static Dictionary<string, DateTime> LastPlayed = new Dictionary<string, DateTime>();
-    public static void PlaySound(string fileName, double delaySeconds = 0)
+    private static MediaPlayer player = new MediaPlayer();
+
+    public static void PlaySound(string fileName, string startChar, double delaySeconds = 0, double volume = 1.0)
     {
-        string path = System.IO.Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
-            "Sounds", Settings.StartingChar, fileName);
-
-        if (!File.Exists(path))
+        string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds", startChar, fileName);
+        if (!File.Exists(path)) return;
+        if (delaySeconds > 0 &&
+            LastPlayed.TryGetValue(fileName, out DateTime lastTime) &&
+            (DateTime.Now - lastTime).TotalSeconds < delaySeconds)
+        {
             return;
-
-        if (delaySeconds > 0)
-        {
-            if (LastPlayed.TryGetValue(fileName, out DateTime lastTime))
-            {
-                if ((DateTime.Now - lastTime).TotalSeconds < delaySeconds)
-                    return;
-            }
         }
-        using (SoundPlayer sp = new SoundPlayer(path))
-        {
-            sp.Play();
-            LastPlayed[fileName] = DateTime.Now;
-        }
+        player.Open(new Uri(path));
+        player.Volume = Settings.VolumeLevel;   
+        player.Play();
+        LastPlayed[fileName] = DateTime.Now;
     }
 }
+
 

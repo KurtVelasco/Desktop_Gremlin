@@ -224,6 +224,38 @@ public static class ConfigManager
                         }
                     }
                     break;
+                case "ENABLE_MIN_RESIZE":
+                    {
+                        if (bool.TryParse(value, out bool Value))
+                        {
+                            Settings.EnableMinSize = Value;
+                        }
+                    }
+                    break;
+                case "FORCE_CENTER":
+                    {
+                        if (bool.TryParse(value, out bool Value))
+                        {
+                            Settings.ForceCenter = Value;
+                        }
+                    }
+                    break;
+                case "ENABLE_MANUAL_RESIZE":
+                    {
+                        if (bool.TryParse(value, out bool Value))
+                        {
+                            Settings.ManualReize = Value;
+                        }
+                    }
+                    break;
+                case "VOLUME_LEVEL":
+                    {
+                        if (double.TryParse(value, out double Value))
+                        {
+                            Settings.VolumeLevel = Value;
+                        }
+                    }
+                    break;
             }
 
         }
@@ -319,9 +351,12 @@ public static class ConfigManager
         bool showTaskBar = Settings.ShowTaskBar;
         double scale = Settings.SpriteSize;
 
-        ApplySettings(window, Settings.AllowColoredHotSpot, Settings.ShowTaskBar,Settings.SpriteSize,Settings.FakeTransparent );
+        ApplySettings(window, Settings.AllowColoredHotSpot, Settings.ShowTaskBar,Settings.SpriteSize,Settings.FakeTransparent,
+            Settings.ManualReize,Settings.ForceCenter,Settings.EnableMinSize
+            );
     }
-    private static void ApplySettings(Gremlin window, bool useColors, bool showTaskBar, double scale, bool useFakeTransparent)
+    private static void ApplySettings(Gremlin window, bool useColors, bool showTaskBar, double scale, 
+        bool useFakeTransparent, bool useManualReize, bool forCenter, bool enableMinResize)
     {
         Border LeftHotspot = window.LeftHotspot;
         Border LeftDownHotspot = window.LeftDownHotspot;
@@ -354,8 +389,14 @@ public static class ConfigManager
         {
             window.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#01000000"));
         }
-
-
+        if (useManualReize)
+        {
+            window.SizeToContent = SizeToContent.Manual;    
+        }
+        if(forCenter)
+        {
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        }
         double baseLeftW = LeftHotspot.Width, baseLeftH = LeftHotspot.Height;
         double baseLeftDownW = LeftDownHotspot.Width, baseLeftDownH = LeftDownHotspot.Height;
         double baseRightW = RightHotspot.Width, baseRightH = RightHotspot.Height;
@@ -372,7 +413,12 @@ public static class ConfigManager
 
         SpriteImage.Width = newWidth;
         SpriteImage.Height = newHeight;
-        double leftHotspotOffsetX = LeftHotspot.Margin.Left - SpriteImage.Margin.Left;
+        if(enableMinResize)
+        {
+            window.MinWidth = window.Width;
+            window.MinHeight = window.Height;
+        }
+       double leftHotspotOffsetX = LeftHotspot.Margin.Left - SpriteImage.Margin.Left;
         double leftHotspotOffsetY = LeftHotspot.Margin.Top - SpriteImage.Margin.Top;
 
         double leftDownOffsetX = LeftDownHotspot.Margin.Left - SpriteImage.Margin.Left;
@@ -446,6 +492,7 @@ public static class ConfigManager
         public void CloseApp()
         {
            _states.PlayOutro();  
+            MediaManager.PlaySound("outro.wav", Settings.StartingChar); 
         }
         private void ForceClose()
         {
