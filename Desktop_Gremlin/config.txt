@@ -8,25 +8,32 @@ FOLLOW_RADIUS = 100.0
 
 //Character Actions Settings
 SLEEP_TIME = 150
-ALLOW_RANDOM_ACTIONS = true
-MAX_INTERVAL = 45
-MIN_INTERVAL = 30
+ALLOW_RANDOM_ACTIONS  = true
+MAX_INTERVAL = 10
+MIN_INTERVAL = 5
 RANDOM_MOVE_DISTANCE = 120
 
 //Change Sprite Size 
 //Sprite Image Size 0.75/1.0/1.5/2.0 
-SPRITE_SCALE = 1.0
+SPRITE_SCALE = 0.75
 
 //Debug Settings
 ALLOW_COLOR_HOTSPOT = false
 SHOW_TASKBAR = true
 ALLOW_ERROR_MESSAGES = false
 
+//If for some reason the sprite is Huge or something
+//I'm running out of Ideas
+ENABLE_MIN_RESIZE = true
+FORCE_CENTER= true 
+ENABLE_MANUAL_RESIZE = true
+
+//WAV VOLUMNE LEVEL 0.0 to 1.0
+VOLUME_LEVEL = 0.1
 
 //If for some reason the Mainwindow is opaque
-FORCE_FAKE_TRANSPARENT = false
 //Side effect: You might not be able to click through around the sprite
-
+FORCE_FAKE_TRANSPARENT = false
 
 //Food and Item Settings Oguri*
 CURRENT_ACCELERATION = 1.0

@@ -45,7 +45,7 @@ namespace Desktop_Gremlin
             GremlinState.LockState();
             _config = new AppConfig(this, GremlinState);
 
-            MediaManager.PlaySound("intro.wav");
+            MediaManager.PlaySound("intro.wav",Settings.StartingChar);
         }
         public void InitializeTimers()
         {
@@ -105,13 +105,13 @@ namespace Desktop_Gremlin
                 CurrentFrames.Grab = PlayAnimationIfActive("Grab", "Actions", CurrentFrames.Grab, FrameCounts.Grab, false);
                 CurrentFrames.Emote1 = PlayAnimationIfActive("Emote1", "Emotes", CurrentFrames.Emote1, FrameCounts.Emote1, false);
                 CurrentFrames.Emote3 = PlayAnimationIfActive("Emote3", "Emotes", CurrentFrames.Emote3, FrameCounts.Emote3, false);
-                CurrentFrames.Emote4 = PlayAnimationIfActive("Emote4", "Emotes", CurrentFrames.Emote4, FrameCounts.Emote4, false);
                 CurrentFrames.Idle = PlayAnimationIfActive("Idle", "Actions", CurrentFrames.Idle, FrameCounts.Idle, false);
                 CurrentFrames.Hover = PlayAnimationIfActive("Hover", "Actions", CurrentFrames.Hover, FrameCounts.Hover, false);
                 CurrentFrames.Sleep = PlayAnimationIfActive("Sleeping", "Actions", CurrentFrames.Sleep, FrameCounts.Sleep, false);
                 CurrentFrames.Pat = PlayAnimationIfActive("Pat", "Actions", CurrentFrames.Pat, FrameCounts.Pat, false);
 
                 //Single Repeat Animations = true at the end//    
+                CurrentFrames.Emote4 = PlayAnimationIfActive("Emote4", "Emotes", CurrentFrames.Emote4, FrameCounts.Emote4, true);
                 CurrentFrames.Emote2 = PlayAnimationIfActive("Emote2", "Emotes", CurrentFrames.Emote2, FrameCounts.Emote2, true);
                 CurrentFrames.Intro = PlayAnimationIfActive("Intro", "Actions", CurrentFrames.Intro, FrameCounts.Intro,true);
                 CurrentFrames.Outro = PlayAnimationIfActive("Outro", "Actions", CurrentFrames.Outro, FrameCounts.Outro, true);
@@ -215,7 +215,7 @@ namespace Desktop_Gremlin
                                 CurrentFrames.Click = 0;
                                 GremlinState.UnlockState();
                                 GremlinState.SetState("Click");
-                                MediaManager.PlaySound("mambo.wav");
+                                MediaManager.PlaySound("mambo.wav",Settings.StartingChar);
                                 GremlinState.LockState();
                                 break;
                             case 1:
@@ -305,7 +305,7 @@ namespace Desktop_Gremlin
             CurrentFrames.Click = 0;
             GremlinState.UnlockState();
             GremlinState.SetState("Click");
-            MediaManager.PlaySound("mambo.wav");
+            MediaManager.PlaySound("mambo.wav", Settings.StartingChar);
             GremlinState.LockState();
         }
 
@@ -314,7 +314,7 @@ namespace Desktop_Gremlin
             GremlinState.SetState("Hover");
             if (GremlinState.GetState("Hover"))
             {
-                MediaManager.PlaySound("hover.wav", 5);
+                MediaManager.PlaySound("hover.wav",Settings.StartingChar, 5);
             }
             
         }
@@ -328,7 +328,7 @@ namespace Desktop_Gremlin
             ResetIdleTimer();
             GremlinState.UnlockState();
             GremlinState.SetState("Grab");
-            MediaManager.PlaySound("grab.wav");
+            MediaManager.PlaySound("grab.wav", Settings.StartingChar);
             DragMove();
             GremlinState.SetState("Idle");
             MouseSettings.FollowCursor = !MouseSettings.FollowCursor;
@@ -340,7 +340,7 @@ namespace Desktop_Gremlin
             CurrentFrames.Grab = 0;
             if (MouseSettings.FollowCursor)
             {
-                MediaManager.PlaySound("run.wav");
+                MediaManager.PlaySound("run.wav", Settings.StartingChar);
             }
         }
         private void TopHotspot_Click(object sender, MouseButtonEventArgs e)
@@ -372,7 +372,7 @@ namespace Desktop_Gremlin
             else
             {
                 GremlinState.UnlockState();
-                MediaManager.PlaySound("sleep.wav");
+                MediaManager.PlaySound("sleep.wav", Settings.StartingChar);
                 GremlinState.SetState("Sleeping");
                 GremlinState.LockState();
             }
@@ -383,7 +383,7 @@ namespace Desktop_Gremlin
             ResetIdleTimer();
             GremlinState.UnlockState();
             GremlinState.SetState(emote);
-            MediaManager.PlaySound(mp3);
+            MediaManager.PlaySound(mp3,Settings.StartingChar);
             GremlinState.LockState();
         }
         private void LeftHotspot_Click(object sender, MouseButtonEventArgs e)

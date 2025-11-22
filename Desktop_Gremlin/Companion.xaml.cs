@@ -1,12 +1,13 @@
 ﻿using Desktop_Gremlin;
 using System;
 using System.Collections.Generic;
-
 using System.Windows;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Window = System.Windows.Window;
 namespace Mambo
 {
     /// <summary>
@@ -43,6 +44,26 @@ namespace Mambo
             SpriteImage.Height = SpriteImage.Height * Settings.CompanionScale;
             IntroEffect.Width = IntroEffect.Width * Settings.CompanionScale;
             IntroEffect.Height = IntroEffect.Height * Settings.CompanionScale;
+            MediaManager.PlaySound("intro.wav", Settings.CompanionChar);
+
+            if (Settings.FakeTransparent)
+            {
+                this.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#01000000"));
+            }
+            if (Settings.ManualReize)
+            {
+                this.SizeToContent = SizeToContent.Manual;
+            }
+            if (Settings.ForceCenter)
+            {
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+            if (Settings.EnableMinSize)
+            {
+                this.MinWidth = this.Width;
+                this.MinHeight = this
+                    .Height;
+            }
         }
         private int PlayAnimationIfActive(string stateName, string folder, int currentFrame, int frameCount, bool resetOnEnd)
         {
@@ -182,7 +203,7 @@ namespace Mambo
         {
             GremlinState.UnlockState();
             GremlinState.SetState("Grab");
-            MediaManager.PlaySound("grab.wav");
+            MediaManager.PlaySound("grab.wav", Settings.CompanionChar);
             DragMove();
             GremlinState.SetState("Idle");
         }
