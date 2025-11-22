@@ -46,7 +46,7 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 ---
 | Character | Version | Download Link |
 |-----------|---------|---------------|
-| Haru | v2.0 Outdated | Outdated |
+| Doto | v2.9 |[Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.9/MeishoDoto_v2.9.zip) |
 | Agnes Tachyon | v2.4 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.4/Tachyon_v2.4.zip) |
 | Matikanetannhauser | v2.7.2 Updated | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/v2.7.2/Mambo_v2.8.zip) |
 | Rice Shower | v2.2 | [Download](https://github.com/KurtVelasco/Desktop_Gremlin/releases/download/2.2/Tracen_v2.1_Rice.zip) |
@@ -66,7 +66,7 @@ SHOW_TASKBAR = true //Show the Icon in the Task bar
 
 | Problem | Possible Solution |
 |---------|-----------------|
-| Browser falsely detects download | Try using a different browser or temporarily disable strict security settings. |
+| Browser falsely detects  download | Try using a different browser or temporarily disable strict security settings. |
 | Gremlin to Big or out-screen | This is mostly a screen scaling issue -> set sprite scaling to lower or 0.1 |
 | Gremlin not following my mouse | Try lowering the FOLLOW_RADIUS in config.txt |
 | Gremlin not animatiing while dragging | Performance options in windows. Check "Animate controls and elements inside windows" |
