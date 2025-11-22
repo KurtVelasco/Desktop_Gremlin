@@ -8,6 +8,11 @@
 
 
 # Updates
+```rust
+//Important Note:
+Most of my work is in the 'tracen' branch I'm planning to move it to
+masters in the futures
+```
 ```ruby
 //2.7 Oguri Cap
 //Added more Configurable Options in config.txt
