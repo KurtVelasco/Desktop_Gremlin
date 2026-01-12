@@ -27,10 +27,11 @@ ALLOW_COLOR_HOTSPOT = true //Makes the Hotspot visible in case you resize the im
 ```c#
 SHOW_TASKBAR = true //Show the Icon in the Task bar
 ```
-# Linux
-| Ver| Download Link |
-|-----------|---------------|
-| Linux Version | [Download](https://github.com/iluvgirlswithglasses/linux-desktop-gremlin) Thank you [@iluvgirlwithglasses](https://github.com/iluvgirlswithglasses), written in Python|
+# Derivate Projects
+| Name | Description | Download Link |
+|------|-------------|---------------|
+| Linux-Desktop-Gremlin | Linux port written in Python, using PySide + Qt6 | [Download](https://github.com/iluvgirlswithglasses/linux-desktop-gremlin) Thank you [@iluvgirlwithglasses](https://github.com/iluvgirlswithglasses)|
+| Desktop_Gremlin_Avalonia | Port to Avalonia framework, written in C#, supports Linux, Windows and Mac | [Download](https://github.com/DGdev91/Desktop_Gremlin_Avalonia) Thank you [@DGdev91](https://github.com/DGdev91)|
 
 # Links
 
